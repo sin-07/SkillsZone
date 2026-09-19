@@ -568,7 +568,7 @@ export default function AdminPage() {
       )}
 
       {/* ================= TAB 2: GATE QR CHECK-IN ================= */}
-      {activeTab === 'checkin' && (
+      {activeTab === 'checkin' /* Gate check-in scanner */ && (
         <div className="max-w-2xl mx-auto space-y-6">
           <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200/90 space-y-6 shadow-xl shadow-slate-200/50">
             <div className="text-center">
