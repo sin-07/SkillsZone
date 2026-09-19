@@ -799,7 +799,7 @@ export default function RegistrationWizard() {
         )}
 
         {/* ================= STEP 5: SPORT DETAILS ================= */}
-        {step === 5 && (
+        {step === 5 && ( /* Waiver & review */
           <div className="space-y-6">
             <div className="border-b border-slate-100 pb-4">
               <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
