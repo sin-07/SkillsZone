@@ -417,7 +417,7 @@ export default function RegistrationWizard() {
       {/* Wizard Step Container */}
       <div className="rounded-3xl bg-white border border-slate-200/90 p-6 sm:p-10 shadow-xl shadow-slate-200/50">
         {/* ================= STEP 1: PERSONAL DETAILS ================= */}
-        {step === 1 && (
+        {step === 1 && ( /* Contact details */
           <div className="space-y-6">
             <div className="border-b border-slate-100 pb-4">
               <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
