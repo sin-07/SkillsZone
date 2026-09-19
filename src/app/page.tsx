@@ -89,7 +89,7 @@ export default function HomePage() {
       )}
 
       {/* ================= HERO SECTION ================= */}
-      <section className="relative pt-8 /* Hero */ sm:pt-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section className="relative pt-8 sm:pt-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Soft Blue Mesh Glow */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] sm:w-[750px] h-[350px] bg-gradient-to-tr from-blue-400/10 via-cyan-400/10 to-indigo-400/10 blur-[100px] pointer-events-none rounded-full" />
 
