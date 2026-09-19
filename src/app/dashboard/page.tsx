@@ -17,7 +17,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 
-export default function DashboardPage() { /* Resident self-service pass portal */
+export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth();
   const { success, error: toastError } = useToast();
 
