@@ -21,6 +21,18 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+const SPORT_IMAGE_FALLBACKS: Record<string, string> = {
+  'Cricket': 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1200&q=80',
+  'Football': 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1200&q=80',
+  'Hockey': 'https://images.unsplash.com/photo-1580748141549-71748dbe0bdc?auto=format&fit=crop&w=1200&q=80',
+  'Table Tennis': 'https://images.unsplash.com/photo-1534158914592-062992fbe900?auto=format&fit=crop&w=1200&q=80',
+  'Race': 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1200&q=80',
+  'Slow Cycling': 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=1200&q=80',
+  'Badminton': 'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=1200&q=80',
+  'Basketball': 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1200&q=80',
+  'Custom': 'https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&w=1200&q=80',
+};
+
 export default function EventDetailPage({ params }: Props) {
   const { slug } = use(params);
   const { success } = useToast();
@@ -93,6 +105,7 @@ export default function EventDetailPage({ params }: Props) {
   );
 
   const spotsRemaining = Math.max(0, event.maxParticipants - event.registeredCount);
+  const heroImage = event.bannerImage || SPORT_IMAGE_FALLBACKS[event.sportType] || SPORT_IMAGE_FALLBACKS['Custom'];
 
   return (
     <div className="min-h-screen py-10 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
@@ -112,34 +125,41 @@ export default function EventDetailPage({ params }: Props) {
         </button>
       </div>
 
-      {/* Main Banner Card */}
-      <div className="rounded-3xl bg-white border border-slate-200/90 overflow-hidden shadow-xl shadow-slate-200/50 relative mb-8">
-        <div className="h-2 w-full bg-blue-600" />
-
-        <div className="p-6 sm:p-10">
-          <div className="flex flex-wrap items-center gap-2 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
-              {event.sportType}
-            </span>
-            <span className="text-xs font-semibold text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
-              {event.category} Category
-            </span>
-            <span
-              className={`text-xs font-bold px-3 py-1 rounded-full ${
-                event.status === 'open'
-                  ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                  : 'bg-rose-50 text-rose-700 border border-rose-200'
-              }`}
-            >
-              {event.status === 'open' ? `${spotsRemaining} Spots Available` : 'Closed'}
-            </span>
+      {/* Main Banner Card with Real Photography */}
+      <div className="rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-md mb-8">
+        <div className="relative h-64 sm:h-80 w-full bg-slate-950 overflow-hidden">
+          <img
+            src={heroImage}
+            alt={event.title}
+            className="w-full h-full object-cover opacity-85"
+          />
+          <div className="absolute inset-0 bg-slate-950/40" />
+          <div className="absolute bottom-6 left-6 right-6 flex flex-col gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-white bg-slate-900/80 backdrop-blur-xs px-2.5 py-1 rounded-md border border-white/20">
+                {event.sportType}
+              </span>
+              <span className="text-[11px] font-semibold text-slate-200 bg-slate-900/80 backdrop-blur-xs px-2.5 py-1 rounded-md border border-white/15">
+                {event.category} Category • Team of {event.teamSize}
+              </span>
+              <span
+                className={`text-[11px] font-bold px-2.5 py-1 rounded-md ${
+                  event.status === 'open'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-rose-600 text-white'
+                }`}
+              >
+                {event.status === 'open' ? `${spotsRemaining} Spots Available` : 'Closed'}
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+              {event.title}
+            </h1>
           </div>
+        </div>
 
-          <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-4">
-            {event.title}
-          </h1>
-
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-3xl mb-8">
+        <div className="p-6 sm:p-8">
+          <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-3xl mb-6">
             {event.description}
           </p>
 

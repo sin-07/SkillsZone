@@ -58,21 +58,21 @@ export default function CountdownTimer({ targetDate = '2026-10-15T08:00:00' }: C
   ];
 
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-3">
-      <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-blue-700 bg-blue-50 px-3.5 py-1.5 rounded-xl border border-blue-200/80 shadow-xs">
-        <Flame className="w-4 h-4 text-blue-600 fill-blue-600" />
-        FEST STARTS IN
+    <div className="inline-flex flex-col sm:flex-row items-center gap-2.5 sm:gap-4 p-2 sm:p-2.5 rounded-2xl bg-white border border-slate-200 shadow-sm">
+      <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-[11px] font-bold uppercase tracking-wider shrink-0">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping" />
+        <span>Kickoff In</span>
       </div>
-      <div className="grid grid-cols-4 gap-2 sm:gap-3">
+      <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
         {timeUnits.map((unit) => (
           <div
             key={unit.label}
-            className="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-2xl bg-white border border-slate-200 shadow-md shadow-slate-200/60 min-w-[62px] sm:min-w-[72px]"
+            className="flex flex-col items-center justify-center py-2 px-3 sm:px-4 rounded-xl bg-slate-50 border border-slate-200/80 min-w-[58px] sm:min-w-[68px]"
           >
-            <span className="text-xl sm:text-2xl font-black text-slate-900 tabular-nums tracking-tight">
+            <span className="text-xl sm:text-2xl font-black text-slate-900 tabular-nums tracking-tight leading-none">
               {String(unit.value).padStart(2, '0')}
             </span>
-            <span className="text-[9px] sm:text-[10px] font-bold text-slate-500 tracking-wider">
+            <span className="text-[9px] font-bold uppercase text-slate-400 tracking-wider mt-1">
               {unit.label}
             </span>
           </div>
