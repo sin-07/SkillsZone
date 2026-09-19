@@ -103,7 +103,7 @@ export default function EventsPage() {
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
-                  selectedCategory === cat /* Active category */
+                  selectedCategory === cat
                     ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
                 }`}
