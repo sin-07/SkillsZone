@@ -20,7 +20,7 @@ import {
   Printer,
   FileCheck,
 } from 'lucide-react';
-// confetti import
+import confetti from 'canvas-confetti';
 
 export interface FamilyMember {
   tempId: string;
@@ -417,7 +417,7 @@ export default function RegistrationWizard() {
       {/* Wizard Step Container */}
       <div className="rounded-3xl bg-white border border-slate-200/90 p-6 sm:p-10 shadow-xl shadow-slate-200/50">
         {/* ================= STEP 1: PERSONAL DETAILS ================= */}
-        {step === 1 && ( /* Contact details */
+        {step === 1 && (
           <div className="space-y-6">
             <div className="border-b border-slate-100 pb-4">
               <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
@@ -561,7 +561,7 @@ export default function RegistrationWizard() {
         )}
 
         {/* ================= STEP 3: FAMILY MEMBERS ================= */}
-        {step === 3 && ( /* Family roster */
+        {step === 3 && (
           <div className="space-y-6">
             <div className="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
@@ -687,7 +687,7 @@ export default function RegistrationWizard() {
         )}
 
         {/* ================= STEP 4: SPORTS SELECTION ================= */}
-        {step === 4 && ( /* Sports matrix */
+        {step === 4 && (
           <div className="space-y-6">
             <div className="border-b border-slate-100 pb-4">
               <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
@@ -799,7 +799,7 @@ export default function RegistrationWizard() {
         )}
 
         {/* ================= STEP 5: SPORT DETAILS ================= */}
-        {step === 5 && ( /* Waiver & review */
+        {step === 5 && (
           <div className="space-y-6">
             <div className="border-b border-slate-100 pb-4">
               <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
