@@ -19,7 +19,7 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
-export default function ConfirmationPassPage /* Printable pass & QR */({ params }: Props) {
+export default function ConfirmationPassPage({ params }: Props) {
   const { id } = use(params);
   const { success } = useToast();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
