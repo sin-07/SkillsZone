@@ -9,7 +9,7 @@ import {
   Building,
 } from 'lucide-react';
 
-export default function ResultsPage() { /* Tournament podium & leaderboard */
+export default function ResultsPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [results, setResults] = useState<any[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
