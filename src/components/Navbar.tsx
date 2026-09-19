@@ -132,7 +132,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   href="/register"
-                  className="px-3.5 py-1.5 text-sm font-semibold rounded-lg bg-slate-900 hover:bg-slate-800 text-white transition"
+                  className="px-3.5 py-1.5 text-sm font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-xs transition"
                 >
                   Sign Up
                 </Link>

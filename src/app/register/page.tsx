@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen bg-slate-950 py-6 sm:py-12">
+    <div className="min-h-screen bg-slate-50 py-6 sm:py-12">
       <RegistrationWizard />
     </div>
   );

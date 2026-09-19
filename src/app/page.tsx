@@ -77,17 +77,17 @@ export default function HomePage() {
     <div className="space-y-16 sm:space-y-24 pb-20 overflow-hidden">
       {/* Pinned Urgent Announcements Banner */}
       {announcements.length > 0 && announcements[0]?.isPinned && (
-        <div className="bg-slate-900 text-white px-4 py-2.5 shadow-sm border-b border-slate-800">
+        <div className="bg-blue-50 text-blue-950 px-4 py-2.5 shadow-xs border-b border-blue-200">
           <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 text-xs">
             <div className="flex items-center gap-2.5 font-medium truncate">
-              <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-ping shrink-0" />
-              <Megaphone className="w-4 h-4 text-blue-400 shrink-0" />
-              <strong className="text-white shrink-0">{announcements[0].title}:</strong>
-              <span className="text-slate-300 truncate">{announcements[0].content}</span>
+              <span className="flex h-2 w-2 rounded-full bg-blue-600 animate-ping shrink-0" />
+              <Megaphone className="w-4 h-4 text-blue-600 shrink-0" />
+              <strong className="text-blue-950 shrink-0">{announcements[0].title}:</strong>
+              <span className="text-blue-800 truncate">{announcements[0].content}</span>
             </div>
             <Link
               href="/events"
-              className="text-blue-400 hover:text-blue-300 whitespace-nowrap font-bold text-[11px] underline shrink-0"
+              className="text-blue-700 hover:text-blue-900 whitespace-nowrap font-bold text-[11px] underline shrink-0"
             >
               Learn More →
             </Link>
@@ -314,7 +314,7 @@ export default function HomePage() {
                 onClick={() => setActiveCategory(cat)}
                 className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors ${
                   activeCategory === cat
-                    ? 'bg-slate-900 text-white shadow-xs'
+                    ? 'bg-blue-600 text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
@@ -474,7 +474,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="p-6 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-              <div className="w-8 h-8 rounded-lg bg-slate-900 text-white font-bold text-xs flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
                 01
               </div>
               <h3 className="text-sm font-bold text-slate-900">Add Flat & Family Roster</h3>
@@ -494,7 +494,7 @@ export default function HomePage() {
             </div>
 
             <div className="p-6 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-              <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white font-bold text-xs flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
                 03
               </div>
               <h3 className="text-sm font-bold text-slate-900">Instant QR & PDF Pass</h3>
@@ -518,15 +518,15 @@ export default function HomePage() {
 
       {/* ================= FINAL REGISTRATION STADIUM CTA ================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl bg-slate-900 p-8 sm:p-14 text-center text-white space-y-6 shadow-lg border border-slate-800 relative overflow-hidden">
+        <div className="rounded-2xl bg-blue-700 p-8 sm:p-14 text-center text-white space-y-6 shadow-lg border border-blue-600 relative overflow-hidden">
           <div className="max-w-2xl mx-auto space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-blue-400">
+            <span className="text-xs font-bold uppercase tracking-widest text-blue-200">
               Registration Closing Soon
             </span>
             <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
               Ready to Represent Your Tower?
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed">
+            <p className="text-xs sm:text-sm text-blue-100 font-normal leading-relaxed">
               Join 50+ society families in the biggest sporting celebration of the year.
               Free participation kits and digital passes close once sport caps are reached.
             </p>
@@ -535,13 +535,13 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/register"
-              className="px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md transition"
+              className="px-8 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-blue-900 font-bold text-sm shadow-md transition"
             >
               Claim Family Entry Pass
             </Link>
             <Link
               href="/events"
-              className="px-8 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm transition"
+              className="px-8 py-3.5 rounded-xl bg-blue-800 hover:bg-blue-900 text-white font-bold text-sm transition border border-blue-500/40"
             >
               Browse Event Schedule
             </Link>

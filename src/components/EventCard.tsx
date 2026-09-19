@@ -208,7 +208,7 @@ export default function EventCard({ event }: { event: EventItem }) {
         <div className="pt-2">
           <Link
             href={`/events/${event.slug || event._id}`}
-            className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold transition-colors flex items-center justify-center gap-2 group/btn shadow-xs"
+            className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-colors flex items-center justify-center gap-2 group/btn shadow-xs"
           >
             <span>View Rulebook & Register</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />

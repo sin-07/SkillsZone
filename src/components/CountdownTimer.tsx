@@ -59,8 +59,8 @@ export default function CountdownTimer({ targetDate = '2026-10-15T08:00:00' }: C
 
   return (
     <div className="inline-flex flex-col sm:flex-row items-center gap-2.5 sm:gap-4 p-2 sm:p-2.5 rounded-2xl bg-white border border-slate-200 shadow-sm">
-      <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-[11px] font-bold uppercase tracking-wider shrink-0">
-        <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping" />
+      <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-[11px] font-bold uppercase tracking-wider shrink-0 shadow-xs">
+        <span className="w-2 h-2 rounded-full bg-white animate-ping" />
         <span>Kickoff In</span>
       </div>
       <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
