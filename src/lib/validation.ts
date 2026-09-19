@@ -13,3 +13,22 @@ export const familyStepSchema = z.object({
   blockTower: z.string().min(1, 'Please select your Block or Tower'),
 });
 
+export const memberItemSchema = z.object({
+  tempId: z.string(),
+  fullName: z.string().min(2, 'Full name required'),
+  age: z.coerce.number().min(3, 'Minimum age is 3 years').max(100, 'Invalid age'),
+  gender: z.enum(['Male', 'Female', 'Other']),
+  relation: z.enum(['Self', 'Spouse', 'Son', 'Daughter', 'Father', 'Mother', 'Sibling', 'Other']),
+  tShirtSize: z.enum(['Kids-S', 'Kids-M', 'Kids-L', 'S', 'M', 'L', 'XL', 'XXL']),
+  medicalNotes: z.string().optional(),
+});
+
+export const sportAllocationSchema = z.object({
+  tempMemberId: z.string(),
+  eventId: z.string(),
+  role: z.string().optional(),
+  partnerName: z.string().optional(),
+  bicycleOption: z.string().optional(),
+  notes: z.string().optional(),
+});
+
