@@ -687,7 +687,7 @@ export default function RegistrationWizard() {
         )}
 
         {/* ================= STEP 4: SPORTS SELECTION ================= */}
-        {step === 4 && (
+        {step === 4 && ( /* Sports matrix */
           <div className="space-y-6">
             <div className="border-b border-slate-100 pb-4">
               <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
