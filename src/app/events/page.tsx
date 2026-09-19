@@ -75,7 +75,7 @@ export default function EventsPage() {
 
         <Link
           href="/register"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold text-sm shadow-lg shadow-blue-500/20 transition hover:scale-105 active:scale-95 self-start md:self-auto"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition self-start md:self-auto"
         >
           <Sparkles className="w-4 h-4" /> Register Family Now
         </Link>

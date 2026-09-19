@@ -387,7 +387,7 @@ export default function RegistrationWizard() {
                       isDone
                         ? 'bg-blue-600 text-white font-extrabold shadow-md shadow-blue-500/25'
                         : isCurrent
-                        ? 'bg-gradient-to-tr from-blue-600 to-cyan-500 text-white ring-4 ring-blue-100 font-black scale-110 shadow-md'
+                        ? 'bg-blue-600 text-white ring-4 ring-blue-100 font-bold scale-110 shadow-md'
                         : 'bg-slate-100 text-slate-400 border border-slate-200'
                     }`}
                   >
@@ -1099,7 +1099,7 @@ export default function RegistrationWizard() {
         {/* ================= STEP 7: PASS CONFIRMATION & SUCCESS ================= */}
         {step === 7 && registrationResult && (
           <div className="space-y-6 text-center py-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white mx-auto shadow-xl shadow-blue-500/20">
+            <div className="w-16 h-16 rounded-2xl bg-blue-600 flex items-center justify-center text-white mx-auto shadow-md">
               <Sparkles className="w-8 h-8" />
             </div>
 
@@ -1117,7 +1117,7 @@ export default function RegistrationWizard() {
             </div>
 
             {/* Official Pass Badge Card */}
-            <div className="max-w-md mx-auto p-6 rounded-3xl bg-gradient-to-b from-blue-50/60 to-white border border-blue-200 shadow-xl relative overflow-hidden">
+            <div className="max-w-md mx-auto p-6 rounded-3xl bg-white border border-slate-200 shadow-lg relative overflow-hidden">
               <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
                 <div className="text-left">
                   <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500">
@@ -1125,14 +1125,14 @@ export default function RegistrationWizard() {
                   </span>
                   <div className="text-sm font-extrabold text-slate-900">COLONYGAMES 2026</div>
                 </div>
-                <span className="text-xs font-bold text-blue-700 bg-blue-100 px-2.5 py-1 rounded-full border border-blue-200">
+                <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">
                   VERIFIED
                 </span>
               </div>
 
               {/* Scannable QR Code */}
               {registrationResult.qrCodeDataUrl && (
-                <div className="p-3 bg-white rounded-2xl max-w-[190px] mx-auto mb-4 shadow-md border border-slate-100">
+                <div className="p-3 bg-white rounded-2xl max-w-[190px] mx-auto mb-4 shadow-sm border border-slate-200">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={registrationResult.qrCodeDataUrl}
@@ -1162,7 +1162,7 @@ export default function RegistrationWizard() {
               <a
                 href={`/api/registrations/${registrationResult.registrationId}/pdf`}
                 download
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold text-sm shadow-lg shadow-blue-500/20 transition hover:scale-105 active:scale-95"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition"
               >
                 <Download className="w-4 h-4" /> Download Official Pass (PDF)
               </a>
@@ -1203,7 +1203,7 @@ export default function RegistrationWizard() {
               <button
                 type="button"
                 onClick={nextStep}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition hover:scale-105 active:scale-95"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition"
               >
                 Continue to Step {step + 1} <ArrowRight className="w-4 h-4" />
               </button>
@@ -1212,10 +1212,10 @@ export default function RegistrationWizard() {
                 type="button"
                 onClick={handleFinalSubmit}
                 disabled={submitting || !agreeRules}
-                className={`inline-flex items-center gap-2 px-7 py-3 rounded-xl font-bold text-sm transition shadow-lg ${
+                className={`inline-flex items-center gap-2 px-7 py-3 rounded-xl font-semibold text-sm transition shadow-sm ${
                   submitting || !agreeRules
                     ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white hover:brightness-110 shadow-blue-500/25 hover:scale-105 active:scale-95'
+                    : 'bg-blue-600 hover:bg-blue-700 text-white'
                 }`}
               >
                 {submitting ? (

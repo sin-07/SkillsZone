@@ -75,7 +75,7 @@ export default function EventCard({ event }: { event: EventItem }) {
   return (
     <div className="group relative rounded-2xl bg-white border border-slate-200/90 hover:border-blue-500/60 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-md shadow-slate-200/40 hover:shadow-2xl hover:shadow-blue-500/10">
       {/* Top Banner Accent */}
-      <div className="h-1.5 w-full bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-500 opacity-90 group-hover:opacity-100 transition" />
+      <div className="h-1.5 w-full bg-blue-600 opacity-90 group-hover:opacity-100 transition" />
 
       <div className="p-5 sm:p-6 flex-1 flex flex-col">
         {/* Header Badges */}
@@ -176,7 +176,7 @@ export default function EventCard({ event }: { event: EventItem }) {
                   ? 'bg-rose-500'
                   : percentFilled >= 70
                   ? 'bg-amber-500'
-                  : 'bg-gradient-to-r from-blue-600 to-cyan-500'
+                  : 'bg-blue-600'
               }`}
               style={{ width: `${percentFilled}%` }}
             />
@@ -194,7 +194,7 @@ export default function EventCard({ event }: { event: EventItem }) {
         </Link>
         <Link
           href={`/register?sport=${encodeURIComponent(event.sportType)}`}
-          className="py-2.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white hover:from-blue-700 hover:to-cyan-700 text-xs font-bold transition flex items-center justify-center gap-1 shadow-md shadow-blue-500/20"
+          className="py-2.5 px-4 rounded-xl bg-blue-600 text-white hover:bg-blue-700 text-xs font-semibold transition flex items-center justify-center gap-1 shadow-sm"
         >
           Register <ArrowRight className="w-3.5 h-3.5" />
         </Link>

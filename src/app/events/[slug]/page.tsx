@@ -114,7 +114,7 @@ export default function EventDetailPage({ params }: Props) {
 
       {/* Main Banner Card */}
       <div className="rounded-3xl bg-white border border-slate-200/90 overflow-hidden shadow-xl shadow-slate-200/50 relative mb-8">
-        <div className="h-2 w-full bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-500" />
+        <div className="h-2 w-full bg-blue-600" />
 
         <div className="p-6 sm:p-10">
           <div className="flex flex-wrap items-center gap-2 mb-3">
@@ -230,7 +230,7 @@ export default function EventDetailPage({ params }: Props) {
               </div>
               <div className="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full transition-all duration-500"
+                  className="h-full bg-blue-600 rounded-full transition-all duration-500"
                   style={{ width: `${percentFilled}%` }}
                 />
               </div>
@@ -256,7 +256,7 @@ export default function EventDetailPage({ params }: Props) {
 
             <Link
               href={`/register?sport=${encodeURIComponent(event.sportType)}`}
-              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold text-sm shadow-lg shadow-blue-500/20 transition flex items-center justify-center gap-2 text-center"
+              className="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition flex items-center justify-center gap-2 text-center"
             >
               Register Family for this Event <ArrowRight className="w-4 h-4" />
             </Link>

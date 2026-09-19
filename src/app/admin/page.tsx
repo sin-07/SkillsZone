@@ -430,7 +430,7 @@ export default function AdminPage() {
           </a>
           <button
             onClick={() => setShowEventModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition"
           >
             <Plus className="w-4 h-4" /> Add Sport / Event
           </button>
@@ -554,7 +554,7 @@ export default function AdminPage() {
                             ? 'bg-rose-500'
                             : filledPct >= 70
                             ? 'bg-amber-500'
-                            : 'bg-gradient-to-r from-blue-600 to-cyan-500'
+                            : 'bg-blue-600'
                         }`}
                         style={{ width: `${filledPct}%` }}
                       />
@@ -596,7 +596,7 @@ export default function AdminPage() {
               <button
                 type="submit"
                 disabled={processingCheckIn}
-                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold text-sm shadow-md transition"
+                className="w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition"
               >
                 {processingCheckIn ? 'Verifying...' : 'Verify Pass & Mark Check-In'}
               </button>

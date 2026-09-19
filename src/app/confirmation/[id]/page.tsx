@@ -134,7 +134,7 @@ export default function ConfirmationPassPage({ params }: Props) {
         {/* Physical Pass Design Container */}
         <div className="rounded-3xl bg-white border border-slate-200/90 shadow-2xl overflow-hidden print:border-none print:shadow-none">
           {/* Header Banner */}
-          <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-cyan-600 p-6 sm:p-8 text-white relative">
+          <div className="bg-blue-700 p-6 sm:p-8 text-white relative">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <span className="text-[10px] uppercase font-bold tracking-widest text-blue-100 bg-white/15 px-2.5 py-0.5 rounded border border-white/20">

@@ -41,7 +41,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform duration-200">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-600/10 group-hover:bg-blue-700 transition-colors">
               <Trophy className="w-6 h-6 text-white fill-white" />
             </div>
             <div>
@@ -69,7 +69,7 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="ml-2 flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white hover:from-blue-700 hover:to-cyan-700 shadow-md shadow-blue-500/20 transition-all hover:scale-105 active:scale-95"
+                    className="ml-2 flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl bg-blue-600 text-white hover:bg-blue-700 shadow-sm transition-colors"
                   >
                     <Icon className="w-4 h-4" />
                     {link.label}
@@ -174,7 +174,7 @@ export default function Navbar() {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition ${
                   link.highlight
-                    ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold'
+                    ? 'bg-blue-600 text-white font-semibold shadow-sm'
                     : active
                     ? 'bg-blue-50 text-blue-700 border border-blue-200'
                     : 'text-slate-700 hover:bg-slate-100'

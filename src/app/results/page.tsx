@@ -129,9 +129,9 @@ export default function ResultsPage() {
                   </div>
 
                   {/* 1st Place Gold (Taller) */}
-                  <div className="order-1 md:order-2 p-8 rounded-3xl bg-gradient-to-b from-amber-50 via-white to-white border-2 border-amber-300 shadow-2xl text-center relative overflow-hidden md:-translate-y-4">
-                    <div className="absolute top-0 right-0 left-0 h-1.5 bg-gradient-to-r from-amber-400 to-yellow-500" />
-                    <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-300 text-slate-950 font-black text-xl flex items-center justify-center mx-auto mb-3 shadow-xl shadow-amber-400/30">
+                  <div className="order-1 md:order-2 p-8 rounded-3xl bg-white border-2 border-amber-400 shadow-xl text-center relative overflow-hidden md:-translate-y-4">
+                    <div className="absolute top-0 right-0 left-0 h-1.5 bg-amber-400" />
+                    <div className="w-14 h-14 rounded-full bg-amber-400 text-slate-950 font-black text-xl flex items-center justify-center mx-auto mb-3 shadow-sm">
                       <Crown className="w-7 h-7 text-slate-950" />
                     </div>
                     <span className="text-xs uppercase font-extrabold text-amber-800 tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-200">
@@ -246,8 +246,8 @@ export default function ResultsPage() {
                     key={t.tower}
                     className={`p-6 rounded-3xl border transition-all ${
                       idx === 0
-                        ? 'bg-gradient-to-b from-amber-50 to-white border-amber-300 shadow-xl'
-                        : 'bg-white border-slate-200 shadow-md'
+                        ? 'bg-amber-50/50 border-amber-300 shadow-sm'
+                        : 'bg-white border-slate-200 shadow-sm'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-3">

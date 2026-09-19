@@ -223,7 +223,7 @@ export default function DashboardPage() {
               </p>
               <Link
                 href="/register"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold text-xs shadow-md"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-sm transition"
               >
                 Register Your Family Now <ArrowRight className="w-4 h-4" />
               </Link>

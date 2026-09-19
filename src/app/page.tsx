@@ -70,7 +70,7 @@ export default function HomePage() {
     <div className="space-y-16 sm:space-y-24 pb-20 overflow-hidden">
       {/* Pinned Urgent Announcements Banner */}
       {announcements.length > 0 && announcements[0]?.isPinned && (
-        <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-cyan-50 border-b border-blue-200 px-4 py-2.5 shadow-xs">
+        <div className="bg-blue-50 border-b border-blue-200 px-4 py-2.5 shadow-xs">
           <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 text-xs">
             <div className="flex items-center gap-2 text-blue-900 font-medium truncate">
               <span className="flex h-2 w-2 rounded-full bg-blue-600 animate-ping shrink-0" />
@@ -90,12 +90,9 @@ export default function HomePage() {
 
       {/* ================= HERO SECTION ================= */}
       <section className="relative pt-8 sm:pt-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Soft Blue Mesh Glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] sm:w-[750px] h-[350px] bg-gradient-to-tr from-blue-400/10 via-cyan-400/10 to-indigo-400/10 blur-[100px] pointer-events-none rounded-full" />
-
         <div className="relative text-center space-y-6 sm:space-y-8 max-w-4xl mx-auto">
           {/* Top Pill */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
             <span>Green Meadows Annual Society Championship</span>
             <span className="text-slate-300">•</span>
@@ -105,7 +102,7 @@ export default function HomePage() {
           {/* Massive Athletic Title */}
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.08]">
             CHAMPIONSHIP GLORY FOR EVERY{' '}
-            <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 bg-clip-text text-transparent">
+            <span className="text-blue-600">
               SOCIETY FAMILY.
             </span>
           </h1>
@@ -125,7 +122,7 @@ export default function HomePage() {
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/register"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white font-black text-base shadow-xl shadow-blue-500/25 hover:brightness-110 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 group"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-blue-600 text-white font-bold text-base hover:bg-blue-700 shadow-md transition flex items-center justify-center gap-2 group"
             >
               <Sparkles className="w-5 h-5 text-white" />
               Register Family & Get Pass
@@ -238,7 +235,7 @@ export default function HomePage() {
 
       {/* ================= HOW REGISTRATION WORKS ================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl bg-gradient-to-b from-blue-50/70 via-indigo-50/40 to-white border border-blue-100 p-8 sm:p-12 space-y-10 shadow-lg">
+        <div className="rounded-3xl bg-white border border-slate-200 p-8 sm:p-12 space-y-10 shadow-sm">
           <div className="text-center max-w-xl mx-auto space-y-2">
             <span className="text-xs font-bold uppercase tracking-widest text-blue-700">
               Simple 3-Step Process
@@ -354,7 +351,7 @@ export default function HomePage() {
 
       {/* ================= FINAL REGISTRATION CTA ================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 p-8 sm:p-14 text-center text-white space-y-6 shadow-2xl relative overflow-hidden">
+        <div className="rounded-3xl bg-blue-700 p-8 sm:p-14 text-center text-white space-y-6 shadow-xl relative overflow-hidden">
           <div className="max-w-2xl mx-auto space-y-3">
             <h2 className="text-3xl sm:text-5xl font-black tracking-tight">
               Ready to Represent Your Tower?

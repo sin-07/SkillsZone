@@ -33,10 +33,10 @@ export async function sendRegistrationConfirmationEmail(params: SendConfirmation
     });
 
     const emailHtml = `
-      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background-color: #0f172a; color: #f8fafc; border-radius: 12px; overflow: hidden; border: 1px solid #334155;">
-        <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 32px 24px; text-align: center;">
+      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; color: #0f172a; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0;">
+        <div style="background-color: #1d4ed8; padding: 32px 24px; text-align: center;">
           <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 800; letter-spacing: 1px;">COLONYGAMES 2026</h1>
-          <p style="margin: 6px 0 0 0; color: #d1fae5; font-size: 14px; font-weight: 500;">Society Sports Fest • Official Entry Confirmation</p>
+          <p style="margin: 6px 0 0 0; color: #dbeafe; font-size: 14px; font-weight: 500;">Society Sports Fest • Official Entry Confirmation</p>
         </div>
         
         <div style="padding: 28px 24px;">
