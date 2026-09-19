@@ -101,23 +101,23 @@ export default function HomePage() {
           {/* Left Column: Bold Editorial Content */}
           <div className="lg:col-span-7 space-y-6 sm:space-y-8">
             {/* Top Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-              <span className="font-bold text-slate-900 uppercase tracking-wider text-[11px]">Green Meadows Annual Sports Fest</span>
-              <span className="text-slate-300">•</span>
-              <span className="text-blue-700 font-bold">Oct 15 – 18, 2026</span>
+            <div className="inline-flex max-w-full flex-wrap items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse shrink-0" />
+              <span className="font-bold text-slate-900 uppercase tracking-wider text-[10px] sm:text-[11px]">Green Meadows Annual Sports Fest</span>
+              <span className="text-slate-300 hidden sm:inline">•</span>
+              <span className="text-blue-700 font-bold text-[10px] sm:text-xs">Oct 15 – 18, 2026</span>
             </div>
 
             {/* Main Athletic Title */}
             <div className="space-y-2">
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.05]">
+              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.08]">
                 9 TOURNAMENTS. <br />
                 6 TOWERS.{' '}
                 <span className="text-blue-600">
                   ONE CUP.
                 </span>
               </h1>
-              <p className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed font-normal pt-2">
+              <p className="text-sm sm:text-base text-slate-600 max-w-xl leading-relaxed font-normal pt-1 sm:pt-2">
                 The premier inter-block sports championship for Green Meadows. Uniting 50+ families
                 and 250+ resident athletes across floodlit Cricket, Football, Badminton, Track Sprint, and Table Tennis.
               </p>

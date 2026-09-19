@@ -358,22 +358,50 @@ export default function RegistrationWizard() {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+    <div className="max-w-4xl mx-auto px-3 sm:px-6 py-6 sm:py-16">
       {/* Top Banner Heading */}
-      <div className="text-center mb-8 sm:mb-12">
-        <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 mb-3 shadow-xs">
+      <div className="text-center mb-6 sm:mb-12">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 mb-2.5 sm:mb-3 shadow-xs">
           <Trophy className="w-3.5 h-3.5 text-blue-600" /> Official Society Registration
         </span>
-        <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+        <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
           ColonyGames <span className="text-blue-600">2026</span> Entry Pass
         </h1>
-        <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
+        <p className="text-xs sm:text-sm text-slate-600 mt-1.5 sm:mt-2 max-w-xl mx-auto">
           Register your family, enroll members across 9 sports, and receive your digital QR pass instantly.
         </p>
       </div>
 
-      {/* Step Indicator Bar */}
-      <div className="mb-10 overflow-x-auto pb-2 scrollbar-none">
+      {/* Mobile-Only Step Header (under 640px) */}
+      <div className="sm:hidden mb-6 p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2.5">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <span className="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
+              {step}
+            </span>
+            <div>
+              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">
+                Step {step} of 7
+              </span>
+              <span className="text-xs font-bold text-slate-900">
+                {stepsList[step - 1]?.label} Details
+              </span>
+            </div>
+          </div>
+          <span className="text-xs font-bold text-blue-600">
+            {Math.round((step / 7) * 100)}%
+          </span>
+        </div>
+        <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-blue-600 rounded-full transition-all duration-300"
+            style={{ width: `${(step / 7) * 100}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Desktop Step Indicator Bar (640px and up) */}
+      <div className="hidden sm:block mb-10 overflow-x-auto pb-2 scrollbar-none">
         <div className="flex items-center justify-between min-w-[580px] px-2">
           {stepsList.map((s, idx) => {
             const Icon = s.icon;
@@ -385,9 +413,9 @@ export default function RegistrationWizard() {
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs transition-all ${
                       isDone
-                        ? 'bg-blue-600 text-white font-extrabold shadow-md shadow-blue-500/25'
+                        ? 'bg-blue-600 text-white font-extrabold shadow-sm'
                         : isCurrent
-                        ? 'bg-blue-600 text-white ring-4 ring-blue-100 font-bold scale-110 shadow-md'
+                        ? 'bg-blue-600 text-white ring-4 ring-blue-100 font-bold scale-110 shadow-sm'
                         : 'bg-slate-100 text-slate-400 border border-slate-200'
                     }`}
                   >
@@ -395,7 +423,7 @@ export default function RegistrationWizard() {
                   </div>
                   <span
                     className={`text-[11px] font-semibold tracking-wide ${
-                      isCurrent ? 'text-blue-700' : isDone ? 'text-slate-800' : 'text-slate-400'
+                      isCurrent ? 'text-blue-700 font-bold' : isDone ? 'text-slate-800' : 'text-slate-400'
                     }`}
                   >
                     {s.label}
@@ -415,12 +443,12 @@ export default function RegistrationWizard() {
       </div>
 
       {/* Wizard Step Container */}
-      <div className="rounded-3xl bg-white border border-slate-200/90 p-6 sm:p-10 shadow-xl shadow-slate-200/50">
+      <div className="rounded-2xl sm:rounded-3xl bg-white border border-slate-200 p-4 sm:p-10 shadow-xs sm:shadow-md">
         {/* ================= STEP 1: PERSONAL DETAILS ================= */}
         {step === 1 && (
           <div className="space-y-6">
             <div className="border-b border-slate-100 pb-4">
-              <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
                 <User className="w-5 h-5 text-blue-600" />
                 Step 1: Primary Contact Information
               </h2>

@@ -60,12 +60,12 @@ export default function ResultsPage() {
         </p>
 
         {/* View Switcher Tabs */}
-        <div className="inline-flex items-center p-1.5 rounded-2xl bg-white border border-slate-200 mt-6 shadow-md">
+        <div className="inline-flex max-w-full overflow-x-auto p-1 rounded-2xl bg-white border border-slate-200 mt-6 shadow-xs scrollbar-none">
           <button
             onClick={() => setActiveTab('leaderboard')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-colors ${
               activeTab === 'leaderboard'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -73,23 +73,23 @@ export default function ResultsPage() {
           </button>
           <button
             onClick={() => setActiveTab('towers')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-colors ${
               activeTab === 'towers'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Building className="w-4 h-4" /> Tower / Block Cup
+            <Building className="w-4 h-4" /> Tower Cup
           </button>
           <button
             onClick={() => setActiveTab('events')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-colors ${
               activeTab === 'events'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Medal className="w-4 h-4" /> Event Scorecards
+            <Medal className="w-4 h-4" /> Scorecards
           </button>
         </div>
       </div>

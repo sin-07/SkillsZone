@@ -58,7 +58,7 @@ export default function CountdownTimer({ targetDate = '2026-10-15T08:00:00' }: C
   ];
 
   return (
-    <div className="inline-flex flex-col sm:flex-row items-center gap-2.5 sm:gap-4 p-2 sm:p-2.5 rounded-2xl bg-white border border-slate-200 shadow-sm">
+    <div className="inline-flex flex-col sm:flex-row items-center gap-2 sm:gap-4 p-2 sm:p-2.5 rounded-2xl bg-white border border-slate-200 shadow-sm max-w-full">
       <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-[11px] font-bold uppercase tracking-wider shrink-0 shadow-xs">
         <span className="w-2 h-2 rounded-full bg-white animate-ping" />
         <span>Kickoff In</span>
@@ -67,9 +67,9 @@ export default function CountdownTimer({ targetDate = '2026-10-15T08:00:00' }: C
         {timeUnits.map((unit) => (
           <div
             key={unit.label}
-            className="flex flex-col items-center justify-center py-2 px-3 sm:px-4 rounded-xl bg-slate-50 border border-slate-200/80 min-w-[58px] sm:min-w-[68px]"
+            className="flex flex-col items-center justify-center py-2 px-2.5 sm:px-4 rounded-xl bg-slate-50 border border-slate-200/80 min-w-[52px] sm:min-w-[68px]"
           >
-            <span className="text-xl sm:text-2xl font-black text-slate-900 tabular-nums tracking-tight leading-none">
+            <span className="text-lg sm:text-2xl font-black text-slate-900 tabular-nums tracking-tight leading-none">
               {String(unit.value).padStart(2, '0')}
             </span>
             <span className="text-[9px] font-bold uppercase text-slate-400 tracking-wider mt-1">
