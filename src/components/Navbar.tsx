@@ -20,7 +20,7 @@ import {
 export default function Navbar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); /* Mobile drawer state */
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
     { href: '/', label: 'Home', icon: Home },
