@@ -101,14 +101,14 @@ export default function ConfirmationPassPage({ params }: Props) {
     <div className="min-h-screen py-10 sm:py-16 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         {/* Top Actions Bar (Hidden when printing) */}
-        <div className="no-print flex items-center justify-between gap-4 mb-6">
+        <div className="no-print flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 transition"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 transition self-start"
           >
             <ArrowLeft className="w-4 h-4" /> Back to Home
           </Link>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={handleShare}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium border border-slate-200 shadow-xs transition"

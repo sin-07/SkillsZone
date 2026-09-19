@@ -195,7 +195,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left 2 Cols: Active Passes */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
                 <QrCode className="w-5 h-5 text-blue-600" />
@@ -208,7 +208,7 @@ export default function DashboardPage() {
 
             <Link
               href="/register"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow transition"
+              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition w-full sm:w-auto self-start"
             >
               <Plus className="w-3.5 h-3.5" /> Register More Sports
             </Link>
