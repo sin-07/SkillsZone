@@ -561,7 +561,7 @@ export default function RegistrationWizard() {
         )}
 
         {/* ================= STEP 3: FAMILY MEMBERS ================= */}
-        {step === 3 && (
+        {step === 3 && ( /* Family roster */
           <div className="space-y-6">
             <div className="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
