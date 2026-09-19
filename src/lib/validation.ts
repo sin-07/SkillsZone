@@ -32,3 +32,20 @@ export const sportAllocationSchema = z.object({
   notes: z.string().optional(),
 });
 
+export const loginSchema = z.object({
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+});
+
+export const checkinSchema = z.object({
+  qrData: z.string().min(1, 'QR code data is required'),
+  gateNumber: z.string().optional(),
+  notes: z.string().optional(),
+});
+
+export const announcementSchema = z.object({
+  title: z.string().min(3, 'Title must be at least 3 characters'),
+  content: z.string().min(10, 'Content must be at least 10 characters'),
+  priority: z.enum(['low', 'medium', 'high', 'urgent']).default('medium'),
+  category: z.string().default('General'),
+});
