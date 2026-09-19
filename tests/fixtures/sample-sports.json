@@ -1,0 +1,39 @@
+[
+  {
+    "title": "Box Cricket League",
+    "slug": "box-cricket",
+    "category": "Outdoor",
+    "sportType": "team",
+    "teamSize": 6,
+    "maxTeams": 16,
+    "minAge": 14,
+    "maxAge": 65,
+    "genderAllowed": "all",
+    "schedule": "Saturday, 8:00 AM - 1:00 PM",
+    "venue": "Society Central Cricket Ground"
+  },
+  {
+    "title": "Slow Cycling Challenge",
+    "slug": "slow-cycling",
+    "category": "Fun",
+    "sportType": "individual",
+    "maxParticipants": 50,
+    "minAge": 8,
+    "maxAge": 70,
+    "genderAllowed": "all",
+    "schedule": "Sunday, 4:00 PM - 6:00 PM",
+    "venue": "Clubhouse Boulevard Track"
+  },
+  {
+    "title": "Table Tennis Open",
+    "slug": "table-tennis",
+    "category": "Indoor",
+    "sportType": "individual",
+    "maxParticipants": 32,
+    "minAge": 10,
+    "maxAge": 75,
+    "genderAllowed": "all",
+    "schedule": "Saturday, 2:00 PM - 6:00 PM",
+    "venue": "Clubhouse TT Hall (2nd Floor)"
+  }
+]
