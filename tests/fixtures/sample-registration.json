@@ -1,0 +1,46 @@
+{
+  "contact": {
+    "contactName": "Aniket Singh",
+    "contactEmail": "aniket.singh07vs@gmail.com",
+    "contactPhone": "9876543210",
+    "emergencyContact": "9876543211"
+  },
+  "family": {
+    "familyName": "Singh Family",
+    "houseNumber": "402",
+    "blockTower": "Tower C"
+  },
+  "members": [
+    {
+      "tempId": "mem-1",
+      "fullName": "Aniket Singh",
+      "age": 26,
+      "gender": "Male",
+      "relation": "Self",
+      "tShirtSize": "L",
+      "medicalNotes": "None"
+    },
+    {
+      "tempId": "mem-2",
+      "fullName": "Priya Singh",
+      "age": 24,
+      "gender": "Female",
+      "relation": "Spouse",
+      "tShirtSize": "M",
+      "medicalNotes": "None"
+    }
+  ],
+  "allocations": [
+    {
+      "tempMemberId": "mem-1",
+      "eventId": "evt_badminton_singles",
+      "role": "Single Player"
+    },
+    {
+      "tempMemberId": "mem-2",
+      "eventId": "evt_slow_cycling",
+      "bicycleOption": "Bring Own Cycle"
+    }
+  ],
+  "waiverAccepted": true
+}
