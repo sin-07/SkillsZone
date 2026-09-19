@@ -21,7 +21,7 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export default function EventDetailPage /* Event rulebook & venue */({ params }: Props) {
+export default function EventDetailPage({ params }: Props) {
   const { slug } = use(params);
   const { success } = useToast();
   const [event, setEvent] = useState<EventItem | null>(null);
