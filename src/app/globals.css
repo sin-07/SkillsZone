@@ -1,153 +1,87 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fdfbf7;
-  --foreground: #000000;
+  --background: #f4f4f0;
+  --foreground: #111111;
   --card-bg: #ffffff;
-  --brutal-black: #000000;
-  --brutal-yellow: #facc15;
-  --brutal-red: #ef4444;
-  --brutal-blue: #2563eb;
-  --brutal-cyan: #06b6d4;
-  --brutal-green: #22c55e;
+  --swiss-black: #111111;
+  --swiss-red: #dc2626;
+  --swiss-gray: #555555;
 }
 
 html {
   overflow-x: hidden;
   width: 100%;
   -webkit-text-size-adjust: 100%;
-  background-color: #fdfbf7;
+  background-color: #f4f4f0;
 }
 
 body {
-  background-color: #fdfbf7;
-  color: #000000;
+  background-color: #f4f4f0;
+  color: #111111;
   font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   overflow-x: hidden;
   width: 100%;
   min-height: 100vh;
   position: relative;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
 }
 
-/* ================= NEO-BRUTALIST DESIGN UTILITIES ================= */
+/* ================= SWISS INTERNATIONAL TYPOGRAPHIC STYLE ================= */
 
-/* Hard Unblurred Drop Shadows */
-.brutal-border {
-  border: 2px solid #000000;
+/* Mathematical Grid & Hairline Dividing Rules */
+.swiss-border {
+  border: 1px solid rgba(17, 17, 17, 0.2);
 }
 
-.brutal-border-thick {
-  border: 3px solid #000000;
+.swiss-border-strong {
+  border: 1px solid #111111;
 }
 
-.brutal-shadow-sm {
-  box-shadow: 3px 3px 0px #000000;
-}
-
-.brutal-shadow {
-  box-shadow: 5px 5px 0px #000000;
-}
-
-.brutal-shadow-lg {
-  box-shadow: 8px 8px 0px #000000;
-}
-
-.brutal-shadow-red {
-  box-shadow: 6px 6px 0px #ef4444;
-}
-
-.brutal-shadow-yellow {
-  box-shadow: 6px 6px 0px #facc15;
-}
-
-/* Tactile Mechanical Press Buttons */
-.brutal-btn {
-  border: 2px solid #000000;
-  box-shadow: 4px 4px 0px #000000;
-  transition: all 0.12s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.brutal-btn:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px #000000;
-}
-
-.brutal-btn:active {
-  transform: translate(4px, 4px);
-  box-shadow: 0px 0px 0px #000000;
-}
-
-.brutal-btn-yellow {
-  background-color: #facc15;
-  color: #000000;
-  border: 2px solid #000000;
-  box-shadow: 4px 4px 0px #000000;
-  transition: all 0.12s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.brutal-btn-yellow:hover {
-  background-color: #fde047;
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px #000000;
-}
-
-.brutal-btn-yellow:active {
-  transform: translate(4px, 4px);
-  box-shadow: 0px 0px 0px #000000;
-}
-
-/* Brutalist Cards */
-.brutal-card {
-  border: 3px solid #000000;
+.swiss-card {
   background-color: #ffffff;
-  box-shadow: 6px 6px 0px #000000;
-  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid #111111;
+  box-shadow: 0 4px 12px -2px rgba(17, 17, 17, 0.05);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.brutal-card:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 9px 9px 0px #000000;
+.swiss-card:hover {
+  transform: translateY(-2px);
+  border-color: #111111;
+  box-shadow: 0 12px 24px -6px rgba(17, 17, 17, 0.1);
 }
 
-/* Diagonal Hazard Stripes */
-.brutal-stripes {
-  background: repeating-linear-gradient(
-    -45deg,
-    #facc15,
-    #facc15 12px,
-    #000000 12px,
-    #000000 24px
-  );
+.swiss-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid rgba(17, 17, 17, 0.25);
+  background: #ffffff;
+  color: #111111;
 }
 
-.brutal-stripes-red {
-  background: repeating-linear-gradient(
-    -45deg,
-    #ef4444,
-    #ef4444 12px,
-    #000000 12px,
-    #000000 24px
-  );
-}
-
-/* Custom Scrollbars */
+/* Crisp Scrollbars */
 *::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 *::-webkit-scrollbar-track {
-  background: #fdfbf7;
-  border-left: 2px solid #000000;
+  background: #f4f4f0;
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #000000;
+  background: #bbbbbb;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: #ef4444;
+  background: #111111;
 }
 
 /* Print styling */
