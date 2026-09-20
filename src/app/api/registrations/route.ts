@@ -220,18 +220,18 @@ export async function POST(req: NextRequest) {
     }
 
     // 10. Send Email in Background
-    if (pdfBuffer) {
-      sendRegistrationConfirmationEmail({
-        to: contactEmail.toLowerCase().trim(),
-        recipientName: contactName.trim(),
-        registrationId,
-        familyName: familyName.trim(),
-        houseNumber: houseNumber.trim(),
-        blockTower: blockTower.trim(),
-        entriesCount: registrationEntries.length,
-        pdfBuffer,
-      }).catch((emailErr) => console.error('Email send err:', emailErr));
-    }
+    sendRegistrationConfirmationEmail({
+      to: contactEmail.toLowerCase().trim(),
+      recipientName: contactName.trim(),
+      registrationId,
+      familyName: familyName.trim(),
+      houseNumber: houseNumber.trim(),
+      blockTower: blockTower.trim(),
+      contactPhone: contactPhone.trim(),
+      entriesCount: registrationEntries.length,
+      entries: pdfEntries,
+      pdfBuffer,
+    }).catch((emailErr) => console.error('Email send err:', emailErr));
 
     return NextResponse.json({
       success: true,

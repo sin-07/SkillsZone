@@ -160,103 +160,128 @@ export default function ConfirmationPassPage({ params }: Props) {
           </div>
 
           {/* Details & QR Section */}
-          <div className="p-6 sm:p-8 space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-              <div className="md:col-span-2 space-y-4">
-                <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                    Family & Household
-                  </h3>
-                  <div className="text-lg font-bold text-slate-900 mt-0.5">
-                    {family?.familyName || registration.contactName}
-                  </div>
-                  <div className="text-sm text-blue-600 font-semibold">
-                    {family?.blockTower || 'Society Block'} • Unit {family?.houseNumber || '-'}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 text-xs">
-                  <div>
-                    <span className="text-slate-500 block">Primary Contact</span>
-                    <span className="text-slate-800 font-semibold">{registration.contactName}</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-500 block">Phone</span>
-                    <span className="text-slate-800 font-semibold">{registration.contactPhone}</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-500 block">Email Address</span>
-                    <span className="text-slate-800 font-semibold">{registration.contactEmail}</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-500 block">Gate Check-in Status</span>
-                    <span
-                      className={`font-semibold ${
-                        registration.checkIn?.isCheckedIn ? 'text-emerald-600' : 'text-amber-600'
-                      }`}
-                    >
-                      {registration.checkIn?.isCheckedIn ? 'Checked In' : 'Pending at Gate'}
-                    </span>
-                  </div>
-                </div>
+          <div className="p-6 sm:p-8 space-y-8 bg-white">
+            {/* Section 01: Household Dossier */}
+            <div>
+              <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#111111] mb-3">
+                [01] REGISTRATION & HOUSEHOLD DOSSIER
               </div>
-
-              {/* QR Code */}
-              <div className="flex flex-col items-center justify-center p-4 bg-slate-50 rounded-2xl shadow-xs border border-slate-200">
-                {registration.qrCodeDataUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={registration.qrCodeDataUrl}
-                    alt="Registration Pass QR"
-                    className="w-40 h-40 object-contain rounded-lg"
-                  />
-                ) : (
-                  <div className="w-40 h-40 flex items-center justify-center text-xs text-slate-500">
-                    QR Ready
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center p-5 border border-[#111111]/20 bg-[#fafaf7]">
+                <div className="md:col-span-2 space-y-4 font-mono">
+                  <div>
+                    <span className="text-[10px] uppercase tracking-wider text-[#666666] block">
+                      Family & Residence
+                    </span>
+                    <div className="text-base font-bold text-[#111111] mt-0.5">
+                      {family?.familyName || registration.contactName}
+                    </div>
+                    <div className="text-xs text-[#dc2626] font-bold mt-0.5">
+                      {family?.blockTower || 'Society Block'} • Unit {family?.houseNumber || '-'}
+                    </div>
                   </div>
-                )}
-                <span className="text-[10px] font-bold text-slate-700 tracking-wider uppercase mt-1">
-                  Scan for Gate Entry
-                </span>
+
+                  <div className="grid grid-cols-2 gap-4 text-xs pt-1 border-t border-[#111111]/10">
+                    <div>
+                      <span className="text-[10px] uppercase text-[#666666] block">Primary Contact</span>
+                      <span className="text-[#111111] font-bold">{registration.contactName}</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase text-[#666666] block">Phone</span>
+                      <span className="text-[#111111] font-bold">{registration.contactPhone}</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase text-[#666666] block">Email Address</span>
+                      <span className="text-[#111111] font-bold truncate block">{registration.contactEmail}</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase text-[#666666] block">Gate Status</span>
+                      <span
+                        className={`font-bold ${
+                          registration.checkIn?.isCheckedIn ? 'text-emerald-700' : 'text-[#dc2626]'
+                        }`}
+                      >
+                        {registration.checkIn?.isCheckedIn ? 'CHECKED IN' : 'READY AT GATE'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* QR Code */}
+                <div className="flex flex-col items-center justify-center p-4 bg-white border border-[#111111] shadow-xs">
+                  {registration.qrCodeDataUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={registration.qrCodeDataUrl}
+                      alt="Registration Pass QR"
+                      className="w-36 h-36 object-contain"
+                    />
+                  ) : (
+                    <div className="w-36 h-36 flex items-center justify-center text-xs text-[#666666] font-mono">
+                      QR Ready
+                    </div>
+                  )}
+                  <span className="text-[9px] font-mono font-bold text-[#111111] tracking-widest uppercase mt-2">
+                    SCAN FOR GATE ENTRY
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Registered Athletes & Sports Table */}
+            {/* Section 02: Registered Athletes & Sports Table */}
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 mb-3 flex items-center gap-1.5">
-                <Users className="w-4 h-4 text-blue-600" />
-                Registered Athletes & Sports ({registration.entries.length} entries)
-              </h3>
-              <div className="rounded-2xl border border-slate-200 overflow-hidden divide-y divide-slate-100 shadow-xs">
+              <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#111111] mb-3 flex items-center gap-1.5">
+                <Users className="w-3.5 h-3.5 text-[#dc2626]" />
+                [02] REGISTERED ATHLETES & SPORTS ({registration.entries.length} ENTRIES)
+              </div>
+              <div className="border border-[#111111] overflow-hidden divide-y divide-[#111111]/15 font-mono">
+                {/* Table Header */}
+                <div className="hidden sm:grid grid-cols-12 gap-3 p-3 bg-[#111111] text-white text-[10px] font-bold uppercase tracking-wider">
+                  <div className="col-span-1 text-center">#</div>
+                  <div className="col-span-4">Athlete</div>
+                  <div className="col-span-4">Sport & Event</div>
+                  <div className="col-span-3 text-right">Details / Role</div>
+                </div>
                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 {registration.entries.map((entry: any, idx: number) => (
                   <div
                     key={idx}
-                    className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white"
+                    className={`p-3.5 flex flex-col sm:grid sm:grid-cols-12 gap-2 sm:gap-3 sm:items-center text-xs ${
+                      idx % 2 === 0 ? 'bg-white' : 'bg-[#fafaf7]'
+                    }`}
                   >
-                    <div>
-                      <div className="font-bold text-slate-900 text-sm">
+                    <div className="col-span-1 hidden sm:block text-center font-bold text-[#666666]">
+                      {String(idx + 1).padStart(2, '0')}
+                    </div>
+                    <div className="col-span-4">
+                      <div className="font-bold text-[#111111] text-sm">
                         {entry.participantName}
                       </div>
-                      <div className="text-xs text-slate-500 mt-0.5">
-                        Sport: <strong className="text-blue-700">{entry.eventTitle}</strong> ({entry.sportType})
+                      <div className="text-[11px] text-[#666666]">
+                        Athlete #{idx + 1}
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="col-span-4">
+                      <div className="font-bold text-[#111111]">{entry.eventTitle}</div>
+                      <div className="text-[10px] text-[#dc2626] font-bold uppercase tracking-wider">
+                        {entry.sportType}
+                      </div>
+                    </div>
+
+                    <div className="col-span-3 sm:text-right flex flex-wrap sm:justify-end items-center gap-1.5 pt-1 sm:pt-0">
                       {entry.sportSpecificInfo?.role && (
-                        <span className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 border border-slate-200">
-                          Role: {entry.sportSpecificInfo.role}
+                        <span className="text-[10px] px-2 py-0.5 bg-white text-[#111111] border border-[#111111]/30 font-bold">
+                          {entry.sportSpecificInfo.role}
                         </span>
                       )}
                       {entry.sportSpecificInfo?.partnerName && (
-                        <span className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 border border-slate-200">
-                          Partner: {entry.sportSpecificInfo.partnerName}
+                        <span className="text-[10px] px-2 py-0.5 bg-white text-[#111111] border border-[#111111]/30 font-bold">
+                          P: {entry.sportSpecificInfo.partnerName}
                         </span>
                       )}
                       {entry.sportSpecificInfo?.bicycleOption && (
-                        <span className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 border border-slate-200">
-                          Cycle: {entry.sportSpecificInfo.bicycleOption}
+                        <span className="text-[10px] px-2 py-0.5 bg-white text-[#111111] border border-[#111111]/30 font-bold">
+                          {entry.sportSpecificInfo.bicycleOption}
                         </span>
                       )}
                     </div>
@@ -265,12 +290,20 @@ export default function ConfirmationPassPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Important Instructions */}
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1.5">
-              <div className="font-bold text-slate-900 mb-1">Gate Pass & Event Day Instructions:</div>
-              <p>1. Present this digital pass or printed QR code at the Central Clubhouse desk to claim official society t-shirts.</p>
-              <p>2. Arrive at designated courts 15 minutes before scheduled match fixtures.</p>
-              <p>3. Non-marking footwear is mandatory for indoor badminton and table tennis arenas.</p>
+            {/* Section 03: Gate Protocols & Directives */}
+            <div className="p-4 bg-[#fdf2f2] border border-[#fca5a5] border-l-4 border-l-[#dc2626] text-xs font-mono space-y-1.5">
+              <div className="font-bold text-[#991b1b] text-[10px] uppercase tracking-wider mb-1">
+                [03] GATE ACCESS PROTOCOLS & ATHLETE DIRECTIVES
+              </div>
+              <p className="text-[#7f1d1d] text-[11px] leading-relaxed">
+                [01] Present this digital pass or printed QR code at Tower-C Club Lounge to collect athlete jerseys.
+              </p>
+              <p className="text-[#7f1d1d] text-[11px] leading-relaxed">
+                [02] Arrive at designated courts/grounds 15 minutes before scheduled match fixtures.
+              </p>
+              <p className="text-[#7f1d1d] text-[11px] leading-relaxed">
+                [03] Non-marking footwear is mandatory for indoor badminton and table tennis arenas.
+              </p>
             </div>
           </div>
         </div>
