@@ -433,73 +433,76 @@ export default function RegistrationWizard() {
       <div className="bg-white border border-[#111111] p-5 sm:p-10">
         {/* ================= STEP 1: PERSONAL DETAILS ================= */}
         {step === 1 && (
-          <div className="space-y-6">
-            <div className="border-b border-slate-100 pb-4">
-              <h2 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
-                <User className="w-5 h-5 text-blue-600" />
-                Step 1: Primary Contact Information
+          <div className="space-y-6 font-mono">
+            <div className="border-b border-[#111111]/15 pb-4">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-[#dc2626] mb-1">
+                [ PHASE 01 // ACCREDITATION CONTACT ]
+              </div>
+              <h2 className="text-base sm:text-lg font-black uppercase tracking-tight text-[#111111] flex items-center gap-2">
+                <User className="w-4 h-4 text-[#dc2626]" />
+                Primary Contact Information
               </h2>
-              <p className="text-xs text-slate-500 mt-1">
-                Enter the primary contact who will receive official tournament updates and pass confirmation.
+              <p className="text-xs text-[#666666] mt-1 font-sans">
+                Enter the primary household contact who will receive official tournament passes and match alerts.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                  Full Name <span className="text-rose-500">*</span>
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1.5">
+                  FULL NAME <span className="text-[#dc2626]">*</span>
                 </label>
                 <input
                   type="text"
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
                   placeholder="e.g. Rajesh Sharma"
-                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white text-sm"
+                  className="w-full px-3.5 py-2.5 bg-[#f4f4f0]/60 border border-[#111111]/30 rounded-none text-xs text-[#111111] placeholder:text-[#888888] focus:outline-none focus:border-[#111111] focus:bg-white"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                  Email Address <span className="text-rose-500">*</span>
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1.5">
+                  EMAIL ADDRESS <span className="text-[#dc2626]">*</span>
                 </label>
                 <input
                   type="email"
                   value={contactEmail}
                   onChange={(e) => setContactEmail(e.target.value)}
                   placeholder="e.g. rajesh@example.com"
-                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white text-sm"
+                  className="w-full px-3.5 py-2.5 bg-[#f4f4f0]/60 border border-[#111111]/30 rounded-none text-xs text-[#111111] placeholder:text-[#888888] focus:outline-none focus:border-[#111111] focus:bg-white"
                   required
                 />
-                <span className="text-[11px] text-blue-600 mt-1 block">
-                  Confirmation PDF and QR badge will be emailed here.
+                <span className="text-[10px] text-[#dc2626] font-medium mt-1 block">
+                  Confirmation PDF and QR credentials will be dispatched here.
                 </span>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                  Mobile Number (WhatsApp) <span className="text-rose-500">*</span>
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1.5">
+                  MOBILE NUMBER (WHATSAPP) <span className="text-[#dc2626]">*</span>
                 </label>
                 <input
                   type="tel"
                   value={contactPhone}
                   onChange={(e) => setContactPhone(e.target.value)}
                   placeholder="e.g. 9823411223"
-                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white text-sm"
+                  className="w-full px-3.5 py-2.5 bg-[#f4f4f0]/60 border border-[#111111]/30 rounded-none text-xs text-[#111111] placeholder:text-[#888888] focus:outline-none focus:border-[#111111] focus:bg-white"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                  Emergency Contact (Optional)
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1.5">
+                  EMERGENCY CONTACT (OPTIONAL)
                 </label>
                 <input
                   type="tel"
                   value={emergencyContact}
                   onChange={(e) => setEmergencyContact(e.target.value)}
                   placeholder="e.g. 9811122334"
-                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white text-sm"
+                  className="w-full px-3.5 py-2.5 bg-[#f4f4f0]/60 border border-[#111111]/30 rounded-none text-xs text-[#111111] placeholder:text-[#888888] focus:outline-none focus:border-[#111111] focus:bg-white"
                 />
               </div>
             </div>
@@ -508,40 +511,43 @@ export default function RegistrationWizard() {
 
         {/* ================= STEP 2: HOUSE DETAILS ================= */}
         {step === 2 && (
-          <div className="space-y-6">
-            <div className="border-b border-slate-100 pb-4">
-              <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                <Home className="w-5 h-5 text-blue-600" />
-                Step 2: Society House & Tower Information
+          <div className="space-y-6 font-mono">
+            <div className="border-b border-[#111111]/15 pb-4">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-[#dc2626] mb-1">
+                [ PHASE 02 // RESIDENCE & TOWER ]
+              </div>
+              <h2 className="text-base sm:text-lg font-black uppercase tracking-tight text-[#111111] flex items-center gap-2">
+                <Home className="w-4 h-4 text-[#dc2626]" />
+                Society House &amp; Tower Information
               </h2>
-              <p className="text-xs text-slate-500 mt-1">
-                Used to tally points for the Society Block/Tower Championship trophy.
+              <p className="text-xs text-[#666666] mt-1 font-sans">
+                Points accrued by family athletes directly tally towards the Society Tower Championship Trophy.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="sm:col-span-2">
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                  Family / Household Name <span className="text-rose-500">*</span>
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1.5">
+                  FAMILY / HOUSEHOLD NAME <span className="text-[#dc2626]">*</span>
                 </label>
                 <input
                   type="text"
                   value={familyName}
                   onChange={(e) => setFamilyName(e.target.value)}
                   placeholder="e.g. Sharma Family, Verma Villa, The Warriors"
-                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white text-sm"
+                  className="w-full px-3.5 py-2.5 bg-[#f4f4f0]/60 border border-[#111111]/30 rounded-none text-xs text-[#111111] placeholder:text-[#888888] focus:outline-none focus:border-[#111111] focus:bg-white"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                  Select Tower / Block <span className="text-rose-500">*</span>
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1.5">
+                  SELECT TOWER / BLOCK <span className="text-[#dc2626]">*</span>
                 </label>
                 <select
                   value={blockTower}
                   onChange={(e) => setBlockTower(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white text-sm"
+                  className="w-full px-3.5 py-2.5 bg-[#f4f4f0]/60 border border-[#111111]/30 rounded-none text-xs text-[#111111] focus:outline-none focus:border-[#111111] focus:bg-white"
                 >
                   {BLOCKS.map((b) => (
                     <option key={b} value={b}>
@@ -552,24 +558,24 @@ export default function RegistrationWizard() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                  Flat / Villa / House Number <span className="text-rose-500">*</span>
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1.5">
+                  FLAT / VILLA / HOUSE NUMBER <span className="text-[#dc2626]">*</span>
                 </label>
                 <input
                   type="text"
                   value={houseNumber}
                   onChange={(e) => setHouseNumber(e.target.value)}
                   placeholder="e.g. 402, Villa-12, B-301"
-                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white text-sm"
+                  className="w-full px-3.5 py-2.5 bg-[#f4f4f0]/60 border border-[#111111]/30 rounded-none text-xs text-[#111111] placeholder:text-[#888888] focus:outline-none focus:border-[#111111] focus:bg-white"
                   required
                 />
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-blue-50 border border-blue-200 text-xs text-blue-900 flex items-start gap-2.5">
-              <Sparkles className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+            <div className="p-4 border border-[#111111]/20 bg-[#f4f4f0] text-xs text-[#111111] flex items-start gap-2.5">
+              <Sparkles className="w-4 h-4 text-[#dc2626] shrink-0 mt-0.5" />
               <span>
-                All medals won by your family members will count towards both your Family Tally and the <strong>{blockTower}</strong> Tower Cup!
+                All podium medals won by your family members will count towards both your Family Standings and the <strong>{blockTower}</strong> Tower Cup!
               </span>
             </div>
           </div>
@@ -577,23 +583,26 @@ export default function RegistrationWizard() {
 
         {/* ================= STEP 3: FAMILY MEMBERS ================= */}
         {step === 3 && (
-          <div className="space-y-6">
-            <div className="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="space-y-6 font-mono">
+            <div className="border-b border-[#111111]/15 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                  <Users className="w-5 h-5 text-blue-600" />
-                  Step 3: Family Athletes & Participants
+                <div className="text-[10px] font-bold uppercase tracking-widest text-[#dc2626] mb-1">
+                  [ PHASE 03 // ATHLETE ROSTER ]
+                </div>
+                <h2 className="text-base sm:text-lg font-black uppercase tracking-tight text-[#111111] flex items-center gap-2">
+                  <Users className="w-4 h-4 text-[#dc2626]" />
+                  Family Athletes &amp; Participants
                 </h2>
-                <p className="text-xs text-slate-500 mt-1">
-                  Add all family members who wish to participate in games or collect society kits.
+                <p className="text-xs text-[#666666] mt-1 font-sans">
+                  Add all family members participating in games or receiving official jerseys.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={addMember}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition self-start sm:self-auto"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#111111] hover:bg-[#dc2626] text-white font-mono font-bold text-xs uppercase tracking-wider border border-[#111111] transition-colors self-start sm:self-auto cursor-pointer"
               >
-                <Plus className="w-4 h-4" /> Add Member
+                <Plus className="w-4 h-4" /> ADD ATHLETE
               </button>
             </div>
 
@@ -601,20 +610,20 @@ export default function RegistrationWizard() {
               {members.map((member, index) => (
                 <div
                   key={member.tempId}
-                  className="p-5 rounded-2xl bg-slate-50/80 border border-slate-200 relative group hover:border-slate-300 transition"
+                  className="p-5 bg-[#f4f4f0] border border-[#111111]/20 relative"
                 >
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs font-bold uppercase tracking-wider text-blue-700 flex items-center gap-2">
-                      <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-[11px]">
-                        {index + 1}
+                  <div className="flex items-center justify-between mb-4 border-b border-[#111111]/10 pb-2">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#111111] flex items-center gap-2">
+                      <span className="w-5 h-5 bg-[#111111] text-white flex items-center justify-center text-[10px] font-bold">
+                        0{index + 1}
                       </span>
-                      Participant #{index + 1}
+                      ATHLETE #{index + 1}
                     </span>
                     {members.length > 1 && (
                       <button
                         type="button"
                         onClick={() => removeMember(member.tempId)}
-                        className="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg transition"
+                        className="text-[#888888] hover:text-[#dc2626] p-1 transition-colors cursor-pointer"
                         title="Remove Member"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -624,21 +633,21 @@ export default function RegistrationWizard() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
                     <div className="md:col-span-2">
-                      <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                        Full Name *
+                      <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1">
+                        FULL NAME *
                       </label>
                       <input
                         type="text"
                         value={member.fullName}
                         onChange={(e) => updateMember(member.tempId, { fullName: e.target.value })}
                         placeholder="e.g. Priya Sharma"
-                        className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs focus:border-blue-600 focus:outline-none"
+                        className="w-full px-3 py-2 bg-white border border-[#111111]/30 rounded-none text-xs text-[#111111] focus:border-[#111111] focus:outline-none"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                        Age (Years) *
+                      <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1">
+                        AGE (YEARS) *
                       </label>
                       <input
                         type="number"
@@ -648,13 +657,13 @@ export default function RegistrationWizard() {
                         onChange={(e) =>
                           updateMember(member.tempId, { age: parseInt(e.target.value) || 0 })
                         }
-                        className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs focus:border-blue-600 focus:outline-none"
+                        className="w-full px-3 py-2 bg-white border border-[#111111]/30 rounded-none text-xs text-[#111111] focus:border-[#111111] focus:outline-none"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                        Gender *
+                      <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1">
+                        GENDER *
                       </label>
                       <select
                         value={member.gender}
@@ -663,7 +672,7 @@ export default function RegistrationWizard() {
                             gender: e.target.value as 'Male' | 'Female' | 'Other',
                           })
                         }
-                        className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs focus:border-blue-600 focus:outline-none"
+                        className="w-full px-3 py-2 bg-white border border-[#111111]/30 rounded-none text-xs text-[#111111] focus:border-[#111111] focus:outline-none"
                       >
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
@@ -672,8 +681,8 @@ export default function RegistrationWizard() {
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                        T-Shirt Size
+                      <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1">
+                        T-SHIRT SIZE
                       </label>
                       <select
                         value={member.tShirtSize}
@@ -682,7 +691,7 @@ export default function RegistrationWizard() {
                             tShirtSize: e.target.value as FamilyMember['tShirtSize'],
                           })
                         }
-                        className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs focus:border-blue-600 focus:outline-none"
+                        className="w-full px-3 py-2 bg-white border border-[#111111]/30 rounded-none text-xs text-[#111111] focus:border-[#111111] focus:outline-none"
                       >
                         <option value="Kids-S">Kids-S (4-6y)</option>
                         <option value="Kids-M">Kids-M (7-9y)</option>
@@ -703,46 +712,49 @@ export default function RegistrationWizard() {
 
         {/* ================= STEP 4: SPORTS SELECTION ================= */}
         {step === 4 && (
-          <div className="space-y-6">
-            <div className="border-b border-slate-100 pb-4">
-              <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-blue-600" />
-                Step 4: Select Sports for Each Member
+          <div className="space-y-6 font-mono">
+            <div className="border-b border-[#111111]/15 pb-4">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-[#dc2626] mb-1">
+                [ PHASE 04 // DISCIPLINE ALLOCATION ]
+              </div>
+              <h2 className="text-base sm:text-lg font-black uppercase tracking-tight text-[#111111] flex items-center gap-2">
+                <Trophy className="w-4 h-4 text-[#dc2626]" />
+                Select Sports for Each Athlete
               </h2>
-              <p className="text-xs text-slate-500 mt-1">
-                Choose eligible sports for each registered family athlete. Age criteria are checked in real-time.
+              <p className="text-xs text-[#666666] mt-1 font-sans">
+                Choose eligible tournaments for each registered family member. Age criteria are strictly verified in real-time.
               </p>
             </div>
 
             {loadingEvents ? (
-              <div className="p-8 text-center text-slate-400">Loading sports fest events...</div>
+              <div className="p-8 text-center text-[#888888] font-mono text-xs uppercase">Loading official tournament catalog...</div>
             ) : (
-              <div className="space-y-8">
+              <div className="space-y-6">
                 {members.map((member) => (
                   <div
                     key={member.tempId}
-                    className="p-5 rounded-2xl bg-slate-50/80 border border-slate-200"
+                    className="p-5 bg-[#f4f4f0] border border-[#111111]/20 space-y-4"
                   >
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#111111]/10 pb-3">
                       <div>
-                        <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-                          <User className="w-4 h-4 text-blue-600" />
+                        <h3 className="font-bold text-[#111111] text-xs uppercase flex items-center gap-2">
+                          <User className="w-3.5 h-3.5 text-[#dc2626]" />
                           {member.fullName || 'Participant'}
-                          <span className="text-xs font-normal text-slate-500">
-                            ({member.age} years old • {member.gender})
+                          <span className="text-[11px] font-normal text-[#666666]">
+                            ({member.age} YRS • {member.gender})
                           </span>
                         </h3>
                       </div>
-                      <span className="text-xs text-blue-700 font-bold bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 bg-white border border-[#111111]/30 text-[#111111] self-start sm:self-auto">
                         {
                           allocations.filter((a) => a.tempMemberId === member.tempId).length
                         }{' '}
-                        Sports Selected
+                        SPORTS SELECTED
                       </span>
                     </div>
 
                     {/* Sports Selection Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
                       {events.map((event) => {
                         const isSelected = allocations.some(
                           (a) => a.tempMemberId === member.tempId && a.eventId === event._id
@@ -759,46 +771,42 @@ export default function RegistrationWizard() {
                             onClick={() => {
                               if (!isClosed) toggleSport(member.tempId, event._id);
                             }}
-                            className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${
+                            className={`p-3 border text-left cursor-pointer transition-colors ${
                               isSelected
-                                ? 'bg-blue-50 border-blue-500 shadow-md shadow-blue-500/10'
+                                ? 'bg-[#111111] text-white border-[#111111]'
                                 : isClosed
-                                ? 'bg-slate-100/60 border-slate-200 opacity-50 cursor-not-allowed'
+                                ? 'bg-[#ebebe6] border-[#111111]/10 opacity-50 cursor-not-allowed text-[#888888]'
                                 : !isAgeEligible
-                                ? 'bg-slate-100/70 border-slate-200 opacity-60'
-                                : 'bg-white border-slate-200 hover:border-blue-400'
+                                ? 'bg-[#ebebe6] border-[#111111]/10 opacity-60 text-[#888888]'
+                                : 'bg-white border-[#111111]/25 text-[#111111] hover:border-[#111111]'
                             }`}
                           >
                             <div className="flex items-start justify-between gap-2">
-                              <span
-                                className={`text-xs font-bold leading-tight ${
-                                  isSelected ? 'text-blue-900' : 'text-slate-900'
-                                }`}
-                              >
+                              <span className="text-xs font-black uppercase tracking-tight leading-tight">
                                 {event.title}
                               </span>
                               <div
-                                className={`w-4 h-4 rounded-md flex items-center justify-center border shrink-0 transition-colors ${
+                                className={`w-3.5 h-3.5 border shrink-0 flex items-center justify-center ${
                                   isSelected
-                                    ? 'bg-blue-600 border-blue-600 text-white'
-                                    : 'border-slate-300 bg-white'
+                                    ? 'border-white bg-[#dc2626] text-white'
+                                    : 'border-[#111111]/40 bg-white'
                                 }`}
                               >
-                                {isSelected && <CheckCircle2 className="w-3.5 h-3.5" />}
+                                {isSelected && <CheckCircle2 className="w-3 h-3" />}
                               </div>
                             </div>
 
-                            <div className="mt-2 flex items-center justify-between text-[10px]">
-                              <span className="text-slate-500 font-medium">
+                            <div className="mt-2 pt-1 border-t border-current/15 flex items-center justify-between text-[9px] uppercase tracking-wider font-mono">
+                              <span className={isSelected ? 'text-[#cccccc]' : 'text-[#666666]'}>
                                 {event.sportType} • {event.category}
                               </span>
                               {isAgeEligible ? (
-                                <span className="text-blue-600 font-semibold">
-                                  {event.minAge}-{event.maxAge}y
+                                <span className={isSelected ? 'text-[#dc2626]' : 'text-[#111111] font-bold'}>
+                                  {event.minAge}–{event.maxAge}Y
                                 </span>
                               ) : (
-                                <span className="text-rose-600 font-semibold">
-                                  Req: {event.minAge}-{event.maxAge}y
+                                <span className="text-[#dc2626] font-bold">
+                                  REQ: {event.minAge}–{event.maxAge}Y
                                 </span>
                               )}
                             </div>
@@ -815,20 +823,23 @@ export default function RegistrationWizard() {
 
         {/* ================= STEP 5: SPORT DETAILS ================= */}
         {step === 5 && (
-          <div className="space-y-6">
-            <div className="border-b border-slate-100 pb-4">
-              <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                <Sliders className="w-5 h-5 text-blue-600" />
-                Step 5: Sport-Specific Preferences & Roles
+          <div className="space-y-6 font-mono">
+            <div className="border-b border-[#111111]/15 pb-4">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-[#dc2626] mb-1">
+                [ PHASE 05 // DISCIPLINE SPECIFICATIONS ]
+              </div>
+              <h2 className="text-base sm:text-lg font-black uppercase tracking-tight text-[#111111] flex items-center gap-2">
+                <Sliders className="w-4 h-4 text-[#dc2626]" />
+                Sport-Specific Preferences &amp; Roles
               </h2>
-              <p className="text-xs text-slate-500 mt-1">
-                Help referees and team coordinators assign roles, pairs, or gear.
+              <p className="text-xs text-[#666666] mt-1 font-sans">
+                Assists official match coordinators with team batting orders, doubles draws, and equipment allocation.
               </p>
             </div>
 
             {allocations.length === 0 ? (
-              <div className="p-8 text-center text-slate-500">
-                No sports selected yet. Please go back to Step 4 to select sports.
+              <div className="p-8 text-center text-[#888888] font-mono text-xs uppercase">
+                No sports selected yet. Please return to Phase 04 to assign tournament disciplines.
               </div>
             ) : (
               <div className="space-y-4">
@@ -840,29 +851,28 @@ export default function RegistrationWizard() {
                   return (
                     <div
                       key={`${alloc.tempMemberId}-${alloc.eventId}`}
-                      className="p-4 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-3"
+                      className="p-4 bg-[#f4f4f0] border border-[#111111]/20 space-y-3 font-mono"
                     >
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between border-b border-[#111111]/10 pb-2">
                         <div className="flex items-center gap-2">
-                          <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 text-xs flex items-center justify-center font-bold">
-                            {idx + 1}
+                          <span className="w-5 h-5 bg-[#111111] text-white text-[10px] flex items-center justify-center font-bold">
+                            0{idx + 1}
                           </span>
-                          <span className="font-bold text-slate-900 text-sm">
-                            {member.fullName} —{' '}
-                            <span className="text-blue-600">{event.title}</span>
+                          <span className="font-bold text-[#111111] text-xs uppercase">
+                            {member.fullName} — <span className="text-[#dc2626]">{event.title}</span>
                           </span>
                         </div>
-                        <span className="text-[11px] text-slate-600 bg-white px-2 py-0.5 rounded border border-slate-200 font-medium">
+                        <span className="text-[9px] uppercase tracking-wider text-[#111111] bg-white px-2 py-0.5 border border-[#111111]/20 font-bold">
                           {event.sportType}
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                         {/* Cricket Role */}
                         {event.sportType === 'Cricket' && (
                           <div>
-                            <label className="block text-[11px] text-slate-600 mb-1 font-medium">
-                              Preferred Role
+                            <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1">
+                              PREFERRED ROLE
                             </label>
                             <select
                               value={alloc.role || 'All-Rounder'}
@@ -874,7 +884,7 @@ export default function RegistrationWizard() {
                                   e.target.value
                                 )
                               }
-                              className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs focus:border-blue-600"
+                              className="w-full px-3 py-2 bg-white border border-[#111111]/30 rounded-none text-xs text-[#111111] focus:border-[#111111]"
                             >
                               <option value="Batsman">Top-order Batsman</option>
                               <option value="Bowler">Fast / Spin Bowler</option>
@@ -887,8 +897,8 @@ export default function RegistrationWizard() {
                         {/* Football Role */}
                         {event.sportType === 'Football' && (
                           <div>
-                            <label className="block text-[11px] text-slate-600 mb-1 font-medium">
-                              Position
+                            <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1">
+                              POSITION
                             </label>
                             <select
                               value={alloc.role || 'Midfielder'}
@@ -900,7 +910,7 @@ export default function RegistrationWizard() {
                                   e.target.value
                                 )
                               }
-                              className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs focus:border-blue-600"
+                              className="w-full px-3 py-2 bg-white border border-[#111111]/30 rounded-none text-xs text-[#111111] focus:border-[#111111]"
                             >
                               <option value="Striker">Striker / Forward</option>
                               <option value="Midfielder">Midfielder</option>
@@ -913,8 +923,8 @@ export default function RegistrationWizard() {
                         {/* Badminton / Table Tennis Partner */}
                         {(event.sportType === 'Badminton' || event.sportType === 'Table Tennis') && (
                           <div>
-                            <label className="block text-[11px] text-slate-600 mb-1 font-medium">
-                              Doubles Partner Name (If applicable)
+                            <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1">
+                              DOUBLES PARTNER NAME (IF APPLICABLE)
                             </label>
                             <input
                               type="text"
@@ -928,7 +938,7 @@ export default function RegistrationWizard() {
                                 )
                               }
                               placeholder="Leave blank for random draw"
-                              className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs focus:border-blue-600"
+                              className="w-full px-3 py-2 bg-white border border-[#111111]/30 rounded-none text-xs text-[#111111] focus:border-[#111111]"
                             />
                           </div>
                         )}
@@ -936,8 +946,8 @@ export default function RegistrationWizard() {
                         {/* Slow Cycling Gear */}
                         {event.sportType === 'Slow Cycling' && (
                           <div>
-                            <label className="block text-[11px] text-slate-600 mb-1 font-medium">
-                              Bicycle Preference
+                            <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1">
+                              BICYCLE PREFERENCE
                             </label>
                             <select
                               value={alloc.bicycleOption || 'Own Bicycle'}
@@ -949,7 +959,7 @@ export default function RegistrationWizard() {
                                   e.target.value
                                 )
                               }
-                              className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs focus:border-blue-600"
+                              className="w-full px-3 py-2 bg-white border border-[#111111]/30 rounded-none text-xs text-[#111111] focus:border-[#111111]"
                             >
                               <option value="Own Bicycle">Bringing Own Bicycle</option>
                               <option value="Need Society Bicycle">Request Society Bicycle</option>
@@ -959,8 +969,8 @@ export default function RegistrationWizard() {
 
                         {/* General Notes */}
                         <div className="sm:col-span-2">
-                          <label className="block text-[11px] text-slate-600 mb-1 font-medium">
-                            Additional notes for referee / coach
+                          <label className="block text-[10px] font-bold uppercase tracking-widest text-[#111111] mb-1">
+                            ADDITIONAL NOTES FOR OFFICIALS / COACH
                           </label>
                           <input
                             type="text"
@@ -974,7 +984,7 @@ export default function RegistrationWizard() {
                               )
                             }
                             placeholder="e.g. Left-handed, available morning slot only"
-                            className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs focus:border-blue-600"
+                            className="w-full px-3 py-2 bg-white border border-[#111111]/30 rounded-none text-xs text-[#111111] focus:border-[#111111]"
                           />
                         </div>
                       </div>
@@ -988,101 +998,105 @@ export default function RegistrationWizard() {
 
         {/* ================= STEP 6: REVIEW & CONFIRMATION ================= */}
         {step === 6 && (
-          <div className="space-y-6">
-            <div className="border-b border-slate-100 pb-4">
-              <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                <FileCheck className="w-5 h-5 text-blue-600" />
-                Step 6: Review Registration & Confirm
+          <div className="space-y-6 font-mono">
+            <div className="border-b border-[#111111]/15 pb-4">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-[#dc2626] mb-1">
+                [ PHASE 06 // AUDIT & CREDENTIAL ISSUANCE ]
+              </div>
+              <h2 className="text-base sm:text-lg font-black uppercase tracking-tight text-[#111111] flex items-center gap-2">
+                <FileCheck className="w-4 h-4 text-[#dc2626]" />
+                Review Registration &amp; Confirm
               </h2>
-              <p className="text-xs text-slate-500 mt-1">
-                Please verify all personal, house, and sports enrollment information before final submission.
+              <p className="text-xs text-[#666666] mt-1 font-sans">
+                Please verify all household and sports enrollment data before finalizing official society credentialing.
               </p>
             </div>
 
             {/* Overview Summary Box */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                <h4 className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">
-                  Household & Contact
-                </h4>
-                <div className="space-y-1.5 text-xs text-slate-700">
+              <div className="p-4 bg-[#f4f4f0] border border-[#111111]/20 space-y-2">
+                <div className="text-[10px] font-bold text-[#dc2626] uppercase tracking-wider">
+                  [ HOUSEHOLD &amp; CONTACT ]
+                </div>
+                <div className="space-y-1 text-xs text-[#111111]">
                   <p>
-                    <span className="text-slate-500">Family:</span> <strong>{familyName}</strong>
+                    <span className="text-[#666666]">FAMILY:</span> <strong>{familyName}</strong>
                   </p>
                   <p>
-                    <span className="text-slate-500">Address:</span> {blockTower} - {houseNumber}
+                    <span className="text-[#666666]">ADDRESS:</span> {blockTower} - {houseNumber}
                   </p>
                   <p>
-                    <span className="text-slate-500">Contact:</span> {contactName} ({contactPhone})
+                    <span className="text-[#666666]">CONTACT:</span> {contactName} ({contactPhone})
                   </p>
                   <p>
-                    <span className="text-slate-500">Email:</span> {contactEmail}
+                    <span className="text-[#666666]">EMAIL:</span> {contactEmail}
                   </p>
                 </div>
               </div>
 
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                <h4 className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-2">
-                  Athletes & Entries
-                </h4>
-                <div className="space-y-1.5 text-xs text-slate-700">
+              <div className="p-4 bg-[#f4f4f0] border border-[#111111]/20 space-y-2">
+                <div className="text-[10px] font-bold text-[#dc2626] uppercase tracking-wider">
+                  [ ATHLETES &amp; ENTRIES ]
+                </div>
+                <div className="space-y-1 text-xs text-[#111111]">
                   <p>
-                    <span className="text-slate-500">Athletes Registered:</span>{' '}
-                    <strong>{members.length} members</strong>
+                    <span className="text-[#666666]">ATHLETES REGISTERED:</span>{' '}
+                    <strong>{members.length} ATHLETES</strong>
                   </p>
                   <p>
-                    <span className="text-slate-500">Total Sport Enrollments:</span>{' '}
-                    <strong className="text-blue-600">{allocations.length} entries</strong>
+                    <span className="text-[#666666]">TOTAL SPORT ENROLLMENTS:</span>{' '}
+                    <strong className="text-[#dc2626]">{allocations.length} ENTRIES</strong>
                   </p>
                   <p>
-                    <span className="text-slate-500">Registration Fee:</span>{' '}
-                    <span className="text-emerald-600 font-bold uppercase">Free (RWA Sponsored)</span>
+                    <span className="text-[#666666]">REGISTRATION FEE:</span>{' '}
+                    <span className="text-[#111111] font-bold uppercase bg-white px-1.5 py-0.5 border border-[#111111]/20">FREE (RWA SPONSORED)</span>
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Athletes Roster Breakdown */}
-            <div className="border border-slate-200 rounded-2xl overflow-hidden">
-              <div className="bg-slate-50 px-4 py-2.5 border-b border-slate-200 font-bold text-xs text-slate-800">
-                Registered Athletes Roster
+            <div className="border border-[#111111] bg-white overflow-hidden shadow-xs">
+              <div className="bg-[#111111] px-4 py-2.5 font-bold text-xs text-white uppercase tracking-wider flex items-center justify-between">
+                <span>REGISTERED ATHLETES ROSTER</span>
+                <span className="text-[10px] text-[#aaaaaa]">{members.length} MEMBERS</span>
               </div>
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-[#111111]/15">
                 {members.map((member) => {
                   const memberSports = allocations
                     .filter((a) => a.tempMemberId === member.tempId)
                     .map((a) => {
-                      const ev = events.find((e) => e._id === a.eventId);
-                      return {
-                        title: ev?.title || 'Sport',
-                        venue: ev?.venue || 'Ground',
-                        time: ev?.scheduleTime || '',
-                        specific: a.role || a.partnerName || a.bicycleOption,
-                      };
-                    });
+                       const ev = events.find((e) => e._id === a.eventId);
+                       return {
+                         title: ev?.title || 'Sport',
+                         venue: ev?.venue || 'Ground',
+                         time: ev?.scheduleTime || '',
+                         specific: a.role || a.partnerName || a.bicycleOption,
+                       };
+                     });
 
                   return (
-                    <div key={member.tempId} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div key={member.tempId} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono">
                       <div>
-                        <div className="font-semibold text-slate-900 text-sm">
+                        <div className="font-bold text-[#111111] text-xs uppercase">
                           {member.fullName}{' '}
-                          <span className="text-xs font-normal text-slate-500">
-                            ({member.age}y • {member.gender} • T-Shirt: {member.tShirtSize})
+                          <span className="text-[10px] font-normal text-[#666666]">
+                            ({member.age}Y • {member.gender} • T-SHIRT: {member.tShirtSize})
                           </span>
                         </div>
-                        <div className="mt-1 flex flex-wrap gap-1.5">
+                        <div className="mt-1.5 flex flex-wrap gap-1.5">
                           {memberSports.length > 0 ? (
                             memberSports.map((s, idx) => (
                               <span
                                 key={idx}
-                                className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200 font-medium"
+                                className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 bg-[#111111] text-white uppercase font-bold"
                               >
                                 {s.title}
                                 {s.specific ? ` (${s.specific})` : ''}
                               </span>
                             ))
                           ) : (
-                            <span className="text-xs text-rose-500">No sports assigned</span>
+                            <span className="text-[10px] text-[#dc2626] uppercase font-bold">NO SPORTS ASSIGNED</span>
                           )}
                         </div>
                       </div>
@@ -1093,18 +1107,18 @@ export default function RegistrationWizard() {
             </div>
 
             {/* Terms & Code of Conduct Checkbox */}
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+            <div className="p-4 border border-[#111111]/20 bg-[#f4f4f0]">
               <label className="flex items-start gap-3 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={agreeRules}
                   onChange={(e) => setAgreeRules(e.target.checked)}
-                  className="mt-1 w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  className="mt-0.5 w-4 h-4 rounded-none accent-[#dc2626] cursor-pointer"
                 />
-                <span className="text-xs text-slate-600 leading-relaxed">
+                <span className="text-xs text-[#333333] leading-relaxed font-sans">
                   I confirm that all provided details are correct. All registered family members agree
                   to abide by tournament rules, practice fair sportsmanship, wear the official society
-                  athletic kit, and arrive at venues 15 minutes prior to game times.
+                  athletic kit, and arrive at venues 15 minutes prior to match kickoff.
                 </span>
               </label>
             </div>
