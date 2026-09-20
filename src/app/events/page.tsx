@@ -62,9 +62,12 @@ export default function EventsPage() {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-10 pb-6 sm:pb-8 border-b border-slate-200 w-full min-w-0">
         <div>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 mb-2.5 shadow-xs">
-            <Trophy className="w-3.5 h-3.5 text-blue-600" /> 9 Official Sports Categories
-          </span>
+          <div className="flex items-center gap-2 mb-2 text-[11px] font-black uppercase tracking-widest text-blue-600">
+            <span className="w-5 h-1 bg-blue-600 rounded-xs" />
+            <span>9 Official Sports Categories</span>
+            <span className="text-slate-300">•</span>
+            <span className="text-slate-500 font-semibold tracking-normal lowercase">ColonyGames 2026</span>
+          </div>
           <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
             Sports & Tournaments
           </h1>

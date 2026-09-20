@@ -149,7 +149,7 @@ export default function ConfirmationPassPage({ params }: Props) {
               </div>
 
               <div className="flex flex-col items-start sm:items-end">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white text-blue-800 shadow-sm">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[11px] font-black tracking-wider bg-white text-blue-800 shadow-xs">
                   <ShieldCheck className="w-4 h-4 text-blue-600" /> CONFIRMED
                 </div>
                 <div className="text-[11px] text-blue-100 mt-1 font-mono">

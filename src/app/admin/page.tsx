@@ -398,11 +398,12 @@ export default function AdminPage() {
       {/* Top Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200">
-              <Shield className="w-3.5 h-3.5" /> Society Committee Admin Panel
-            </span>
-            <span className="text-xs text-slate-400">v2.4 Live</span>
+          <div className="flex items-center gap-2 mb-1 text-[11px] font-black uppercase tracking-widest text-blue-600">
+            <span className="w-5 h-1 bg-blue-600 rounded-xs" />
+            <Shield className="w-3.5 h-3.5" />
+            <span>Society Committee Admin Panel</span>
+            <span className="text-slate-300">•</span>
+            <span className="text-slate-400 font-semibold tracking-normal lowercase">v2.4 Live</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-2">
             ColonyGames 2026 Command Center
@@ -734,7 +735,7 @@ export default function AdminPage() {
                       </td>
                       <td className="px-5 py-4">
                         <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-md uppercase ${
                             reg.status === 'confirmed'
                               ? 'bg-blue-50 text-blue-700 border border-blue-200'
                               : 'bg-rose-50 text-rose-700 border border-rose-200'
@@ -786,7 +787,7 @@ export default function AdminPage() {
                       {ev.sportType}
                     </span>
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
                         ev.status === 'open'
                           ? 'bg-blue-50 text-blue-700'
                           : 'bg-rose-50 text-rose-700'

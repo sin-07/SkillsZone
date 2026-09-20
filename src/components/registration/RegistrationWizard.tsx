@@ -361,9 +361,14 @@ export default function RegistrationWizard() {
     <div className="max-w-4xl mx-auto px-3 sm:px-6 py-6 sm:py-16">
       {/* Top Banner Heading */}
       <div className="text-center mb-6 sm:mb-12">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 mb-2.5 sm:mb-3 shadow-xs">
-          <Trophy className="w-3.5 h-3.5 text-blue-600" /> Official Society Registration
-        </span>
+        <div className="inline-flex items-center justify-center gap-2 mb-2.5 sm:mb-3 text-[11px] sm:text-xs font-black uppercase tracking-widest text-blue-600">
+          <span className="w-5 h-1 bg-blue-600 rounded-xs" />
+          <Trophy className="w-3.5 h-3.5 text-blue-600" />
+          <span>Official Society Registration</span>
+          <span className="text-slate-300">•</span>
+          <span className="text-slate-500 font-semibold tracking-normal lowercase">ColonyGames 2026</span>
+          <span className="w-5 h-1 bg-blue-600 rounded-xs" />
+        </div>
         <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
           ColonyGames <span className="text-blue-600">2026</span> Entry Pass
         </h1>
@@ -746,7 +751,7 @@ export default function RegistrationWizard() {
                           </span>
                         </h3>
                       </div>
-                      <span className="text-xs text-blue-700 font-semibold bg-blue-100/70 px-2.5 py-1 rounded-full border border-blue-200">
+                      <span className="text-xs text-blue-700 font-bold bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
                         {
                           allocations.filter((a) => a.tempMemberId === member.tempId).length
                         }{' '}
@@ -1088,7 +1093,7 @@ export default function RegistrationWizard() {
                             memberSports.map((s, idx) => (
                               <span
                                 key={idx}
-                                className="inline-flex items-center gap-1 text-[11px] px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-medium"
+                                className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200 font-medium"
                               >
                                 {s.title}
                                 {s.specific ? ` (${s.specific})` : ''}
@@ -1132,10 +1137,12 @@ export default function RegistrationWizard() {
             </div>
 
             <div>
-              <span className="text-xs uppercase font-bold tracking-widest text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
-                Registration Confirmed
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-3">
+              <div className="inline-flex items-center justify-center gap-2 mb-2 text-xs font-black uppercase tracking-widest text-emerald-600">
+                <span className="w-4 h-1 bg-emerald-500 rounded-xs" />
+                <span>Registration Confirmed</span>
+                <span className="w-4 h-1 bg-emerald-500 rounded-xs" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
                 You&apos;re All Set for ColonyGames 2026!
               </h2>
               <p className="text-xs text-slate-500 mt-2 max-w-md mx-auto">
@@ -1153,7 +1160,7 @@ export default function RegistrationWizard() {
                   </span>
                   <div className="text-sm font-extrabold text-slate-900">COLONYGAMES 2026</div>
                 </div>
-                <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">
+                <span className="text-[11px] font-black tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200">
                   VERIFIED
                 </span>
               </div>

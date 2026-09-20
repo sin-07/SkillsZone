@@ -158,10 +158,13 @@ export default function DashboardPage() {
       {/* Header Banner */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 sm:p-8 rounded-3xl bg-white border border-slate-200/90 shadow-xl shadow-slate-200/40 relative overflow-hidden">
         <div className="space-y-1">
-          <span className="text-xs font-bold uppercase tracking-widest text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
-            Resident Athlete Hub
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-2">
+          <div className="flex items-center gap-2 mb-1 text-[11px] font-black uppercase tracking-widest text-blue-600">
+            <span className="w-5 h-1 bg-blue-600 rounded-xs" />
+            <span>Resident Athlete Hub</span>
+            <span className="text-slate-300">•</span>
+            <span className="text-slate-500 font-semibold tracking-normal lowercase">ColonyGames 2026</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
             Welcome, {user.name}
           </h1>
           <p className="text-xs text-slate-500">
@@ -243,7 +246,7 @@ export default function DashboardPage() {
                           {reg.registrationId}
                         </span>
                         <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-md uppercase ${
                             reg.status === 'confirmed'
                               ? 'bg-blue-50 text-blue-700 border border-blue-200'
                               : reg.status === 'cancelled'
@@ -254,7 +257,7 @@ export default function DashboardPage() {
                           {reg.status}
                         </span>
                         {reg.checkIn?.isCheckedIn && (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-cyan-50 text-cyan-700 border border-cyan-200">
                             Checked In at Gate
                           </span>
                         )}

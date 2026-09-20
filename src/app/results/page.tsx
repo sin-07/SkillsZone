@@ -49,9 +49,14 @@ export default function ResultsPage() {
     <div className="min-h-screen py-10 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Page Header */}
       <div className="text-center mb-10 sm:mb-14">
-        <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-50 text-amber-800 border border-amber-300 mb-3 shadow-xs">
-          <Trophy className="w-3.5 h-3.5 text-amber-600" /> Live Tournament Standings
-        </span>
+        <div className="inline-flex items-center justify-center gap-2 mb-2 text-[11px] sm:text-xs font-black uppercase tracking-widest text-amber-700">
+          <span className="w-5 h-1 bg-amber-500 rounded-xs" />
+          <Trophy className="w-3.5 h-3.5 text-amber-600" />
+          <span>Live Tournament Standings</span>
+          <span className="text-slate-300">•</span>
+          <span className="text-slate-500 font-semibold tracking-normal lowercase">ColonyGames 2026</span>
+          <span className="w-5 h-1 bg-amber-500 rounded-xs" />
+        </div>
         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
           Society Leaderboard & Results
         </h1>
@@ -134,7 +139,7 @@ export default function ResultsPage() {
                     <div className="w-14 h-14 rounded-full bg-amber-400 text-slate-950 font-black text-xl flex items-center justify-center mx-auto mb-3 shadow-sm">
                       <Crown className="w-7 h-7 text-slate-950" />
                     </div>
-                    <span className="text-xs uppercase font-extrabold text-amber-800 tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-200">
+                    <span className="inline-block text-[11px] uppercase font-black text-amber-900 tracking-widest bg-amber-100 px-2.5 py-0.5 rounded-sm border border-amber-300">
                       GOLD CHAMPIONS
                     </span>
                     <h3 className="text-xl font-extrabold text-slate-900 mt-2">
@@ -256,7 +261,7 @@ export default function ResultsPage() {
                         {t.tower}
                       </span>
                       <span
-                        className={`text-xs font-black px-2 py-0.5 rounded-full ${
+                        className={`text-xs font-black px-2 py-0.5 rounded-md ${
                           idx === 0 ? 'bg-amber-400 text-slate-950' : 'bg-slate-100 text-slate-600'
                         }`}
                       >
@@ -344,7 +349,7 @@ export default function ResultsPage() {
                           >
                             <div className="flex items-center justify-between mb-2">
                               <span
-                                className={`text-xs font-black px-2.5 py-0.5 rounded-full ${
+                                className={`text-[11px] font-black tracking-wider px-2 py-0.5 rounded-md ${
                                   w.rank === 1
                                     ? 'bg-amber-400 text-slate-950'
                                     : w.rank === 2
