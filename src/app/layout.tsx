@@ -39,7 +39,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900 font-sans selection:bg-blue-600 selection:text-white">
+      <body className="min-h-full flex flex-col bg-[#f4f4f0] text-[#111111] font-sans selection:bg-[#111111] selection:text-white">
         <AuthProvider>
           <ToastProvider>
             <Navbar />

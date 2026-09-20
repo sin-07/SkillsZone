@@ -359,96 +359,78 @@ export default function RegistrationWizard() {
 
   return (
     <div className="max-w-4xl mx-auto px-3 sm:px-6 py-6 sm:py-16">
-      {/* Top Banner Heading */}
-      <div className="text-center mb-6 sm:mb-12">
-        <div className="inline-flex items-center justify-center gap-2 mb-2.5 sm:mb-3 text-[11px] sm:text-xs font-black uppercase tracking-widest text-blue-600">
-          <span className="w-5 h-1 bg-blue-600 rounded-xs" />
-          <Trophy className="w-3.5 h-3.5 text-blue-600" />
-          <span>Official Society Registration</span>
-          <span className="text-slate-300">•</span>
-          <span className="text-slate-500 font-semibold tracking-normal lowercase">ColonyGames 2026</span>
-          <span className="w-5 h-1 bg-blue-600 rounded-xs" />
+      {/* Top Banner Heading - Swiss Editorial Broadside */}
+      <div className="text-center mb-8 sm:mb-12 pb-6 border-b border-[#111111]/20">
+        <div className="font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-[#dc2626] mb-1">
+          [ PROTOCOL // 07 PHASES • REGISTRATION 2026 ]
         </div>
-        <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-          ColonyGames <span className="text-blue-600">2026</span> Entry Pass
+        <h1 className="text-2xl sm:text-5xl font-black text-[#111111] uppercase tracking-tight">
+          COLONYGAMES 2026 ENTRY PASS
         </h1>
-        <p className="text-xs sm:text-sm text-slate-600 mt-1.5 sm:mt-2 max-w-xl mx-auto">
-          Register your family, enroll members across 9 sports, and receive your digital QR pass instantly.
+        <p className="text-xs sm:text-sm text-[#555555] mt-1.5 max-w-xl mx-auto font-sans">
+          Register family members, assign tournament disciplines, and generate your official digital QR credentials.
         </p>
       </div>
 
       {/* Mobile-Only Step Header (under 640px) */}
-      <div className="sm:hidden mb-6 p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2.5">
+      <div className="sm:hidden mb-6 p-4 bg-white border border-[#111111] space-y-2.5 font-mono">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <span className="w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
+            <span className="w-7 h-7 bg-[#111111] text-white font-black text-xs flex items-center justify-center">
               {step}
             </span>
             <div>
-              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">
-                Step {step} of 7
+              <span className="text-[10px] uppercase font-bold tracking-wider text-[#888888] block">
+                PHASE 0{step} OF 07
               </span>
-              <span className="text-xs font-bold text-slate-900">
-                {stepsList[step - 1]?.label} Details
+              <span className="text-xs font-black uppercase text-[#111111]">
+                {stepsList[step - 1]?.label}
               </span>
             </div>
           </div>
-          <span className="text-xs font-bold text-blue-600">
+          <span className="text-xs font-bold text-[#dc2626]">
             {Math.round((step / 7) * 100)}%
           </span>
         </div>
-        <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+        <div className="h-1.5 w-full bg-[#ebebe6] border border-[#111111]/15 overflow-hidden">
           <div
-            className="h-full bg-blue-600 rounded-full transition-all duration-300"
+            className="h-full bg-[#111111] transition-all duration-300"
             style={{ width: `${(step / 7) * 100}%` }}
           />
         </div>
       </div>
 
-      {/* Desktop Step Indicator Bar (640px and up) */}
-      <div className="hidden sm:block mb-10 overflow-x-auto pb-2 scrollbar-none">
-        <div className="flex items-center justify-between min-w-[580px] px-2">
-          {stepsList.map((s, idx) => {
-            const Icon = s.icon;
+      {/* Desktop Step Indicator Bar (640px and up) - Swiss Modular Index Bar */}
+      <div className="hidden sm:block mb-8 font-mono">
+        <div className="grid grid-cols-7 border border-[#111111] bg-white divide-x divide-[#111111]">
+          {stepsList.map((s) => {
             const isDone = step > s.num;
             const isCurrent = step === s.num;
             return (
-              <React.Fragment key={s.num}>
-                <div className="flex flex-col items-center gap-1.5 text-center">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs transition-all ${
-                      isDone
-                        ? 'bg-blue-600 text-white font-extrabold shadow-sm'
-                        : isCurrent
-                        ? 'bg-blue-600 text-white ring-4 ring-blue-100 font-bold scale-110 shadow-sm'
-                        : 'bg-slate-100 text-slate-400 border border-slate-200'
-                    }`}
-                  >
-                    {isDone ? <CheckCircle2 className="w-5 h-5" /> : <Icon className="w-4 h-4" />}
-                  </div>
-                  <span
-                    className={`text-[11px] font-semibold tracking-wide ${
-                      isCurrent ? 'text-blue-700 font-bold' : isDone ? 'text-slate-800' : 'text-slate-400'
-                    }`}
-                  >
-                    {s.label}
-                  </span>
+              <div
+                key={s.num}
+                className={`p-3 text-center transition-colors ${
+                  isCurrent
+                    ? 'bg-[#111111] text-white'
+                    : isDone
+                    ? 'bg-[#f4f4f0] text-[#111111]'
+                    : 'bg-white text-[#888888]'
+                }`}
+              >
+                <div className="text-[10px] font-bold uppercase tracking-widest">
+                  0{s.num}
                 </div>
-                {idx < stepsList.length - 1 && (
-                  <div
-                    className={`flex-1 h-0.5 mx-2 rounded transition-colors ${
-                      step > s.num ? 'bg-blue-600' : 'bg-slate-200'
-                    }`}
-                  />
-                )}
-              </React.Fragment>
+                <div className="text-[11px] font-black uppercase tracking-tight mt-0.5 truncate">
+                  {s.label}
+                </div>
+              </div>
             );
           })}
         </div>
       </div>
 
       {/* Wizard Step Container */}
-      <div className="rounded-2xl sm:rounded-3xl bg-white border border-slate-200 p-4 sm:p-10 shadow-xs sm:shadow-md">
+      <div className="bg-white border border-[#111111] p-5 sm:p-10">
         {/* ================= STEP 1: PERSONAL DETAILS ================= */}
         {step === 1 && (
           <div className="space-y-6">
@@ -1129,66 +1111,75 @@ export default function RegistrationWizard() {
           </div>
         )}
 
-        {/* ================= STEP 7: PASS CONFIRMATION & SUCCESS ================= */}
+        {/* ================= STEP 7: PASS CONFIRMATION & SUCCESS (SWISS ENTRY TICKET) ================= */}
         {step === 7 && registrationResult && (
-          <div className="space-y-6 text-center py-4">
-            <div className="w-16 h-16 rounded-2xl bg-blue-600 flex items-center justify-center text-white mx-auto shadow-md">
-              <Sparkles className="w-8 h-8" />
-            </div>
-
+          <div className="space-y-8 text-center py-4 font-mono">
             <div>
-              <div className="inline-flex items-center justify-center gap-2 mb-2 text-xs font-black uppercase tracking-widest text-emerald-600">
-                <span className="w-4 h-1 bg-emerald-500 rounded-xs" />
-                <span>Registration Confirmed</span>
-                <span className="w-4 h-1 bg-emerald-500 rounded-xs" />
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
-                You&apos;re All Set for ColonyGames 2026!
+              <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 bg-[#111111] text-white">
+                REGISTRATION CONFIRMED • PASS ACTIVE
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-[#111111] mt-3">
+                COLONYGAMES 2026 PASS ISSUED
               </h2>
-              <p className="text-xs text-slate-500 mt-2 max-w-md mx-auto">
-                Your entry pass has been generated. An email confirmation has been sent to{' '}
-                <strong className="text-slate-800">{contactEmail}</strong> with the official PDF pass attached.
+              <p className="text-xs text-[#555555] mt-1.5 max-w-md mx-auto font-sans">
+                Official accreditation generated for {familyName}. An electronic copy has been dispatched to{' '}
+                <strong className="text-[#111111]">{contactEmail}</strong>.
               </p>
             </div>
 
-            {/* Official Pass Badge Card */}
-            <div className="max-w-md mx-auto p-6 rounded-3xl bg-white border border-slate-200 shadow-lg relative overflow-hidden">
-              <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
-                <div className="text-left">
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500">
-                    Official Entry Pass
-                  </span>
-                  <div className="text-sm font-extrabold text-slate-900">COLONYGAMES 2026</div>
+            {/* Official Pass Badge Card - Swiss Cultural Event Ticket */}
+            <div className="max-w-md mx-auto bg-white border-2 border-[#111111] text-left p-0 overflow-hidden shadow-sm">
+              <div className="p-4 bg-[#111111] text-white flex items-center justify-between">
+                <div>
+                  <div className="text-[9px] font-bold uppercase tracking-widest text-[#aaaaaa]">
+                    OFFICIAL ATHLETIC CREDENTIAL
+                  </div>
+                  <div className="text-sm font-black uppercase tracking-tight">COLONYGAMES 2026</div>
                 </div>
-                <span className="text-[11px] font-black tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200">
-                  VERIFIED
+                <span className="text-[10px] font-black tracking-widest bg-[#dc2626] text-white px-2 py-0.5">
+                  VALIDATED
                 </span>
               </div>
 
               {/* Scannable QR Code */}
               {registrationResult.qrCodeDataUrl && (
-                <div className="p-3 bg-white rounded-2xl max-w-[190px] mx-auto mb-4 shadow-sm border border-slate-200">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={registrationResult.qrCodeDataUrl}
-                    alt="Registration QR Pass"
-                    className="w-full h-auto"
-                  />
+                <div className="p-6 bg-white flex flex-col items-center justify-center border-b border-[#111111]/20">
+                  <div className="p-2 border border-[#111111] bg-white">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={registrationResult.qrCodeDataUrl}
+                      alt="Registration QR Pass"
+                      className="w-44 h-44 object-contain"
+                    />
+                  </div>
                 </div>
               )}
 
-              <div className="text-center">
-                <div className="text-xs text-slate-500">REGISTRATION PASS ID</div>
-                <div className="text-2xl font-black tracking-widest text-blue-700 font-mono mt-0.5">
-                  {registrationResult.registrationId}
+              <div className="p-5 space-y-3 bg-[#f4f4f0]/50">
+                <div className="flex items-center justify-between border-b border-[#111111]/15 pb-2">
+                  <span className="text-[10px] text-[#666666] uppercase">CREDENTIAL ID:</span>
+                  <span className="text-sm font-black text-[#111111] tracking-wider">
+                    {registrationResult.registrationId}
+                  </span>
                 </div>
-                <div className="text-xs text-slate-700 font-semibold mt-1">
-                  {familyName} • {blockTower} - {houseNumber}
+
+                <div className="flex items-center justify-between border-b border-[#111111]/15 pb-2">
+                  <span className="text-[10px] text-[#666666] uppercase">HOUSEHOLD:</span>
+                  <span className="text-xs font-bold text-[#111111] uppercase">
+                    {familyName} ({blockTower} - {houseNumber})
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] text-[#666666] uppercase">PRIMARY ATHLETE:</span>
+                  <span className="text-xs font-bold text-[#111111] uppercase">
+                    {contactName}
+                  </span>
                 </div>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-slate-200 text-[11px] text-slate-500">
-                Present this QR code at the Gate Registration Desk for kit pickup & attendance check-in.
+              <div className="p-3 bg-[#111111] text-white text-[9px] uppercase tracking-wider text-center">
+                PRESENT AT REGISTRATION DESK FOR JERSEY PICKUP & GATE ENTRY
               </div>
             </div>
 
@@ -1197,23 +1188,16 @@ export default function RegistrationWizard() {
               <a
                 href={`/api/registrations/${registrationResult.registrationId}/pdf`}
                 download
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#111111] hover:bg-[#dc2626] text-white font-bold text-xs uppercase tracking-widest border border-[#111111] transition-colors"
               >
-                <Download className="w-4 h-4" /> Download Official Pass (PDF)
+                <Download className="w-4 h-4" /> DOWNLOAD OFFICIAL PDF PASS
               </a>
 
               <Link
                 href={`/confirmation/${registrationResult.registrationId}`}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm border border-slate-200 transition"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-white hover:bg-[#f4f4f0] text-[#111111] font-bold text-xs uppercase tracking-widest border border-[#111111] transition-colors"
               >
-                <Printer className="w-4 h-4" /> View Full Digital Pass
-              </Link>
-
-              <Link
-                href="/dashboard"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-slate-50 text-slate-600 font-medium text-sm border border-slate-200 transition"
-              >
-                Go to Member Dashboard
+                <Printer className="w-4 h-4" /> PRINT PASS
               </Link>
             </div>
           </div>
@@ -1221,14 +1205,14 @@ export default function RegistrationWizard() {
 
         {/* Wizard Controls Footer */}
         {step < 7 && (
-          <div className="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between">
+          <div className="mt-8 pt-6 border-t border-[#111111]/15 flex items-center justify-between font-mono">
             {step > 1 ? (
               <button
                 type="button"
                 onClick={prevStep}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200 transition"
+                className="inline-flex items-center gap-2 px-5 py-3 bg-white hover:bg-[#f4f4f0] text-[#111111] text-xs font-bold uppercase tracking-wider border border-[#111111]/30 transition-colors"
               >
-                <ArrowLeft className="w-4 h-4" /> Back
+                <ArrowLeft className="w-4 h-4" /> PREVIOUS
               </button>
             ) : (
               <div />
@@ -1238,29 +1222,29 @@ export default function RegistrationWizard() {
               <button
                 type="button"
                 onClick={nextStep}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#111111] hover:bg-[#dc2626] text-white text-xs font-bold uppercase tracking-widest border border-[#111111] transition-colors"
               >
-                Continue to Step {step + 1} <ArrowRight className="w-4 h-4" />
+                CONTINUE TO PHASE 0{step + 1} <ArrowRight className="w-4 h-4" />
               </button>
             ) : (
               <button
                 type="button"
                 onClick={handleFinalSubmit}
                 disabled={submitting || !agreeRules}
-                className={`inline-flex items-center gap-2 px-7 py-3 rounded-xl font-semibold text-sm transition shadow-sm ${
+                className={`inline-flex items-center gap-2 px-8 py-3.5 font-mono text-xs font-bold uppercase tracking-widest border transition-colors ${
                   submitting || !agreeRules
-                    ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                    : 'bg-blue-600 hover:bg-blue-700 text-white'
+                    ? 'bg-[#ebebe6] text-[#888888] border-[#111111]/20 cursor-not-allowed'
+                    : 'bg-[#111111] hover:bg-[#dc2626] text-white border-[#111111]'
                 }`}
               >
                 {submitting ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Generating Official Pass...
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent animate-spin" />
+                    ACCREDITING PASS...
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-4 h-4" /> Complete Registration & Generate Pass
+                    <Sparkles className="w-4 h-4 text-[#dc2626]" /> CONFIRM ROSTER & ISSUE PASS
                   </>
                 )}
               </button>

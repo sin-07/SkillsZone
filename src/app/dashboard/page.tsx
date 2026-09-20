@@ -155,40 +155,37 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen py-10 sm:py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">
-      {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 sm:p-8 rounded-3xl bg-white border border-slate-200/90 shadow-xl shadow-slate-200/40 relative overflow-hidden">
+      {/* Header Banner - Swiss Control Strip */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 sm:p-8 bg-white border border-[#111111] font-mono">
         <div className="space-y-1">
-          <div className="flex items-center gap-2 mb-1 text-[11px] font-black uppercase tracking-widest text-blue-600">
-            <span className="w-5 h-1 bg-blue-600 rounded-xs" />
-            <span>Resident Athlete Hub</span>
-            <span className="text-slate-300">•</span>
-            <span className="text-slate-500 font-semibold tracking-normal lowercase">ColonyGames 2026</span>
+          <div className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#dc2626] mb-1">
+            [ ATHLETE HUB // COLONYGAMES 2026 ]
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-            Welcome, {user.name}
+          <h1 className="text-2xl sm:text-4xl font-black text-[#111111] uppercase tracking-tight">
+            WELCOME, {user.name}
           </h1>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-[#666666] uppercase">
             {family ? (
               <>
                 {family.familyName} • {family.blockTower} - {family.houseNumber}
               </>
             ) : (
-              'ColonyGames 2026 Participant'
+              'COLONYGAMES 2026 PARTICIPANT'
             )}
           </p>
         </div>
 
         {/* Quick Points Widget */}
-        <div className="flex items-center gap-4 bg-amber-50/60 p-4 rounded-2xl border border-amber-200 self-start md:self-auto">
-          <div className="w-12 h-12 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-bold shadow-md shadow-amber-300/40">
-            <Trophy className="w-6 h-6" />
+        <div className="flex items-center gap-4 bg-[#f4f4f0] p-4 border border-[#111111] self-start md:self-auto font-mono">
+          <div className="w-10 h-10 bg-[#111111] text-white flex items-center justify-center font-bold">
+            <Trophy className="w-5 h-5 text-[#dc2626]" />
           </div>
           <div>
-            <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-              Family Points
+            <div className="text-[10px] font-bold text-[#888888] uppercase tracking-wider">
+              FAMILY POINTS
             </div>
-            <div className="text-2xl font-black text-slate-900">
-              {family?.points || 0} <span className="text-xs font-normal text-slate-500">pts</span>
+            <div className="text-2xl font-black text-[#111111]">
+              {family?.points || 0} <span className="text-xs font-normal text-[#888888]">PTS</span>
             </div>
           </div>
         </div>
@@ -237,33 +234,33 @@ export default function DashboardPage() {
               {registrations.map((reg: any) => (
                 <div
                   key={reg._id}
-                  className="rounded-3xl bg-white border border-slate-200/90 p-6 space-y-5 hover:border-blue-300 transition shadow-lg shadow-slate-200/30"
+                  className="bg-white border border-[#111111] p-6 space-y-5 font-mono"
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#111111]/15 pb-4">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-black text-blue-700 font-mono tracking-wider">
+                        <span className="text-sm font-black text-[#111111] font-mono tracking-wider">
                           {reg.registrationId}
                         </span>
                         <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-md uppercase ${
+                          className={`text-[10px] font-bold px-2 py-0.5 border uppercase ${
                             reg.status === 'confirmed'
-                              ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                              ? 'bg-[#111111] text-white border-[#111111]'
                               : reg.status === 'cancelled'
-                              ? 'bg-rose-50 text-rose-700 border border-rose-200'
-                              : 'bg-amber-50 text-amber-700 border border-amber-200'
+                              ? 'bg-[#dc2626] text-white border-[#dc2626]'
+                              : 'bg-white text-[#111111] border-[#111111]/30'
                           }`}
                         >
                           {reg.status}
                         </span>
                         {reg.checkIn?.isCheckedIn && (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-cyan-50 text-cyan-700 border border-cyan-200">
-                            Checked In at Gate
+                          <span className="text-[10px] font-bold px-2 py-0.5 bg-[#dc2626] text-white uppercase">
+                            CHECKED IN AT GATE
                           </span>
                         )}
                       </div>
-                      <span className="text-xs text-slate-500 mt-1 block">
-                        Registered on {new Date(reg.createdAt).toLocaleDateString('en-IN')}
+                      <span className="text-[10px] text-[#666666] uppercase mt-1 block">
+                        REGISTERED: {new Date(reg.createdAt).toLocaleDateString('en-IN')}
                       </span>
                     </div>
 
@@ -271,15 +268,15 @@ export default function DashboardPage() {
                       <a
                         href={`/api/registrations/${reg.registrationId}/pdf`}
                         download
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200 transition"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#f4f4f0] hover:bg-[#111111] hover:text-white text-[#111111] text-xs font-bold uppercase border border-[#111111]/30 transition-colors"
                       >
-                        <Download className="w-3.5 h-3.5" /> Pass PDF
+                        <Download className="w-3.5 h-3.5" /> PDF
                       </a>
                       <Link
                         href={`/confirmation/${reg.registrationId}`}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 text-xs font-bold transition"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#111111] hover:bg-[#dc2626] text-white text-xs font-bold uppercase transition-colors"
                       >
-                        <ExternalLink className="w-3.5 h-3.5" /> View Pass
+                        <ExternalLink className="w-3.5 h-3.5" /> VIEW PASS
                       </Link>
                     </div>
                   </div>

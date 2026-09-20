@@ -1,60 +1,70 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import CountdownTimer from '@/components/CountdownTimer';
 import EventCard, { EventItem } from '@/components/EventCard';
 import {
-  Trophy,
-  Users,
-  Flame,
+  Calendar,
   Shield,
   ArrowRight,
-  Sparkles,
-  Calendar,
-  CheckCircle2,
-  Medal,
-  Award,
   ChevronRight,
+  Clock,
   Megaphone,
   QrCode,
-  Zap,
+  Trophy,
   Activity,
-  MapPin,
-  Clock,
+  Check,
 } from 'lucide-react';
+
+interface Announcement {
+  _id: string;
+  title: string;
+  content: string;
+  category: string;
+  isPinned?: boolean;
+}
+
+interface FamilyLeaderboardItem {
+  _id: string;
+  familyName: string;
+  blockTower: string;
+  houseNumber: string;
+  points: number;
+  medals: {
+    gold: number;
+    silver: number;
+    bronze: number;
+  };
+}
 
 export default function HomePage() {
   const [events, setEvents] = useState<EventItem[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [announcements, setAnnouncements] = useState<any[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [topFamilies, setTopFamilies] = useState<any[]>([]);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [topFamilies, setTopFamilies] = useState<FamilyLeaderboardItem[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string>('All');
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState('All');
 
   useEffect(() => {
     async function loadInitialData() {
       try {
-        await fetch('/api/seed');
-
-        const [evRes, annRes, resRes] = await Promise.all([
+        const [eventsRes, announceRes, resultsRes] = await Promise.all([
           fetch('/api/events'),
           fetch('/api/announcements'),
           fetch('/api/results'),
         ]);
 
-        if (evRes.ok) {
-          const d = await evRes.json();
-          setEvents(d.events || []);
+        if (eventsRes.ok) {
+          const eventsData = await eventsRes.json();
+          setEvents(eventsData.events || []);
         }
-        if (annRes.ok) {
-          const d = await annRes.json();
-          setAnnouncements(d.announcements || []);
+        if (announceRes.ok) {
+          const aData = await announceRes.json();
+          setAnnouncements(aData.announcements || []);
         }
-        if (resRes.ok) {
-          const d = await resRes.json();
-          setTopFamilies((d.familyLeaderboard || []).slice(0, 3));
+        if (resultsRes.ok) {
+          const rData = await resultsRes.json();
+          setTopFamilies(rData.familyLeaderboard?.slice(0, 3) || []);
         }
       } catch (err) {
         console.error('Error loading home data:', err);
@@ -77,114 +87,117 @@ export default function HomePage() {
     <div className="space-y-16 sm:space-y-24 pb-20 overflow-hidden">
       {/* Pinned Urgent Announcements Banner */}
       {announcements.length > 0 && announcements[0]?.isPinned && (
-        <div className="bg-blue-50 text-blue-950 px-4 py-2.5 shadow-xs border-b border-blue-200">
-          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 text-xs">
-            <div className="flex items-center gap-2.5 font-medium truncate">
-              <span className="flex h-2 w-2 rounded-full bg-blue-600 animate-ping shrink-0" />
-              <Megaphone className="w-4 h-4 text-blue-600 shrink-0" />
-              <strong className="text-blue-950 shrink-0">{announcements[0].title}:</strong>
-              <span className="text-blue-800 truncate">{announcements[0].content}</span>
+        <div className="bg-[#111111] text-white px-4 py-2 border-b border-[#111111]">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 font-mono text-xs">
+            <div className="flex items-center gap-2.5 truncate">
+              <span className="w-2 h-2 bg-[#dc2626] animate-pulse shrink-0" />
+              <Megaphone className="w-3.5 h-3.5 text-[#dc2626] shrink-0" />
+              <strong className="text-white uppercase tracking-wider shrink-0">[DISPATCH]:</strong>
+              <span className="text-slate-300 truncate">{announcements[0].title} — {announcements[0].content}</span>
             </div>
             <Link
               href="/events"
-              className="text-blue-700 hover:text-blue-900 whitespace-nowrap font-bold text-[11px] underline shrink-0"
+              className="text-[#dc2626] hover:text-white uppercase font-bold text-[10px] tracking-widest shrink-0 underline"
             >
-              Learn More →
+              DETAILS →
             </Link>
           </div>
         </div>
       )}
 
-      {/* ================= HERO SECTION (HIGH IMPACT ASYMMETRIC) ================= */}
-      <section className="relative pt-6 sm:pt-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Left Column: Bold Editorial Content */}
+      {/* ================= HERO SECTION (SWISS MONUMENTAL ASYMMETRIC) ================= */}
+      <section className="relative pt-6 sm:pt-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Background Monogram Watermark */}
+        <div className="absolute right-0 top-12 pointer-events-none select-none text-[22vw] font-black text-[#111111]/[0.025] leading-none tracking-tighter uppercase font-mono">
+          2026
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start relative z-10">
+          {/* Left Column: Monumental Typographic Broadsheet */}
           <div className="lg:col-span-7 space-y-6 sm:space-y-8">
-            {/* Top Eyebrow */}
-            <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-blue-600">
-              <span className="w-6 h-1 bg-blue-600 rounded-xs" />
-              <span>Green Meadows Annual Sports Fest</span>
-              <span className="text-slate-300">•</span>
-              <span className="text-slate-600 font-bold tracking-normal">Oct 15 – 18, 2026</span>
+            {/* Top Eyebrow / Catalog Ref */}
+            <div className="flex items-center gap-2 font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-[#111111]">
+              <span className="px-1.5 py-0.5 bg-[#dc2626] text-white">REF 01</span>
+              <span>GREEN MEADOWS ANNUAL SPORTS FESTIVAL</span>
+              <span className="text-[#888888]">•</span>
+              <span className="text-[#666666]">OCT 15 – 18, 2026</span>
             </div>
 
-            {/* Main Athletic Title */}
-            <div className="space-y-2">
-              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.08]">
-                9 TOURNAMENTS. <br />
-                6 TOWERS.{' '}
-                <span className="text-blue-600">
-                  ONE CUP.
-                </span>
+            {/* Monumental Headline */}
+            <div className="space-y-3">
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-[#111111] tracking-tighter uppercase leading-[0.92]">
+                9 TOURNAMENTS.<br />
+                6 TOWERS.<br />
+                <span className="text-[#dc2626]">ONE TROPHY.</span>
               </h1>
-              <p className="text-sm sm:text-base text-slate-600 max-w-xl leading-relaxed font-normal pt-1 sm:pt-2">
-                The premier inter-block sports championship for Green Meadows. Uniting 50+ families
-                and 250+ resident athletes across floodlit Cricket, Football, Badminton, Track Sprint, and Table Tennis.
+              <p className="text-xs sm:text-sm text-[#444444] max-w-xl leading-relaxed font-normal pt-2 border-t border-[#111111]/15">
+                The official inter-tower residential championship. Uniting 50+ families and 250+ resident athletes across
+                certified Box Cricket, Football, Badminton, Track Sprint, Table Tennis, and Tug of War.
               </p>
             </div>
 
-            {/* Countdown Widget */}
+            {/* Swiss Tabular Countdown Ticker */}
             <div className="pt-1">
               <CountdownTimer targetDate="2026-10-15T08:00:00" />
             </div>
 
             {/* Hero Action Station */}
-            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <Link
                 href="/register"
-                className="px-8 py-4 rounded-xl bg-blue-600 text-white font-bold text-sm sm:text-base hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all flex items-center justify-center gap-2 group"
+                className="px-8 py-4 bg-[#111111] hover:bg-[#dc2626] text-white font-mono font-bold text-xs uppercase tracking-widest transition-colors flex items-center justify-center gap-3 border border-[#111111] group"
               >
-                <span>Register Family & Get Pass</span>
+                <span>REGISTER FAMILY & GET PASS</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
 
               <Link
                 href="/events"
-                className="px-7 py-4 rounded-xl bg-white hover:bg-slate-50 text-slate-900 font-bold text-sm border border-slate-300 shadow-xs transition-colors flex items-center justify-center gap-2"
+                className="px-7 py-4 bg-white hover:bg-[#f4f4f0] text-[#111111] font-mono font-bold text-xs uppercase tracking-widest border border-[#111111] transition-colors flex items-center justify-center gap-2"
               >
-                <Calendar className="w-4 h-4 text-blue-600" />
-                <span>View 9 Tournaments</span>
+                <Calendar className="w-4 h-4 text-[#dc2626]" />
+                <span>ALL 9 DISCIPLINES</span>
               </Link>
             </div>
 
-            {/* Society Guarantee Points */}
-            <div className="pt-2 flex flex-wrap items-center gap-5 text-xs text-slate-600 font-medium">
+            {/* Swiss Legal Specifications */}
+            <div className="pt-2 flex flex-wrap items-center gap-6 font-mono text-[10px] text-[#555555] uppercase tracking-wider">
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" /> Free Resident Entry
+                <Check className="w-3.5 h-3.5 text-[#dc2626]" /> NO ENTRY FEE FOR RESIDENTS
               </span>
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" /> Official Dry-Fit Society Jersey
+                <Check className="w-3.5 h-3.5 text-[#dc2626]" /> OFFICIAL SOCIETY KIT
               </span>
               <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" /> Digital QR Code Pass
+                <Check className="w-3.5 h-3.5 text-[#dc2626]" /> DIGITAL QR ENTRY PASS
               </span>
             </div>
           </div>
 
-          {/* Right Column: Live Tournament Match Center Card */}
+          {/* Right Column: Live Match Command Center Module */}
           <div className="lg:col-span-5">
-            <div className="rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-lg">
-              {/* Stadium Header Visual */}
-              <div className="relative h-56 w-full bg-slate-950 overflow-hidden">
+            <div className="bg-white border border-[#111111] overflow-hidden">
+              {/* Stadium Visual Frame */}
+              <div className="relative h-60 w-full bg-[#111111] overflow-hidden border-b border-[#111111]">
                 <img
                   src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1000&q=80"
                   alt="Green Meadows Sports Fest Stadium"
                   className="w-full h-full object-cover opacity-80"
                 />
-                <div className="absolute inset-0 bg-slate-950/40" />
+                <div className="absolute inset-0 bg-[#111111]/30" />
 
-                {/* Live Status Pill */}
-                <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1 rounded-md bg-slate-900/90 text-white text-[11px] font-bold tracking-wider uppercase border border-white/20">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>Registrations Active</span>
+                {/* Status Badge */}
+                <div className="absolute top-3 left-3 flex items-center gap-2 px-2.5 py-1 bg-[#111111] text-white font-mono text-[10px] font-bold tracking-widest uppercase border border-white/20">
+                  <span className="w-1.5 h-1.5 bg-[#dc2626] animate-pulse" />
+                  <span>REGISTRATIONS ACTIVE</span>
                 </div>
 
-                <div className="absolute bottom-4 left-4 right-4">
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-blue-300 block">
-                    Society Sports Festival 2026
+                <div className="absolute bottom-3 left-3 right-3">
+                  <span className="font-mono text-[9px] uppercase font-bold tracking-widest text-[#dddddd] block">
+                    EDITION 2026 // LOGISTICS
                   </span>
-                  <h3 className="text-xl font-black text-white">
-                    Tournament Command Center
+                  <h3 className="text-lg font-black uppercase tracking-tight text-white">
+                    TOURNAMENT COMMAND CENTER
                   </h3>
                 </div>
               </div>
@@ -192,63 +205,58 @@ export default function HomePage() {
               {/* Card Body: Live Numbers & Next Matches */}
               <div className="p-5 sm:p-6 space-y-5">
                 {/* Live Capacity Ticker */}
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/90 space-y-2">
+                <div className="p-4 bg-[#f4f4f0] border border-[#111111]/15 space-y-2 font-mono">
                   <div className="flex items-center justify-between text-xs font-bold">
-                    <span className="text-slate-600">Total Athlete Capacity</span>
-                    <span className="text-blue-700">
-                      {totalRegistered || 184} / {totalCapacity || 250} Athletes ({overallPercent || 74}%)
+                    <span className="text-[#555555] uppercase">TOTAL ROSTER QUOTA</span>
+                    <span className="text-[#111111]">
+                      {totalRegistered || 184} / {totalCapacity || 250} ({overallPercent || 74}%)
                     </span>
                   </div>
-                  <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+                  <div className="h-2 w-full bg-white border border-[#111111]/20 overflow-hidden">
                     <div
-                      className="h-full bg-blue-600 rounded-full transition-all duration-500"
+                      className="h-full bg-[#111111] transition-all duration-500"
                       style={{ width: `${overallPercent || 74}%` }}
                     />
                   </div>
-                  <p className="text-[11px] text-slate-500">
-                    Remaining slots filling across Tower A, B, C, D, E, F. Register before Oct 12 deadline.
+                  <p className="text-[10px] text-[#666666] uppercase tracking-wider">
+                    REMAINING SLOTS OPEN ACROSS TOWERS A–F. REGISTRATION CLOSES OCT 12.
                   </p>
                 </div>
 
                 {/* Opening Event Highlight */}
-                <div className="space-y-2">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                    Opening Day Spotlight
+                <div className="space-y-2 font-mono">
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-[#888888]">
+                    OPENING DAY SPOTLIGHT
                   </span>
-                  <div className="p-3.5 rounded-xl border border-slate-200 hover:border-blue-500 transition-colors flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center font-black">
-                        <Shield className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-slate-900 text-xs sm:text-sm">
-                          Box Cricket League (T10)
-                        </h4>
-                        <p className="text-[11px] text-slate-500 flex items-center gap-1.5 mt-0.5">
-                          <Clock className="w-3 h-3 text-blue-600" /> Oct 15 • 08:00 AM • Main Oval
-                        </p>
-                      </div>
+                  <div className="p-3 border border-[#111111]/20 hover:border-[#111111] transition-colors flex items-center justify-between bg-white">
+                    <div>
+                      <h4 className="font-bold text-[#111111] text-xs uppercase">
+                        BOX CRICKET LEAGUE (T10)
+                      </h4>
+                      <p className="text-[10px] text-[#666666] flex items-center gap-1.5 mt-0.5">
+                        <Clock className="w-3 h-3 text-[#dc2626]" /> OCT 15 • 08:00 AM • MAIN OVAL
+                      </p>
                     </div>
                     <Link
                       href="/events/cricket-t10"
-                      className="text-xs font-bold text-blue-600 hover:text-blue-800"
+                      className="text-xs font-bold text-[#dc2626] hover:underline"
                     >
-                      Rules →
+                      RULES →
                     </Link>
                   </div>
                 </div>
 
                 {/* Tower Standings Quick Look */}
-                <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+                <div className="pt-3 border-t border-[#111111]/15 flex items-center justify-between font-mono">
                   <div>
-                    <span className="text-[11px] font-semibold text-slate-500">Current Tower Cup Leader:</span>
-                    <p className="text-xs font-bold text-slate-900">🏆 Tower A Gladiators (140 pts)</p>
+                    <span className="text-[10px] text-[#666666] uppercase">CURRENT TOWER LEADER:</span>
+                    <p className="text-xs font-black text-[#111111]">TOWER A GLADIATORS (140 PTS)</p>
                   </div>
                   <Link
                     href="/results"
-                    className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1"
+                    className="text-xs font-bold text-[#dc2626] hover:underline flex items-center gap-1 uppercase"
                   >
-                    Standings <ChevronRight className="w-3.5 h-3.5" />
+                    STANDINGS <ChevronRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </div>
@@ -257,69 +265,83 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ================= STATS COUNTER STRIP ================= */}
+      {/* ================= STATS COUNTER STRIP (SWISS MODULAR GRID) ================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-sm">
-          <div className="space-y-1">
-            <div className="text-3xl sm:text-4xl font-black text-slate-900">50+</div>
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
-              Participating Families
+        <div className="grid grid-cols-2 md:grid-cols-4 border border-[#111111] bg-white divide-x divide-y md:divide-y-0 divide-[#111111]/15">
+          <div className="p-6 sm:p-8 space-y-1 font-mono">
+            <span className="text-[10px] uppercase font-bold text-[#888888] tracking-widest block">
+              [01] PARTICIPATION
+            </span>
+            <div className="text-4xl sm:text-5xl font-black text-[#111111] tracking-tight">50+</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-[#111111]">
+              FAMILIES ENROLLED
             </div>
-            <p className="text-[11px] text-slate-400">Representing all 6 towers</p>
+            <p className="text-[10px] text-[#777777] uppercase">ACROSS ALL 6 TOWERS</p>
           </div>
-          <div className="space-y-1">
-            <div className="text-3xl sm:text-4xl font-black text-blue-600">250+</div>
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
-              Resident Athletes
+
+          <div className="p-6 sm:p-8 space-y-1 font-mono">
+            <span className="text-[10px] uppercase font-bold text-[#888888] tracking-widest block">
+              [02] ATHLETES
+            </span>
+            <div className="text-4xl sm:text-5xl font-black text-[#dc2626] tracking-tight">250+</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-[#111111]">
+              RESIDENT ATHLETES
             </div>
-            <p className="text-[11px] text-slate-400">Ages 6 to 75 competing</p>
+            <p className="text-[10px] text-[#777777] uppercase">AGES 6 TO 75 COMPETING</p>
           </div>
-          <div className="space-y-1">
-            <div className="text-3xl sm:text-4xl font-black text-slate-900">9</div>
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
-              Sports Tournaments
+
+          <div className="p-6 sm:p-8 space-y-1 font-mono">
+            <span className="text-[10px] uppercase font-bold text-[#888888] tracking-widest block">
+              [03] DISCIPLINES
+            </span>
+            <div className="text-4xl sm:text-5xl font-black text-[#111111] tracking-tight">09</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-[#111111]">
+              TOURNAMENTS
             </div>
-            <p className="text-[11px] text-slate-400">Team, Individual & Family</p>
+            <p className="text-[10px] text-[#777777] uppercase">TEAM, INDIVIDUAL & FAMILY</p>
           </div>
-          <div className="space-y-1">
-            <div className="text-3xl sm:text-4xl font-black text-amber-500">27</div>
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
-              Podium Medals & Cups
+
+          <div className="p-6 sm:p-8 space-y-1 font-mono">
+            <span className="text-[10px] uppercase font-bold text-[#888888] tracking-widest block">
+              [04] HONORS
+            </span>
+            <div className="text-4xl sm:text-5xl font-black text-[#111111] tracking-tight">27</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-[#111111]">
+              PODIUM MEDALS & CUPS
             </div>
-            <p className="text-[11px] text-slate-400">Gold, Silver & Bronze honors</p>
+            <p className="text-[10px] text-[#777777] uppercase">GOLD, SILVER & BRONZE</p>
           </div>
         </div>
       </section>
 
-      {/* ================= FEATURED SPORTS SHOWCASE ================= */}
+      {/* ================= FEATURED SPORTS EXHIBITION ================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-[#111111]/20">
           <div>
-            <div className="flex items-center gap-2 mb-1.5 text-[11px] font-black uppercase tracking-widest text-blue-600">
-              <span className="w-5 h-1 bg-blue-600 rounded-xs" />
-              <span>Championship Tournaments</span>
+            <div className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#dc2626] mb-1">
+              [ DIRECTORY // 09 DISCIPLINES ]
             </div>
-            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-              Official Sports Roster
+            <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111111]">
+              OFFICIAL SPORTS ROSTER
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-xl">
-              Every tournament is officially officiated with dedicated referees, certified equipment, and electronic score tracking.
+            <p className="text-xs sm:text-sm text-[#555555] mt-1 max-w-xl font-normal">
+              Every tournament is officially officiated with certified referees, standardized equipment, and electronic scoring.
             </p>
           </div>
 
-          {/* Category Switcher */}
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white border border-slate-200 shadow-xs self-start md:self-auto">
+          {/* Category Switcher - Swiss Modular Tabs */}
+          <div className="flex items-center gap-1 p-1 bg-white border border-[#111111]/20 self-start md:self-auto font-mono">
             {['All', 'Individual', 'Team', 'Family'].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors ${
+                className={`px-3 py-1.5 text-xs uppercase tracking-wider font-bold transition-colors ${
                   activeCategory === cat
-                    ? 'bg-blue-600 text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                    ? 'bg-[#111111] text-white'
+                    : 'text-[#555555] hover:text-[#111111] hover:bg-[#f4f4f0]'
                 }`}
               >
-                {cat}
+                [{cat}]
               </button>
             ))}
           </div>
@@ -335,68 +357,70 @@ export default function HomePage() {
         <div className="text-center pt-2">
           <Link
             href="/events"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-xs font-bold text-slate-800 transition shadow-xs"
+            className="inline-flex items-center gap-2 px-8 py-3.5 bg-white hover:bg-[#111111] hover:text-white border border-[#111111] font-mono text-xs font-bold uppercase tracking-widest text-[#111111] transition-colors"
           >
-            <span>View All Tournaments, Age Categories & Venues</span>
-            <ArrowRight className="w-3.5 h-3.5 text-blue-600" />
+            <span>VIEW ALL TOURNAMENT SPECIFICATIONS</span>
+            <ArrowRight className="w-3.5 h-3.5 text-[#dc2626]" />
           </Link>
         </div>
       </section>
 
-      {/* ================= THE COLONYGAMES EXPERIENCE ================= */}
+      {/* ================= TOURNAMENT STANDARDS (SWISS BROADSHEET) ================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="text-center max-w-2xl mx-auto space-y-2">
-          <div className="flex items-center justify-center gap-2 mb-1 text-[11px] font-black uppercase tracking-widest text-blue-600">
-            <span className="w-5 h-1 bg-blue-600 rounded-xs" />
-            <span>Tournament Standards</span>
-            <span className="w-5 h-1 bg-blue-600 rounded-xs" />
+        <div className="pb-4 border-b border-[#111111]/20">
+          <div className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#dc2626] mb-1">
+            [ STANDARDS // REGULATIONS ]
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            Built for Serious Sport & Society Pride
+          <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111111]">
+            BUILT FOR SERIOUS SPORT
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500">
-            Experience a professional-grade championship environment right in our residential community.
+          <p className="text-xs sm:text-sm text-[#555555] mt-1">
+            A professional championship standard upheld across all venues and tournament gates.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-900 flex items-center justify-center font-bold">
-              <QrCode className="w-5 h-5 text-blue-600" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-[#111111] bg-white divide-y lg:divide-y-0 lg:divide-x divide-[#111111]/15 font-mono">
+          <div className="p-6 space-y-3">
+            <span className="text-[10px] font-bold text-[#888888] tracking-widest uppercase">REG.01</span>
+            <div className="w-8 h-8 bg-[#111111] text-white flex items-center justify-center font-bold">
+              <QrCode className="w-4 h-4 text-[#dc2626]" />
             </div>
-            <h3 className="font-bold text-slate-900 text-sm">Instant Digital Pass</h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Personalized digital passes with security QR codes and printable PDF passes for check-in at tournament gates.
+            <h3 className="font-bold text-sm uppercase text-[#111111]">DIGITAL QR ENTRY PASS</h3>
+            <p className="text-xs text-[#555555] leading-relaxed font-sans">
+              Personalized passes with cryptographic QR codes and printable PDF credentials for gate validation.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-900 flex items-center justify-center font-bold">
-              <Trophy className="w-5 h-5 text-amber-500" />
+          <div className="p-6 space-y-3">
+            <span className="text-[10px] font-bold text-[#888888] tracking-widest uppercase">REG.02</span>
+            <div className="w-8 h-8 bg-[#111111] text-white flex items-center justify-center font-bold">
+              <Trophy className="w-4 h-4 text-[#dc2626]" />
             </div>
-            <h3 className="font-bold text-slate-900 text-sm">Live Tower Standings</h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Automated points table updated after every match. Tower pride is on the line for the Annual Society Champions Trophy.
+            <h3 className="font-bold text-sm uppercase text-[#111111]">TOWER CUP SCORING</h3>
+            <p className="text-xs text-[#555555] leading-relaxed font-sans">
+              Automated points table updated immediately after each match. Gold earns 10 pts, Silver 7, Bronze 5.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-900 flex items-center justify-center font-bold">
-              <Shield className="w-5 h-5 text-blue-600" />
+          <div className="p-6 space-y-3">
+            <span className="text-[10px] font-bold text-[#888888] tracking-widest uppercase">REG.03</span>
+            <div className="w-8 h-8 bg-[#111111] text-white flex items-center justify-center font-bold">
+              <Shield className="w-4 h-4 text-[#dc2626]" />
             </div>
-            <h3 className="font-bold text-slate-900 text-sm">Official Dri-Fit Kit</h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Every registered participant receives an official tournament jersey tailored to their selected size before opening ceremony.
+            <h3 className="font-bold text-sm uppercase text-[#111111]">OFFICIAL ATHLETIC KIT</h3>
+            <p className="text-xs text-[#555555] leading-relaxed font-sans">
+              Every registered participant receives an official tournament jersey tailored to their exact size.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-900 flex items-center justify-center font-bold">
-              <Activity className="w-5 h-5 text-emerald-600" />
+          <div className="p-6 space-y-3">
+            <span className="text-[10px] font-bold text-[#888888] tracking-widest uppercase">REG.04</span>
+            <div className="w-8 h-8 bg-[#111111] text-white flex items-center justify-center font-bold">
+              <Activity className="w-4 h-4 text-[#dc2626]" />
             </div>
-            <h3 className="font-bold text-slate-900 text-sm">Referees & Medical</h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              External certified referees for unbiased fair play, alongside on-site first aid, hydration lounges, and score marshals.
+            <h3 className="font-bold text-sm uppercase text-[#111111]">REFEREES & MEDICAL</h3>
+            <p className="text-xs text-[#555555] leading-relaxed font-sans">
+              External certified referees ensure unbiased fair play, alongside on-site first aid and hydration points.
             </p>
           </div>
         </div>
@@ -405,53 +429,55 @@ export default function HomePage() {
       {/* ================= LEADERBOARD PODIUM PREVIEW ================= */}
       {topFamilies.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between pb-4 border-b border-[#111111]/20">
             <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-slate-600">
-                Championship Standings
+              <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#dc2626]">
+                [ 2026 // STANDINGS ]
               </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">
-                Family & Tower Leaderboard
+              <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-[#111111]">
+                FAMILY & TOWER LEADERBOARD
               </h2>
             </div>
             <Link
               href="/results"
-              className="text-xs font-bold text-blue-700 hover:underline flex items-center gap-1"
+              className="font-mono text-xs font-bold text-[#111111] hover:text-[#dc2626] uppercase flex items-center gap-1"
             >
-              Full Standings & Medals <ChevronRight className="w-4 h-4" />
+              FULL TALLY <ChevronRight className="w-4 h-4 text-[#dc2626]" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono">
             {topFamilies.map((fam, idx) => (
               <div
                 key={fam._id}
-                className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex items-center justify-between"
+                className="p-6 bg-white border border-[#111111] flex items-center justify-between"
               >
-                <div className="flex items-center gap-3.5">
+                <div className="flex items-center gap-4">
                   <div
-                    className={`w-10 h-10 rounded-xl font-black text-sm flex items-center justify-center ${
+                    className={`w-10 h-10 font-black text-sm flex items-center justify-center ${
                       idx === 0
-                        ? 'bg-amber-400 text-slate-950 font-black'
+                        ? 'bg-[#111111] text-white'
                         : idx === 1
-                        ? 'bg-slate-200 text-slate-800 font-bold'
-                        : 'bg-amber-700 text-white font-bold'
+                        ? 'bg-[#444444] text-white'
+                        : 'bg-[#777777] text-white'
                     }`}
                   >
                     #{idx + 1}
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-900 text-sm">{fam.familyName}</h4>
-                    <p className="text-xs text-slate-500">
-                      {fam.blockTower} • Flat {fam.houseNumber}
+                    <h4 className="font-bold text-[#111111] text-sm uppercase">{fam.familyName}</h4>
+                    <p className="text-[10px] text-[#666666] uppercase">
+                      {fam.blockTower} • UNIT {fam.houseNumber}
                     </p>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <div className="text-lg font-black text-slate-900">{fam.points} <span className="text-xs text-slate-500 font-semibold">pts</span></div>
-                  <div className="text-[10px] text-slate-500 font-medium">
-                    {fam.medals?.gold || 0} Gold • {fam.medals?.silver || 0} Silver
+                  <div className="text-xl font-black text-[#111111]">
+                    {fam.points} <span className="text-[10px] text-[#888888]">PTS</span>
+                  </div>
+                  <div className="text-[10px] text-[#dc2626] font-bold">
+                    {fam.medals?.gold || 0}G • {fam.medals?.silver || 0}S
                   </div>
                 </div>
               </div>
@@ -460,51 +486,49 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* ================= HOW REGISTRATION WORKS ================= */}
+      {/* ================= 3-STEP ENROLLMENT PROCESS ================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl bg-white border border-slate-200 p-8 sm:p-12 space-y-10 shadow-xs">
-          <div className="text-center max-w-xl mx-auto space-y-2">
-            <div className="flex items-center justify-center gap-2 mb-1 text-[11px] font-black uppercase tracking-widest text-blue-600">
-              <span className="w-5 h-1 bg-blue-600 rounded-xs" />
-              <span>Simple 3-Step Roster Registration</span>
-              <span className="w-5 h-1 bg-blue-600 rounded-xs" />
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
-              How Your Family Enrolls
+        <div className="border border-[#111111] bg-white p-8 sm:p-12 space-y-10">
+          <div className="pb-4 border-b border-[#111111]/20">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#dc2626]">
+              [ PROTOCOL // 03 STEPS ]
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-[#111111]">
+              HOW YOUR FAMILY REGISTERS
             </h2>
-            <p className="text-xs text-slate-500">
-              Designed for speed on smartphone or desktop in under 2 minutes.
+            <p className="text-xs text-[#555555] font-mono uppercase mt-1">
+              DESIGNED FOR SPEED ON MOBILE OR DESKTOP IN UNDER 2 MINUTES.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-              <div className="w-8 h-8 rounded-lg bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 font-mono">
+            <div className="p-6 bg-[#f4f4f0] border border-[#111111]/20 space-y-3">
+              <div className="w-8 h-8 bg-[#111111] text-white font-bold text-xs flex items-center justify-center">
                 01
               </div>
-              <h3 className="text-sm font-bold text-slate-900">Add Flat & Family Roster</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Provide your flat number, tower, and list participating family members with their custom t-shirt sizes.
+              <h3 className="text-xs font-bold uppercase text-[#111111]">TOWER & ROSTER DETAILS</h3>
+              <p className="text-xs text-[#555555] leading-relaxed font-sans">
+                Provide flat number, select block/tower, and enter participating members with custom kit sizes.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-              <div className="w-8 h-8 rounded-lg bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
+            <div className="p-6 bg-[#f4f4f0] border border-[#111111]/20 space-y-3">
+              <div className="w-8 h-8 bg-[#111111] text-white font-bold text-xs flex items-center justify-center">
                 02
               </div>
-              <h3 className="text-sm font-bold text-slate-900">Pick Tournament Sports</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Select eligible sports for each member. Age criteria and team limits are validated automatically.
+              <h3 className="text-xs font-bold uppercase text-[#111111]">ALLOCATE TOURNAMENTS</h3>
+              <p className="text-xs text-[#555555] leading-relaxed font-sans">
+                Assign eligible sports per member. Age criteria and team restrictions are validated in real-time.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-              <div className="w-8 h-8 rounded-lg bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
+            <div className="p-6 bg-[#f4f4f0] border border-[#111111]/20 space-y-3">
+              <div className="w-8 h-8 bg-[#111111] text-white font-bold text-xs flex items-center justify-center">
                 03
               </div>
-              <h3 className="text-sm font-bold text-slate-900">Instant QR & PDF Pass</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Download your official printable tournament pass with embedded QR code. Also sent directly to your inbox.
+              <h3 className="text-xs font-bold uppercase text-[#111111]">INSTANT QR & PDF PASS</h3>
+              <p className="text-xs text-[#555555] leading-relaxed font-sans">
+                Receive your official pass with embedded QR code. Also dispatched instantly to your email inbox.
               </p>
             </div>
           </div>
@@ -512,45 +536,48 @@ export default function HomePage() {
           <div className="text-center pt-2">
             <Link
               href="/register"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md shadow-blue-600/20 transition"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-[#111111] hover:bg-[#dc2626] text-white font-mono font-bold text-xs uppercase tracking-widest transition-colors border border-[#111111]"
             >
-              <span>Begin Family Registration</span>
+              <span>START FAMILY REGISTRATION</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ================= FINAL REGISTRATION STADIUM CTA ================= */}
+      {/* ================= FINAL REGISTRATION ARCHITECTURAL CTA ================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl bg-blue-700 p-8 sm:p-14 text-center text-white space-y-6 shadow-lg border border-blue-600 relative overflow-hidden">
-          <div className="max-w-2xl mx-auto space-y-3">
-            <div className="flex items-center justify-center gap-2 mb-1 text-[11px] font-black uppercase tracking-widest text-blue-200">
-              <span className="w-5 h-1 bg-blue-300 rounded-xs" />
-              <span>Registration Closing Soon</span>
-              <span className="w-5 h-1 bg-blue-300 rounded-xs" />
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
-              Ready to Represent Your Tower?
+        <div className="border border-[#111111] bg-[#111111] p-8 sm:p-16 text-center text-white space-y-6 relative overflow-hidden">
+          {/* Architectural Background Lettering */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none opacity-5 font-mono text-[20vw] font-black text-white">
+            CHAMPION
+          </div>
+
+          <div className="max-w-2xl mx-auto space-y-3 relative z-10">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#dc2626]">
+              [ DEADLINE: OCT 12 // FINAL CALL ]
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white leading-tight">
+              REPRESENT YOUR TOWER. <br /> CLAIM YOUR GLORY.
             </h2>
-            <p className="text-xs sm:text-sm text-blue-100 font-normal leading-relaxed">
-              Join 50+ society families in the biggest sporting celebration of the year.
-              Free participation kits and digital passes close once sport caps are reached.
+            <p className="text-xs sm:text-sm text-[#aaaaaa] font-normal leading-relaxed font-mono">
+              Join 50+ families in the biggest sporting celebration of Green Meadows.
+              Official jersey quotas close once team slots are filled.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4 relative z-10 font-mono">
             <Link
               href="/register"
-              className="px-8 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-blue-900 font-bold text-sm shadow-md transition"
+              className="px-8 py-4 bg-white hover:bg-[#dc2626] hover:text-white text-[#111111] font-bold text-xs uppercase tracking-widest transition-colors"
             >
-              Claim Family Entry Pass
+              CLAIM OFFICIAL ENTRY PASS
             </Link>
             <Link
               href="/events"
-              className="px-8 py-3.5 rounded-xl bg-blue-800 hover:bg-blue-900 text-white font-bold text-sm transition border border-blue-500/40"
+              className="px-8 py-4 bg-transparent hover:bg-white/10 text-white font-bold text-xs uppercase tracking-widest transition-colors border border-white/30"
             >
-              Browse Event Schedule
+              BROWSE 9 TOURNAMENTS
             </Link>
           </div>
         </div>

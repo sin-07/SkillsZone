@@ -131,28 +131,28 @@ export default function ConfirmationPassPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Physical Pass Design Container */}
-        <div className="rounded-3xl bg-white border border-slate-200/90 shadow-2xl overflow-hidden print:border-none print:shadow-none">
+        {/* Physical Pass Design Container - Swiss Cultural Event Ticket */}
+        <div className="bg-white border-2 border-[#111111] overflow-hidden font-mono print:border-none">
           {/* Header Banner */}
-          <div className="bg-blue-700 p-6 sm:p-8 text-white relative">
+          <div className="bg-[#111111] p-6 sm:p-8 text-white relative border-b border-[#111111]">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-widest text-blue-100 bg-white/15 px-2.5 py-0.5 rounded border border-white/20">
-                  Official Society Pass • 2026
+                <span className="text-[9px] uppercase font-bold tracking-widest text-[#aaaaaa] border border-white/20 px-2 py-0.5">
+                  OFFICIAL ATHLETIC CREDENTIAL • 2026
                 </span>
-                <h1 className="text-2xl sm:text-3xl font-black text-white mt-1.5 tracking-tight">
+                <h1 className="text-2xl sm:text-4xl font-black text-white mt-2 uppercase tracking-tight">
                   COLONYGAMES 2026
                 </h1>
-                <p className="text-xs text-blue-100 mt-1 flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5" /> Central Society Sports Complex & Grounds
+                <p className="text-[11px] text-[#cccccc] mt-1 flex items-center gap-1.5 uppercase">
+                  <MapPin className="w-3.5 h-3.5 text-[#dc2626]" /> CENTRAL SPORTS COMPLEX & GROUNDS
                 </p>
               </div>
 
               <div className="flex flex-col items-start sm:items-end">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[11px] font-black tracking-wider bg-white text-blue-800 shadow-xs">
-                  <ShieldCheck className="w-4 h-4 text-blue-600" /> CONFIRMED
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#dc2626] text-white text-[11px] font-black tracking-widest uppercase">
+                  <ShieldCheck className="w-4 h-4" /> CONFIRMED
                 </div>
-                <div className="text-[11px] text-blue-100 mt-1 font-mono">
+                <div className="text-[10px] text-[#aaaaaa] mt-1 font-mono uppercase">
                   PASS ID: <strong className="text-white">{registration.registrationId}</strong>
                 </div>
               </div>

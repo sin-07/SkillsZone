@@ -43,36 +43,36 @@ export default function CountdownTimer({ targetDate = '2026-10-15T08:00:00' }: C
 
   if (timeLeft.isExpired) {
     return (
-      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 font-bold text-sm shadow-xs">
-        <Flame className="w-5 h-5 text-blue-600 animate-pulse" />
-        THE FEST HAS OFFICIALLY BEGUN!
+      <div className="inline-flex items-center gap-2 px-4 py-2 border border-[#dc2626] bg-[#dc2626]/10 text-[#dc2626] font-mono font-bold text-xs uppercase tracking-widest">
+        <Flame className="w-4 h-4 text-[#dc2626] animate-pulse" />
+        THE FESTIVAL HAS OFFICIALLY BEGUN
       </div>
     );
   }
 
   const timeUnits = [
     { label: 'DAYS', value: timeLeft.days },
-    { label: 'HOURS', value: timeLeft.hours },
-    { label: 'MINUTES', value: timeLeft.minutes },
-    { label: 'SECONDS', value: timeLeft.seconds },
+    { label: 'HRS', value: timeLeft.hours },
+    { label: 'MIN', value: timeLeft.minutes },
+    { label: 'SEC', value: timeLeft.seconds },
   ];
 
   return (
-    <div className="inline-flex flex-col sm:flex-row items-center gap-2 sm:gap-4 p-2 sm:p-2.5 rounded-2xl bg-white border border-slate-200 shadow-sm max-w-full">
-      <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-[11px] font-bold uppercase tracking-wider shrink-0 shadow-xs">
-        <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-        <span>Kickoff In</span>
+    <div className="inline-flex flex-col sm:flex-row items-stretch sm:items-center border border-[#111111]/20 bg-white max-w-full">
+      <div className="flex items-center gap-2 px-3 py-2 bg-[#111111] text-white font-mono text-[10px] font-bold uppercase tracking-widest shrink-0 border-b sm:border-b-0 sm:border-r border-[#111111]">
+        <span className="w-1.5 h-1.5 bg-[#dc2626] animate-pulse" />
+        <span>T-MINUS // OPENING</span>
       </div>
-      <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
+      <div className="grid grid-cols-4 divide-x divide-[#111111]/15">
         {timeUnits.map((unit) => (
           <div
             key={unit.label}
-            className="flex flex-col items-center justify-center py-2 px-2.5 sm:px-4 rounded-xl bg-slate-50 border border-slate-200/80 min-w-[52px] sm:min-w-[68px]"
+            className="flex flex-col items-center justify-center py-2 px-3 sm:px-4 min-w-[54px] sm:min-w-[64px]"
           >
-            <span className="text-lg sm:text-2xl font-black text-slate-900 tabular-nums tracking-tight leading-none">
+            <span className="text-xl sm:text-2xl font-mono font-black text-[#111111] tabular-nums tracking-tight leading-none">
               {String(unit.value).padStart(2, '0')}
             </span>
-            <span className="text-[9px] font-bold uppercase text-slate-400 tracking-wider mt-1">
+            <span className="text-[9px] font-mono font-bold uppercase text-[#888888] tracking-widest mt-1">
               {unit.label}
             </span>
           </div>

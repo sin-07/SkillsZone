@@ -40,29 +40,6 @@ export interface EventItem {
   bannerImage?: string;
 }
 
-const getSportIcon = (sportType: string) => {
-  switch (sportType) {
-    case 'Cricket':
-      return Shield;
-    case 'Football':
-      return Flame;
-    case 'Hockey':
-      return Zap;
-    case 'Table Tennis':
-      return Target;
-    case 'Race':
-      return Timer;
-    case 'Slow Cycling':
-      return Compass;
-    case 'Badminton':
-      return Award;
-    case 'Basketball':
-      return Activity;
-    default:
-      return Trophy;
-  }
-};
-
 const SPORT_IMAGE_FALLBACKS: Record<string, string> = {
   'Cricket': 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80',
   'Football': 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80',
@@ -76,7 +53,6 @@ const SPORT_IMAGE_FALLBACKS: Record<string, string> = {
 };
 
 export default function EventCard({ event }: { event: EventItem }) {
-  const Icon = getSportIcon(event.sportType);
   const registered = event.registeredCount || 0;
   const max = event.maxParticipants || 32;
   const percentFilled = Math.min(100, Math.round((registered / max) * 100));
@@ -85,55 +61,51 @@ export default function EventCard({ event }: { event: EventItem }) {
   const displayImage = event.bannerImage || SPORT_IMAGE_FALLBACKS[event.sportType] || SPORT_IMAGE_FALLBACKS['Custom'];
 
   return (
-    <div className="group rounded-2xl bg-white border border-slate-200 hover:border-blue-600 transition-all duration-200 flex flex-col justify-between overflow-hidden shadow-xs hover:shadow-lg">
-      {/* High-Impact Sports Image Header */}
-      <div className="relative h-48 w-full overflow-hidden bg-slate-900">
+    <div className="group bg-white border border-[#111111]/20 hover:border-[#111111] transition-all duration-200 flex flex-col justify-between overflow-hidden">
+      {/* High-Contrast Swiss Photo Frame */}
+      <div className="relative h-48 w-full overflow-hidden bg-[#111111] border-b border-[#111111]/20">
         <img
           src={displayImage}
           alt={event.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-85 group-hover:opacity-100"
           loading="lazy"
         />
-        {/* Scrim overlay for crisp badge readability */}
-        <div className="absolute inset-0 bg-slate-950/30" />
+        <div className="absolute inset-0 bg-[#111111]/25" />
 
-        {/* Top Badges */}
-        <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900/85 backdrop-blur-xs text-white text-[11px] font-bold tracking-wider uppercase border border-white/15">
-            <Icon className="w-3.5 h-3.5 text-blue-400" />
-            <span>{event.sportType}</span>
+        {/* Top Architectural Badges */}
+        <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2">
+          <div className="px-2 py-0.5 bg-[#111111] text-white font-mono text-[10px] font-bold tracking-widest uppercase border border-white/20">
+            {event.sportType}
           </div>
 
           <div>
             {event.status === 'open' && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-white text-blue-900 shadow-xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
-                {spotsLeft <= 6 ? `${spotsLeft} Spots Left` : 'Open'}
+              <span className="px-2 py-0.5 font-mono text-[10px] font-bold bg-white text-[#111111] border border-[#111111]/30">
+                {spotsLeft <= 6 ? `${spotsLeft} SPOTS LEFT` : 'OPEN'}
               </span>
             )}
             {event.status === 'closing-soon' && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-amber-400 text-slate-950 shadow-xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-slate-950" />
-                Closing Fast
+              <span className="px-2 py-0.5 font-mono text-[10px] font-bold bg-[#dc2626] text-white">
+                CLOSING FAST
               </span>
             )}
             {event.status === 'closed' && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-rose-600 text-white shadow-xs">
-                Full / Closed
+              <span className="px-2 py-0.5 font-mono text-[10px] font-bold bg-[#111111] text-white">
+                CAPACITY FULL
               </span>
             )}
             {event.status === 'completed' && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-800 text-slate-200 border border-slate-700">
-                Completed
+              <span className="px-2 py-0.5 font-mono text-[10px] font-bold bg-[#888888] text-white">
+                COMPLETED
               </span>
             )}
           </div>
         </div>
 
-        {/* Bottom Format Pill */}
-        <div className="absolute bottom-3 left-3">
-          <span className="px-2 py-0.5 rounded bg-slate-900/80 backdrop-blur-xs text-slate-200 text-[10px] font-semibold uppercase tracking-wider border border-white/10">
-            {event.category} • Team of {event.teamSize}
+        {/* Bottom Format Badge */}
+        <div className="absolute bottom-2.5 left-2.5">
+          <span className="px-2 py-0.5 bg-white/95 text-[#111111] font-mono text-[9px] font-bold uppercase tracking-widest border border-[#111111]/20">
+            {event.category} • TEAM OF {event.teamSize}
           </span>
         </div>
       </div>
@@ -141,63 +113,52 @@ export default function EventCard({ event }: { event: EventItem }) {
       <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
         <div>
           {/* Title */}
-          <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+          <h3 className="text-base font-black uppercase tracking-tight text-[#111111] group-hover:text-[#dc2626] transition-colors line-clamp-1">
             {event.title}
           </h3>
-          <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed mt-1.5">
+          <p className="text-xs text-[#555555] line-clamp-2 leading-relaxed mt-1 font-normal">
             {event.description}
           </p>
         </div>
 
         {/* Meta Info Grid */}
-        <div className="space-y-2 pt-3 border-t border-slate-100 text-xs text-slate-600">
+        <div className="space-y-1.5 pt-3 border-t border-[#111111]/10 font-mono text-[11px] text-[#444444]">
           <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1.5 text-slate-500 font-medium">
-              <Calendar className="w-3.5 h-3.5 text-blue-600" />
-              Schedule:
-            </span>
-            <span className="font-semibold text-slate-900 truncate max-w-[180px]">
-              {event.scheduleDate} • {event.scheduleTime.split('-')[0]}
+            <span className="text-[#888888] uppercase">SCHEDULE:</span>
+            <span className="font-bold text-[#111111] truncate max-w-[180px]">
+              {event.scheduleDate}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1.5 text-slate-500 font-medium">
-              <MapPin className="w-3.5 h-3.5 text-blue-600" />
-              Venue:
-            </span>
-            <span className="font-semibold text-slate-900 truncate max-w-[180px]">
+            <span className="text-[#888888] uppercase">VENUE:</span>
+            <span className="font-bold text-[#111111] truncate max-w-[180px]">
               {event.venue}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1.5 text-slate-500 font-medium">
-              <Users className="w-3.5 h-3.5 text-blue-600" />
-              Eligibility:
-            </span>
-            <span className="font-semibold text-slate-900">
-              Age {event.minAge} – {event.maxAge} yrs
+            <span className="text-[#888888] uppercase">ELIGIBILITY:</span>
+            <span className="font-bold text-[#111111]">
+              AGE {event.minAge}–{event.maxAge} YRS
             </span>
           </div>
         </div>
 
         {/* Precision Capacity Meter */}
-        <div className="space-y-1.5 pt-1">
-          <div className="flex items-center justify-between text-[11px] font-semibold">
-            <span className="text-slate-500">Registration Capacity</span>
-            <span className="text-slate-900 font-bold">
-              {registered} / {max} <span className="text-slate-400 font-normal">({percentFilled}%)</span>
+        <div className="space-y-1 pt-1 font-mono">
+          <div className="flex items-center justify-between text-[10px]">
+            <span className="text-[#888888] uppercase">ROSTER CAPACITY</span>
+            <span className="text-[#111111] font-bold">
+              {registered}/{max} ({percentFilled}%)
             </span>
           </div>
-          <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+          <div className="h-1.5 w-full bg-[#ebebe6] overflow-hidden border border-[#111111]/15">
             <div
-              className={`h-full transition-all duration-500 rounded-full ${
+              className={`h-full transition-all duration-300 ${
                 percentFilled >= 90
-                  ? 'bg-rose-600'
-                  : percentFilled >= 70
-                  ? 'bg-amber-500'
-                  : 'bg-blue-600'
+                  ? 'bg-[#dc2626]'
+                  : 'bg-[#111111]'
               }`}
               style={{ width: `${percentFilled}%` }}
             />
@@ -208,9 +169,9 @@ export default function EventCard({ event }: { event: EventItem }) {
         <div className="pt-2">
           <Link
             href={`/events/${event.slug || event._id}`}
-            className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-colors flex items-center justify-center gap-2 group/btn shadow-xs"
+            className="w-full py-2.5 px-4 bg-[#111111] hover:bg-[#dc2626] text-white font-mono text-xs font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-2 group/btn border border-[#111111]"
           >
-            <span>View Rulebook & Register</span>
+            <span>VIEW RULES & REGISTER</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
           </Link>
         </div>

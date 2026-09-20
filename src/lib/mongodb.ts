@@ -35,6 +35,13 @@ export async function connectDB(): Promise<typeof mongoose> {
     return cached.conn;
   }
 
+  // Guarantee Google/Cloudflare DNS for SRV queries across all environments
+  try {
+    dns.setServers(['8.8.8.8', '1.1.1.1']);
+  } catch {
+    // Ignore if not allowed in runtime
+  }
+
   if (!cached.promise) {
     const opts: mongoose.ConnectOptions = {
       bufferCommands: false,
