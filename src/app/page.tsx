@@ -84,10 +84,10 @@ export default function HomePage() {
   const overallPercent = Math.min(100, Math.round((totalRegistered / totalCapacity) * 100));
 
   return (
-    <div className="space-y-16 sm:space-y-24 pb-20 overflow-hidden">
+    <div className="pb-20 overflow-hidden">
       {/* Pinned Urgent Announcements Banner - Swiss Dispatch */}
       {announcements.length > 0 && announcements[0]?.isPinned && (
-        <div className="bg-[#111111] text-white px-4 py-2.5 border-b border-[#111111]">
+        <div className="bg-[#111111] text-white px-4 py-2 border-b border-[#111111]">
           <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 font-mono text-xs">
             <div className="flex items-center gap-2.5 truncate">
               <span className="w-2 h-2 bg-[#dc2626] animate-pulse shrink-0" />
@@ -106,7 +106,7 @@ export default function HomePage() {
       )}
 
       {/* ================= HERO SECTION (SWISS INTERNATIONAL TYPOGRAPHIC STYLE) ================= */}
-      <section className="relative pt-6 sm:pt-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section className="relative pt-3 sm:pt-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Background Monogram Watermark */}
         <div className="absolute right-0 top-10 pointer-events-none select-none text-[20vw] font-black text-[#111111]/[0.025] leading-none tracking-tighter uppercase font-mono">
           2026
@@ -281,8 +281,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ================= STATS COUNTER STRIP (SWISS MODULAR GRID) ================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ================= LOWER SECTIONS CONTAINER ================= */}
+      <div className="space-y-14 sm:space-y-20 mt-10 sm:mt-14">
+        {/* ================= STATS COUNTER STRIP (SWISS MODULAR GRID) ================= */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 border border-[#111111] bg-white divide-x divide-y md:divide-y-0 divide-[#111111]/15 font-mono shadow-xs">
           <div className="p-6 sm:p-8 space-y-1">
             <span className="text-[10px] uppercase font-bold text-[#888888] tracking-widest block">
@@ -598,6 +600,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }
