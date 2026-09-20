@@ -86,14 +86,14 @@ export default function EventDetailPage({ params }: Props) {
 
   if (error || !event) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center">
-        <h2 className="text-xl font-bold text-slate-900 mb-2">Event Not Found</h2>
-        <p className="text-sm text-slate-500 mb-6">The requested sports event does not exist.</p>
+      <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center font-mono">
+        <h2 className="text-xl font-bold text-[#111111] mb-2 uppercase">Event Not Found</h2>
+        <p className="text-xs text-[#666666] mb-6">The requested sports discipline does not exist in the official roster.</p>
         <Link
           href="/events"
-          className="px-5 py-2.5 rounded-xl bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 shadow-md"
+          className="px-5 py-2.5 bg-[#111111] hover:bg-[#dc2626] text-white text-xs font-mono font-bold uppercase tracking-wider border border-[#111111] transition-colors"
         >
-          Back to All Events
+          Back to All Tournaments
         </Link>
       </div>
     );
@@ -110,49 +110,49 @@ export default function EventDetailPage({ params }: Props) {
   return (
     <div className="min-h-screen py-10 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
       {/* Back Link and Share */}
-      <div className="flex items-center justify-between gap-4 mb-6">
+      <div className="flex items-center justify-between gap-4 mb-6 font-mono">
         <Link
           href="/events"
-          className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 transition"
+          className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-[#111111] hover:text-[#dc2626] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Sports Directory
         </Link>
         <button
           onClick={handleShare}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 text-xs hover:text-blue-600 shadow-xs transition"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-[#111111]/30 text-[#111111] text-xs font-medium uppercase tracking-wider hover:border-[#111111] transition-colors cursor-pointer"
         >
           <Share2 className="w-3.5 h-3.5" /> Share Sport
         </button>
       </div>
 
       {/* Main Banner Card with Real Photography */}
-      <div className="rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-md mb-8">
-        <div className="relative h-64 sm:h-80 w-full bg-slate-950 overflow-hidden">
+      <div className="bg-white border border-[#111111] overflow-hidden shadow-xs mb-8">
+        <div className="relative h-64 sm:h-80 w-full bg-[#111111] overflow-hidden">
           <img
             src={heroImage}
             alt={event.title}
             className="w-full h-full object-cover opacity-85"
           />
-          <div className="absolute inset-0 bg-slate-950/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-[#111111]/40 to-transparent" />
           <div className="absolute bottom-6 left-6 right-6 flex flex-col gap-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-white bg-slate-900/80 backdrop-blur-xs px-2.5 py-1 rounded-md border border-white/20">
+            <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-wider">
+              <span className="text-white bg-[#111111] px-2.5 py-1 border border-white/20">
                 {event.sportType}
               </span>
-              <span className="text-[11px] font-semibold text-slate-200 bg-slate-900/80 backdrop-blur-xs px-2.5 py-1 rounded-md border border-white/15">
+              <span className="text-white bg-black/60 px-2.5 py-1 border border-white/15">
                 {event.category} Category • Team of {event.teamSize}
               </span>
               <span
-                className={`text-[11px] font-bold px-2.5 py-1 rounded-md ${
+                className={`px-2.5 py-1 text-white border ${
                   event.status === 'open'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-rose-600 text-white'
+                    ? 'bg-[#111111] border-[#dc2626] text-white'
+                    : 'bg-[#dc2626] border-[#dc2626] text-white'
                 }`}
               >
                 {event.status === 'open' ? `${spotsRemaining} Spots Available` : 'Closed'}
               </span>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+            <h1 className="text-2xl sm:text-4xl font-black text-white uppercase tracking-tight">
               {event.title}
             </h1>
           </div>
@@ -235,50 +235,54 @@ export default function EventDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Right: Registration Sticky Card */}
+        {/* Right: Registration Sticky Card - Swiss Module */}
         <div>
-          <div className="rounded-3xl bg-white border border-slate-200/90 p-6 space-y-5 sticky top-24 shadow-lg shadow-slate-200/50">
-            <h3 className="text-base font-bold text-slate-900">Enrollment Status</h3>
+          <div className="bg-white border border-[#111111] p-6 space-y-5 sticky top-24 shadow-xs font-mono">
+            <div className="flex items-center justify-between pb-3 border-b border-[#111111]/15">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-[#111111]">ENROLLMENT STATUS</h3>
+              <span className="text-[10px] bg-[#111111] text-white px-1.5 py-0.5">ROSTER</span>
+            </div>
 
             {/* Capacity Progress */}
             <div>
               <div className="flex items-center justify-between text-xs mb-2">
-                <span className="text-slate-500">Slots Filled</span>
-                <span className="text-slate-800 font-bold">
-                  {event.registeredCount} / {event.maxParticipants} athletes
+                <span className="text-[#666666] uppercase text-[10px]">SLOTS FILLED</span>
+                <span className="text-[#111111] font-bold">
+                  {event.registeredCount} / {event.maxParticipants} ATHLETES
                 </span>
               </div>
-              <div className="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden">
+              <div className="w-full h-2 bg-[#f4f4f0] border border-[#111111]/20 overflow-hidden">
                 <div
-                  className="h-full bg-blue-600 rounded-full transition-all duration-500"
+                  className="h-full bg-[#dc2626] transition-all duration-500"
                   style={{ width: `${percentFilled}%` }}
                 />
               </div>
-              <span className="text-[11px] text-blue-700 font-semibold mt-1.5 block">
-                {spotsRemaining} slots remaining in this event
+              <span className="text-[10px] text-[#dc2626] font-bold uppercase tracking-wider mt-1.5 block">
+                {spotsRemaining} SLOTS REMAINING IN THIS EVENT
               </span>
             </div>
 
-            <div className="pt-2 border-t border-slate-100 text-xs text-slate-600 space-y-2">
+            <div className="pt-2 border-t border-[#111111]/15 text-xs text-[#555555] space-y-2">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-blue-600" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#dc2626] shrink-0" />
                 <span>Zero registration fee for society families</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-blue-600" />
-                <span>Official T-shirt & digital QR pass included</span>
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#dc2626] shrink-0" />
+                <span>Official T-shirt &amp; digital QR pass included</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-blue-600" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#dc2626] shrink-0" />
                 <span>Points count toward Tower Championship</span>
               </div>
             </div>
 
             <Link
               href={`/register?sport=${encodeURIComponent(event.sportType)}`}
-              className="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition flex items-center justify-center gap-2 text-center"
+              className="w-full py-3.5 px-4 bg-[#111111] hover:bg-[#dc2626] text-white font-mono font-bold text-xs uppercase tracking-widest border border-[#111111] transition-colors flex items-center justify-center gap-2 text-center"
             >
-              Register Family for this Event <ArrowRight className="w-4 h-4" />
+              <span>REGISTER FAMILY FOR THIS SPORT</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

@@ -87,7 +87,7 @@ export default function ConfirmationPassPage({ params }: Props) {
         </p>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 shadow-md"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111111] hover:bg-[#dc2626] text-white text-xs font-mono font-bold uppercase tracking-wider border border-[#111111] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Return to Homepage
         </Link>
@@ -104,27 +104,27 @@ export default function ConfirmationPassPage({ params }: Props) {
         <div className="no-print flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 transition self-start"
+            className="inline-flex items-center gap-1.5 text-xs font-mono font-medium uppercase tracking-wider text-[#111111] hover:text-[#dc2626] transition-colors self-start"
           >
             <ArrowLeft className="w-4 h-4" /> Back to Home
           </Link>
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={handleShare}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium border border-slate-200 shadow-xs transition"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-[#f4f4f0] text-[#111111] text-xs font-mono font-medium uppercase tracking-wider border border-[#111111]/30 transition-colors"
             >
               <Share2 className="w-3.5 h-3.5" /> Share
             </button>
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium border border-slate-200 shadow-xs transition"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white hover:bg-[#f4f4f0] text-[#111111] text-xs font-mono font-medium uppercase tracking-wider border border-[#111111]/30 transition-colors"
             >
               <Printer className="w-3.5 h-3.5" /> Print Pass
             </button>
             <a
               href={`/api/registrations/${registration.registrationId}/pdf`}
               download
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#111111] hover:bg-[#dc2626] text-white text-xs font-mono font-bold uppercase tracking-wider border border-[#111111] transition-colors"
             >
               <Download className="w-3.5 h-3.5" /> PDF Pass
             </a>
@@ -132,7 +132,7 @@ export default function ConfirmationPassPage({ params }: Props) {
         </div>
 
         {/* Physical Pass Design Container - Swiss Cultural Event Ticket */}
-        <div className="bg-white border-2 border-[#111111] overflow-hidden font-mono print:border-none">
+        <div className="bg-white border border-[#111111] overflow-hidden font-mono print:border-none shadow-xs">
           {/* Header Banner */}
           <div className="bg-[#111111] p-6 sm:p-8 text-white relative border-b border-[#111111]">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

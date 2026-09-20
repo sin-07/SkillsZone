@@ -48,24 +48,28 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white border border-slate-200/90 p-8 sm:p-10 rounded-3xl shadow-2xl shadow-slate-200/60">
-        <div className="text-center">
-          <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center mx-auto mb-4 shadow-sm">
-            <Trophy className="w-6 h-6 text-white fill-white" />
+    <div className="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full border border-[#111111] bg-white p-8 sm:p-10 shadow-xs space-y-8">
+        {/* Header - Swiss Technical Catalog Style */}
+        <div className="space-y-3 pb-6 border-b border-[#111111]/15">
+          <div className="flex items-center justify-between font-mono text-[10px] font-bold uppercase tracking-widest text-[#111111]">
+            <span className="px-1.5 py-0.5 bg-[#dc2626] text-white">CG-GATE</span>
+            <span className="text-[#666666]">[ AUTH // SYSTEM GATE ]</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Resident & Admin Sign In
-          </h2>
-          <p className="text-xs text-slate-500 mt-2">
-            Enter your account credentials or use demo quick logins below
-          </p>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-black text-[#111111] uppercase tracking-tight leading-none">
+              RESIDENT &amp; ADMIN ACCESS
+            </h1>
+            <p className="text-xs text-[#666666] mt-2 font-mono uppercase tracking-wide">
+              Official verification for tournament athletes &amp; officials
+            </p>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-              Email Address
+            <label className="block text-[10px] font-mono font-bold uppercase tracking-widest text-[#111111] mb-2">
+              EMAIL ADDRESS
             </label>
             <div className="relative">
               <input
@@ -74,15 +78,15 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@greenmeadows.internal"
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 pl-11 text-sm text-slate-900 focus:outline-hidden focus:border-blue-600 focus:bg-white transition"
+                className="w-full bg-[#f4f4f0]/60 border border-[#111111]/30 rounded-none px-4 py-3 pl-11 text-xs sm:text-sm font-mono text-[#111111] placeholder:text-[#888888] focus:outline-hidden focus:border-[#111111] focus:bg-white transition-colors"
               />
-              <Mail className="w-4 h-4 text-slate-400 absolute left-4 top-3.5" />
+              <Mail className="w-4 h-4 text-[#666666] absolute left-4 top-3.5" />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-              Password
+            <label className="block text-[10px] font-mono font-bold uppercase tracking-widest text-[#111111] mb-2">
+              PASSWORD
             </label>
             <div className="relative">
               <input
@@ -91,42 +95,61 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 pl-11 text-sm text-slate-900 focus:outline-hidden focus:border-blue-600 focus:bg-white transition"
+                className="w-full bg-[#f4f4f0]/60 border border-[#111111]/30 rounded-none px-4 py-3 pl-11 text-xs sm:text-sm font-mono text-[#111111] placeholder:text-[#888888] focus:outline-hidden focus:border-[#111111] focus:bg-white transition-colors"
               />
-              <Lock className="w-4 h-4 text-slate-400 absolute left-4 top-3.5" />
+              <Lock className="w-4 h-4 text-[#666666] absolute left-4 top-3.5" />
             </div>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition flex items-center justify-center gap-2"
+            className="w-full py-3.5 px-4 bg-[#111111] hover:bg-[#dc2626] text-white font-mono font-bold text-xs uppercase tracking-widest border border-[#111111] transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
           >
             {loading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-white border-t-transparent animate-spin" />
             ) : (
               <>
-                Sign In to Portal <ArrowRight className="w-4 h-4" />
+                <span>SIGN IN TO PORTAL</span>
+                <ArrowRight className="w-4 h-4" />
               </>
             )}
           </button>
         </form>
 
-        {/* Demo Admin Tip */}
-        <div className="p-3.5 rounded-2xl bg-blue-50 border border-blue-200 text-[11px] text-blue-900 space-y-1">
-          <div className="flex items-center gap-1.5 text-blue-700 font-bold">
-            <ShieldCheck className="w-3.5 h-3.5" /> Demo Admin Access
+        {/* Demo Admin Tip - Swiss Technical Metadata */}
+        <div className="p-4 border border-[#111111]/20 bg-[#f4f4f0] font-mono text-[11px] space-y-2">
+          <div className="flex items-center justify-between text-[#dc2626] font-bold">
+            <span className="flex items-center gap-1.5 uppercase tracking-wider">
+              <ShieldCheck className="w-3.5 h-3.5" /> DEMO OFFICIAL CREDENTIALS
+            </span>
+            <span className="text-[9px] bg-[#111111] text-white px-1.5 py-0.5">PRE-SET</span>
           </div>
-          <p>
-            Email: <code className="text-blue-950 font-bold">admin@colonygames.com</code> | Password:{' '}
-            <code className="text-blue-950 font-bold">Admin@Colony2026!</code>
-          </p>
+          <div className="text-[#333333] space-y-1 text-[11px]">
+            <p>
+              USER: <code className="text-[#111111] font-bold bg-white px-1.5 py-0.5 border border-[#111111]/20">admin@colonygames.com</code>
+            </p>
+            <p>
+              PASS: <code className="text-[#111111] font-bold bg-white px-1.5 py-0.5 border border-[#111111]/20">Admin@Colony2026!</code>
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              setEmail('admin@colonygames.com');
+              setPassword('Admin@Colony2026!');
+            }}
+            className="text-[10px] uppercase font-bold text-[#dc2626] hover:underline cursor-pointer block pt-1"
+          >
+            ⚡ AUTO-FILL DEMO CREDENTIALS →
+          </button>
         </div>
 
-        <div className="text-center text-xs text-slate-500">
-          Don&apos;t have an account yet?{' '}
-          <Link href="/register" className="text-blue-600 font-semibold hover:underline">
-            Register your family here
+        {/* Registration Link */}
+        <div className="text-center font-mono text-xs text-[#666666] pt-2 border-t border-[#111111]/15">
+          NEW HOUSEHOLD?{' '}
+          <Link href="/register" className="text-[#dc2626] font-bold hover:underline">
+            REGISTER YOUR FAMILY PASS →
           </Link>
         </div>
       </div>

@@ -127,20 +127,20 @@ export default function DashboardPage() {
         <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
           <User className="w-7 h-7" />
         </div>
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">Member Login Required</h2>
-        <p className="text-xs text-slate-500 max-w-sm mb-6">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-[#111111] mb-2">Member Login Required</h2>
+        <p className="text-xs text-[#666666] max-w-sm mb-6 uppercase">
           Please log in or register your family to view your active passes and member roster.
         </p>
         <div className="flex items-center gap-3">
           <Link
             href="/login"
-            className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition"
+            className="px-5 py-2.5 bg-[#111111] hover:bg-[#dc2626] text-white font-mono font-bold text-xs uppercase tracking-wider border border-[#111111] transition-colors"
           >
             Log In
           </Link>
           <Link
             href="/register"
-            className="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs border border-slate-200 transition"
+            className="px-5 py-2.5 bg-white hover:bg-[#f4f4f0] text-[#111111] font-mono font-bold text-xs uppercase tracking-wider border border-[#111111] transition-colors"
           >
             Register Family
           </Link>
@@ -197,33 +197,33 @@ export default function DashboardPage() {
         <div className="lg:col-span-2 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                <QrCode className="w-5 h-5 text-blue-600" />
+              <h2 className="text-xl font-black uppercase tracking-tight text-[#111111] flex items-center gap-2">
+                <QrCode className="w-5 h-5 text-[#dc2626]" />
                 Tournament Entry Passes
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-[#666666] uppercase">
                 Display digital QR codes at gates or download PDF passes.
               </p>
             </div>
 
             <Link
               href="/register"
-              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition w-full sm:w-auto self-start"
+              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-[#111111] hover:bg-[#dc2626] text-white text-xs font-mono font-bold uppercase tracking-wider border border-[#111111] transition-colors w-full sm:w-auto self-start"
             >
               <Plus className="w-3.5 h-3.5" /> Register More Sports
             </Link>
           </div>
 
           {registrations.length === 0 ? (
-            <div className="p-12 text-center rounded-3xl bg-white border border-slate-200 shadow-sm">
-              <Trophy className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-              <h3 className="text-base font-bold text-slate-900">No active registrations yet</h3>
-              <p className="text-xs text-slate-500 mt-1 mb-4 max-w-sm mx-auto">
+            <div className="p-12 text-center bg-white border border-[#111111] font-mono shadow-xs">
+              <Trophy className="w-10 h-10 text-[#888888] mx-auto mb-3" />
+              <h3 className="text-sm font-bold uppercase tracking-wider text-[#111111]">No active registrations yet</h3>
+              <p className="text-xs text-[#666666] mt-1 mb-4 max-w-sm mx-auto uppercase">
                 Select from Cricket, Football, Badminton, Table Tennis, 100m sprint and more!
               </p>
               <Link
                 href="/register"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-sm transition"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111111] hover:bg-[#dc2626] text-white font-mono font-bold text-xs uppercase tracking-wider border border-[#111111] transition-colors"
               >
                 Register Your Family Now <ArrowRight className="w-4 h-4" />
               </Link>
@@ -472,14 +472,14 @@ export default function DashboardPage() {
                 <button
                   type="button"
                   onClick={() => setShowAddMember(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-100 text-xs text-slate-700 hover:bg-slate-200"
+                  className="px-4 py-2 border border-[#111111]/20 bg-white text-xs font-mono font-bold uppercase tracking-wider text-[#111111] hover:bg-[#f4f4f0] transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={savingMember}
-                  className="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 shadow-md shadow-blue-500/20"
+                  className="px-4 py-2 bg-[#111111] hover:bg-[#dc2626] text-white text-xs font-mono font-bold uppercase tracking-wider border border-[#111111] transition-colors"
                 >
                   {savingMember ? 'Saving...' : 'Add Member'}
                 </button>
