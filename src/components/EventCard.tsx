@@ -6,17 +6,7 @@ import {
   Calendar,
   MapPin,
   Users,
-  Shield,
-  Clock,
   ArrowRight,
-  Flame,
-  Zap,
-  Target,
-  Timer,
-  Compass,
-  Award,
-  Activity,
-  Trophy,
 } from 'lucide-react';
 
 export interface EventItem {
@@ -61,41 +51,46 @@ export default function EventCard({ event }: { event: EventItem }) {
   const displayImage = event.bannerImage || SPORT_IMAGE_FALLBACKS[event.sportType] || SPORT_IMAGE_FALLBACKS['Custom'];
 
   return (
-    <div className="group bg-white border border-[#111111]/20 hover:border-[#111111] transition-all duration-200 flex flex-col justify-between overflow-hidden">
-      {/* High-Contrast Swiss Photo Frame */}
-      <div className="relative h-48 w-full overflow-hidden bg-[#111111] border-b border-[#111111]/20">
+    <div className="group bg-white border-[3px] border-black shadow-[6px_6px_0px_#000000] hover:shadow-[10px_10px_0px_#000000] hover:-translate-x-1 hover:-translate-y-1 transition-all duration-150 flex flex-col justify-between overflow-hidden">
+      {/* High-Contrast Photo Frame */}
+      <div className="relative h-48 w-full overflow-hidden bg-black border-b-[3px] border-black">
         <img
           src={displayImage}
           alt={event.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-85 group-hover:opacity-100"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-85 group-hover:opacity-100"
           loading="lazy"
+          onError={(e) => {
+            // Fallback gracefully on broken images
+            const target = e.currentTarget;
+            target.style.display = 'none';
+          }}
         />
-        <div className="absolute inset-0 bg-[#111111]/25" />
+        <div className="absolute inset-0 bg-black/25 pointer-events-none" />
 
-        {/* Top Architectural Badges */}
+        {/* Top Brutalist Badges */}
         <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2">
-          <div className="px-2 py-0.5 bg-[#111111] text-white font-mono text-[10px] font-bold tracking-widest uppercase border border-white/20">
+          <div className="px-2.5 py-1 bg-[#facc15] text-black font-mono text-[10px] font-black tracking-wider uppercase border-2 border-black shadow-[2px_2px_0px_#000000]">
             {event.sportType}
           </div>
 
           <div>
             {event.status === 'open' && (
-              <span className="px-2 py-0.5 font-mono text-[10px] font-bold bg-white text-[#111111] border border-[#111111]/30">
+              <span className="px-2.5 py-1 font-mono text-[10px] font-black bg-white text-black border-2 border-black shadow-[2px_2px_0px_#000000]">
                 {spotsLeft <= 6 ? `${spotsLeft} SPOTS LEFT` : 'OPEN'}
               </span>
             )}
             {event.status === 'closing-soon' && (
-              <span className="px-2 py-0.5 font-mono text-[10px] font-bold bg-[#dc2626] text-white">
+              <span className="px-2.5 py-1 font-mono text-[10px] font-black bg-[#ef4444] text-white border-2 border-black shadow-[2px_2px_0px_#000000]">
                 CLOSING FAST
               </span>
             )}
             {event.status === 'closed' && (
-              <span className="px-2 py-0.5 font-mono text-[10px] font-bold bg-[#111111] text-white">
+              <span className="px-2.5 py-1 font-mono text-[10px] font-black bg-black text-white border-2 border-white shadow-[2px_2px_0px_#000000]">
                 CAPACITY FULL
               </span>
             )}
             {event.status === 'completed' && (
-              <span className="px-2 py-0.5 font-mono text-[10px] font-bold bg-[#888888] text-white">
+              <span className="px-2.5 py-1 font-mono text-[10px] font-black bg-[#64748b] text-white border-2 border-black">
                 COMPLETED
               </span>
             )}
@@ -104,7 +99,7 @@ export default function EventCard({ event }: { event: EventItem }) {
 
         {/* Bottom Format Badge */}
         <div className="absolute bottom-2.5 left-2.5">
-          <span className="px-2 py-0.5 bg-white/95 text-[#111111] font-mono text-[9px] font-bold uppercase tracking-widest border border-[#111111]/20">
+          <span className="px-2 py-0.5 bg-white text-black font-mono text-[9px] font-black uppercase tracking-wider border-2 border-black">
             {event.category} • TEAM OF {event.teamSize}
           </span>
         </div>
@@ -113,33 +108,33 @@ export default function EventCard({ event }: { event: EventItem }) {
       <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
         <div>
           {/* Title */}
-          <h3 className="text-base font-black uppercase tracking-tight text-[#111111] group-hover:text-[#dc2626] transition-colors line-clamp-1">
+          <h3 className="text-base font-black uppercase tracking-tight text-black group-hover:text-[#ef4444] transition-colors line-clamp-1">
             {event.title}
           </h3>
-          <p className="text-xs text-[#555555] line-clamp-2 leading-relaxed mt-1 font-normal">
+          <p className="text-xs text-black/75 line-clamp-2 leading-relaxed mt-1 font-medium">
             {event.description}
           </p>
         </div>
 
         {/* Meta Info Grid */}
-        <div className="space-y-1.5 pt-3 border-t border-[#111111]/10 font-mono text-[11px] text-[#444444]">
+        <div className="space-y-1.5 pt-3 border-t-2 border-black font-mono text-[11px] text-black">
           <div className="flex items-center justify-between">
-            <span className="text-[#888888] uppercase">SCHEDULE:</span>
-            <span className="font-bold text-[#111111] truncate max-w-[180px]">
+            <span className="text-black/60 uppercase font-bold">SCHEDULE:</span>
+            <span className="font-black text-black truncate max-w-[180px]">
               {event.scheduleDate}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-[#888888] uppercase">VENUE:</span>
-            <span className="font-bold text-[#111111] truncate max-w-[180px]">
+            <span className="text-black/60 uppercase font-bold">VENUE:</span>
+            <span className="font-black text-black truncate max-w-[180px]">
               {event.venue}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-[#888888] uppercase">ELIGIBILITY:</span>
-            <span className="font-bold text-[#111111]">
+            <span className="text-black/60 uppercase font-bold">ELIGIBILITY:</span>
+            <span className="font-black text-black">
               AGE {event.minAge}–{event.maxAge} YRS
             </span>
           </div>
@@ -147,18 +142,18 @@ export default function EventCard({ event }: { event: EventItem }) {
 
         {/* Precision Capacity Meter */}
         <div className="space-y-1 pt-1 font-mono">
-          <div className="flex items-center justify-between text-[10px]">
-            <span className="text-[#888888] uppercase">ROSTER CAPACITY</span>
-            <span className="text-[#111111] font-bold">
+          <div className="flex items-center justify-between text-[10px] font-black">
+            <span className="text-black/70 uppercase">ROSTER CAPACITY</span>
+            <span className="text-black">
               {registered}/{max} ({percentFilled}%)
             </span>
           </div>
-          <div className="h-1.5 w-full bg-[#ebebe6] overflow-hidden border border-[#111111]/15">
+          <div className="h-3 w-full bg-white border-2 border-black overflow-hidden">
             <div
               className={`h-full transition-all duration-300 ${
                 percentFilled >= 90
-                  ? 'bg-[#dc2626]'
-                  : 'bg-[#111111]'
+                  ? 'bg-[#ef4444]'
+                  : 'bg-[#facc15]'
               }`}
               style={{ width: `${percentFilled}%` }}
             />
@@ -169,10 +164,10 @@ export default function EventCard({ event }: { event: EventItem }) {
         <div className="pt-2">
           <Link
             href={`/events/${event.slug || event._id}`}
-            className="w-full py-2.5 px-4 bg-[#111111] hover:bg-[#dc2626] text-white font-mono text-xs font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-2 group/btn border border-[#111111]"
+            className="w-full py-3 px-4 bg-black hover:bg-[#ef4444] text-white font-mono text-xs font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2 group/btn border-2 border-black shadow-[3px_3px_0px_#facc15] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5"
           >
             <span>VIEW RULES & REGISTER</span>
-            <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+            <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
           </Link>
         </div>
       </div>
