@@ -286,14 +286,14 @@ export default function ResultsPage() {
           {activeTab === 'events' && (
             <div className="max-w-5xl mx-auto space-y-6">
               {/* Sport Filter */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none w-full max-w-full min-w-0">
                 {sportsList.map((sport) => (
                   <button
                     key={sport}
                     onClick={() => setSelectedSport(sport)}
-                    className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition shrink-0 ${
                       selectedSport === sport
-                        ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                        ? 'bg-blue-600 text-white shadow-xs'
                         : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200'
                     }`}
                   >

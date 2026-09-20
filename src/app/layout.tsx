@@ -43,7 +43,7 @@ export default function RootLayout({
         <AuthProvider>
           <ToastProvider>
             <Navbar />
-            <main className="flex-1 w-full flex flex-col">{children}</main>
+            <main className="flex-1 w-full max-w-full overflow-x-clip flex flex-col min-w-0">{children}</main>
             <Footer />
           </ToastProvider>
         </AuthProvider>

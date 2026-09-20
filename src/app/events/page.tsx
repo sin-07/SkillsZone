@@ -58,9 +58,9 @@ export default function EventsPage() {
   });
 
   return (
-    <div className="min-h-screen py-10 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div className="min-h-screen py-8 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full min-w-0 overflow-x-hidden">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 sm:mb-10 pb-6 sm:pb-8 border-b border-slate-200">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-10 pb-6 sm:pb-8 border-b border-slate-200 w-full min-w-0">
         <div>
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 mb-2.5 shadow-xs">
             <Trophy className="w-3.5 h-3.5 text-blue-600" /> 9 Official Sports Categories
@@ -75,17 +75,17 @@ export default function EventsPage() {
 
         <Link
           href="/register"
-          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm shadow-xs transition w-full sm:w-auto shrink-0"
+          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm shadow-xs transition w-full md:w-auto shrink-0"
         >
           <Sparkles className="w-4 h-4" /> Register Family Now
         </Link>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 mb-8 sm:mb-10 space-y-3.5 shadow-xs">
-        <div className="flex flex-col lg:flex-row gap-3">
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 mb-8 sm:mb-10 space-y-3.5 shadow-xs w-full max-w-full overflow-hidden min-w-0">
+        <div className="flex flex-col lg:flex-row gap-3 w-full min-w-0">
           {/* Search Input */}
-          <div className="relative flex-1">
+          <div className="relative flex-1 w-full min-w-0">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
@@ -97,12 +97,12 @@ export default function EventsPage() {
           </div>
 
           {/* Category Chips */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0 scrollbar-none w-full lg:w-auto shrink-0">
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 lg:pb-0 scrollbar-none w-full max-w-full min-w-0">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-colors ${
+                className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-colors shrink-0 ${
                   selectedCategory === cat
                     ? 'bg-blue-600 text-white shadow-xs'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80'
@@ -115,7 +115,7 @@ export default function EventsPage() {
         </div>
 
         {/* Sports Sub-Filter */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pt-3 border-t border-slate-100 scrollbar-none w-full pb-1">
+        <div className="flex items-center gap-1.5 overflow-x-auto pt-3 border-t border-slate-100 scrollbar-none w-full max-w-full min-w-0 pb-1.5">
           <span className="text-xs text-slate-500 font-semibold whitespace-nowrap flex items-center gap-1 mr-1 shrink-0">
             <Filter className="w-3.5 h-3.5 text-blue-600" /> Sport:
           </span>
