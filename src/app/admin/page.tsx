@@ -21,6 +21,8 @@ import {
   FileSpreadsheet,
   Building,
   RefreshCw,
+  Mail,
+  ArrowLeft,
 } from 'lucide-react';
 
 export default function AdminPage() {
@@ -52,6 +54,9 @@ export default function AdminPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [checkInResult, setCheckInResult] = useState<any>(null);
   const [processingCheckIn, setProcessingCheckIn] = useState(false);
+
+  // Email Resend Loading State
+  const [resendingEmailId, setResendingEmailId] = useState<string | null>(null);
 
   // New Event Modal State
   const [showEventModal, setShowEventModal] = useState(false);
@@ -99,23 +104,24 @@ export default function AdminPage() {
 
       if (statsRes.ok) setStatsData(await statsRes.json());
       if (regRes.ok) {
-        const d = await regRes.json();
-        setRegistrations(d.registrations || []);
+        const data = await regRes.json();
+        setRegistrations(data.registrations || []);
       }
       if (evRes.ok) {
-        const d = await evRes.json();
-        setEvents(d.events || []);
+        const data = await evRes.json();
+        setEvents(data.events || []);
       }
       if (famRes.ok) {
-        const d = await famRes.json();
-        setFamilies(d.families || []);
+        const data = await famRes.json();
+        setFamilies(data.families || []);
       }
       if (annRes.ok) {
-        const d = await annRes.json();
-        setAnnouncements(d.announcements || []);
+        const data = await annRes.json();
+        setAnnouncements(data.announcements || []);
       }
     } catch (err) {
       console.error('Error loading admin data:', err);
+      toastError('Failed to load real-time admin metrics.');
     } finally {
       setLoading(false);
     }
@@ -123,9 +129,10 @@ export default function AdminPage() {
 
   useEffect(() => {
     fetchAllAdminData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Handle QR / Pass Check-In
+  // Quick Gate Check-In Submit
   const handleCheckInSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!checkInInput.trim()) return;
@@ -133,65 +140,108 @@ export default function AdminPage() {
     setProcessingCheckIn(true);
     setCheckInResult(null);
 
-    let passId = checkInInput.trim();
-    if (passId.includes('/confirmation/')) {
-      const parts = passId.split('/confirmation/');
-      passId = parts[parts.length - 1];
-    } else if (passId.startsWith('{')) {
-      try {
-        const parsed = JSON.parse(passId);
-        passId = parsed.id || passId;
-      } catch {
-        // use raw
+    let searchCode = checkInInput.trim();
+    try {
+      if (searchCode.startsWith('{') && searchCode.endsWith('}')) {
+        const parsed = JSON.parse(searchCode);
+        if (parsed.id) searchCode = parsed.id;
       }
+    } catch {
+      // Not JSON, use raw input
     }
 
     try {
-      const res = await fetch(`/api/registrations/${passId}/checkin`, {
+      const res = await fetch(`/api/registrations/${searchCode}/checkin`, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ checkedInBy: user?.name || 'Gate Marshal' }),
       });
 
       const data = await res.json();
-      if (res.ok) {
-        setCheckInResult(data);
-        success(data.message || 'Check-in recorded!');
+      if (res.ok && data.success) {
+        setCheckInResult({
+          success: true,
+          registration: data.registration,
+          alreadyCheckedIn: data.alreadyCheckedIn,
+        });
+        success(
+          data.alreadyCheckedIn
+            ? `Pass ${searchCode} was already checked in.`
+            : `Gate Entry Approved for ${data.registration.contactName}!`
+        );
         setCheckInInput('');
         fetchAllAdminData();
       } else {
-        toastError(data.error || 'Failed to check-in.');
-        setCheckInResult({ error: data.error });
+        setCheckInResult({
+          error: data.error || 'Invalid QR code or Pass ID not found.',
+        });
+        toastError(data.error || 'Gate check-in failed.');
       }
     } catch {
-      toastError('Network error during check-in verification.');
+      setCheckInResult({ error: 'Network error checking in pass.' });
+      toastError('Network error checking in pass.');
     } finally {
       setProcessingCheckIn(false);
+    }
+  };
+
+  // Resend Confirmation Email with PDF Pass
+  const handleResendEmail = async (regId: string, email: string) => {
+    setResendingEmailId(regId);
+    try {
+      const res = await fetch(`/api/registrations/${regId}/email`, { method: 'POST' });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        success(data.message || `Official confirmation email resent to ${email}`);
+      } else {
+        toastError(data.error || 'Failed to dispatch confirmation email.');
+      }
+    } catch {
+      toastError('Network error while resending confirmation email.');
+    } finally {
+      setResendingEmailId(null);
     }
   };
 
   // Create Event Handler
   const handleCreateEvent = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!eventTitle.trim()) return;
+
     try {
+      const slug = eventTitle
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+
+      const rulesArray = eventRules
+        .split('\n')
+        .map((r) => r.trim())
+        .filter(Boolean);
+
       const res = await fetch('/api/events', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          title: eventTitle,
+          title: eventTitle.trim(),
+          slug,
           sportType: eventSport,
           category: eventCategory,
           venue: eventVenue,
           scheduleDate: eventDate,
           scheduleTime: eventTime,
-          minAge: eventMinAge,
-          maxAge: eventMaxAge,
-          maxParticipants: eventMaxCapacity,
-          rules: eventRules,
-          description: eventDesc,
+          minAge: Number(eventMinAge),
+          maxAge: Number(eventMaxAge),
+          maxParticipants: Number(eventMaxCapacity),
+          registeredCount: 0,
+          rules: rulesArray,
+          description: eventDesc || `${eventSport} championship for all residents.`,
+          status: 'open',
         }),
       });
 
       if (res.ok) {
-        success('Tournament event created successfully!');
+        success(`Event "${eventTitle}" created successfully!`);
         setShowEventModal(false);
         setEventTitle('');
         setEventDesc('');
@@ -342,10 +392,10 @@ export default function AdminPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-slate-500">
+      <div className="min-h-screen flex items-center justify-center text-[#666666] font-mono">
         <div className="flex items-center gap-3">
-          <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
-          Loading Admin Command Center...
+          <div className="w-5 h-5 border-2 border-[#111111] border-t-transparent animate-spin" />
+          [SYSTEM: LOADING ADMIN COMMAND CENTER...]
         </div>
       </div>
     );
@@ -353,19 +403,21 @@ export default function AdminPage() {
 
   if (user?.role !== 'admin') {
     return (
-      <div className="min-h-[75vh] flex flex-col items-center justify-center p-6 text-center">
-        <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center mb-4 border border-amber-200">
-          <Shield className="w-7 h-7" />
+      <div className="min-h-[75vh] flex flex-col items-center justify-center p-6 text-center font-mono">
+        <div className="w-14 h-14 bg-[#111111] text-white flex items-center justify-center mb-4 border border-[#111111]">
+          <Shield className="w-7 h-7 text-[#dc2626]" />
         </div>
-        <h2 className="text-xl font-bold text-slate-900 mb-2">Admin Clearance Required</h2>
-        <p className="text-xs text-slate-500 max-w-sm mb-6">
+        <h2 className="text-xl font-bold uppercase tracking-wider text-[#111111] mb-2">
+          ADMIN CLEARANCE REQUIRED
+        </h2>
+        <p className="text-xs text-[#666666] max-w-sm mb-6">
           You must be signed in with a Society Sports Committee Admin account to view this command center.
         </p>
         <Link
           href="/login"
-          className="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs shadow-md hover:bg-blue-700"
+          className="px-6 py-2.5 bg-[#111111] hover:bg-[#dc2626] text-white font-bold text-xs uppercase tracking-widest border border-[#111111] transition-colors"
         >
-          Sign In as Admin
+          Sign In as Admin ↗
         </Link>
       </div>
     );
@@ -394,44 +446,44 @@ export default function AdminPage() {
   });
 
   return (
-    <div className="min-h-screen py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8 font-mono">
       {/* Top Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#111111]/20">
         <div>
-          <div className="flex items-center gap-2 mb-1 text-[11px] font-black uppercase tracking-widest text-blue-600">
-            <span className="w-5 h-1 bg-blue-600 rounded-xs" />
-            <Shield className="w-3.5 h-3.5" />
-            <span>Society Committee Admin Panel</span>
-            <span className="text-slate-300">•</span>
-            <span className="text-slate-400 font-semibold tracking-normal lowercase">v2.4 Live</span>
+          <div className="flex items-center gap-2 mb-1 text-[10px] font-bold uppercase tracking-widest text-[#111111]">
+            <span className="w-3 h-3 bg-[#dc2626]" />
+            <Shield className="w-3.5 h-3.5 text-[#dc2626]" />
+            <span>SOCIETY COMMITTEE ADMIN PANEL</span>
+            <span className="text-[#888888]">•</span>
+            <span className="text-[#666666]">LIVE SYSTEM V2.6</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-2">
-            ColonyGames 2026 Command Center
+          <h1 className="text-2xl sm:text-3xl font-black text-[#111111] tracking-tight mt-1 uppercase">
+            COLONY<span className="text-[#dc2626]">GAMES</span> 2026 COMMAND CENTER
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Real-time athlete registration metrics, gate check-in, event scheduling, and points tally.
+          <p className="text-xs text-[#555555] mt-1 font-sans">
+            Real-time athlete registration metrics, gate credential scanner, sports fixtures, and medal tally.
           </p>
         </div>
 
         {/* Global Action Buttons */}
-        <div className="flex items-center gap-2.5 self-start md:self-auto">
+        <div className="flex flex-wrap items-center gap-2.5 self-start md:self-auto">
           <button
             onClick={fetchAllAdminData}
             title="Refresh Data"
-            className="p-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-600 border border-slate-200 shadow-xs transition"
+            className="p-2.5 bg-white hover:bg-[#f4f4f0] text-[#111111] border border-[#111111]/30 transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
           <a
             href="/api/export?view=roster"
             download
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold border border-slate-200 shadow-xs transition"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-[#f4f4f0] text-[#111111] text-xs font-bold uppercase tracking-wider border border-[#111111]/30 transition-colors"
           >
-            <FileSpreadsheet className="w-4 h-4 text-blue-600" /> Export Athlete Roster (CSV)
+            <FileSpreadsheet className="w-4 h-4 text-[#dc2626]" /> Export Roster (CSV)
           </a>
           <button
             onClick={() => setShowEventModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#111111] hover:bg-[#dc2626] text-white text-xs font-bold uppercase tracking-wider border border-[#111111] transition-colors"
           >
             <Plus className="w-4 h-4" /> Add Sport / Event
           </button>
@@ -439,15 +491,15 @@ export default function AdminPage() {
       </div>
 
       {/* Navigation Sub-Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-slate-200">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-[#111111]/20">
         {[
-          { id: 'overview', label: 'Metrics Overview', icon: Trophy },
-          { id: 'checkin', label: 'Gate QR Check-in', icon: QrCode },
-          { id: 'registrations', label: `Registrations (${registrations.length})`, icon: Users },
-          { id: 'events', label: `Events & Sports (${events.length})`, icon: Calendar },
-          { id: 'families', label: `Families (${families.length})`, icon: Building },
-          { id: 'results', label: 'Medal & Results Entry', icon: Award },
-          { id: 'announcements', label: 'Announcements', icon: Megaphone },
+          { id: 'overview', label: '01 / METRICS OVERVIEW', icon: Trophy },
+          { id: 'checkin', label: '02 / GATE QR CHECK-IN', icon: QrCode },
+          { id: 'registrations', label: `03 / PASSES (${registrations.length})`, icon: Users },
+          { id: 'events', label: `04 / EVENTS (${events.length})`, icon: Calendar },
+          { id: 'families', label: `05 / FAMILIES (${families.length})`, icon: Building },
+          { id: 'results', label: '06 / PODIUM & MEDALS', icon: Award },
+          { id: 'announcements', label: '07 / BROADCASTS', icon: Megaphone },
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -456,13 +508,13 @@ export default function AdminPage() {
               key={tab.id}
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition ${
+              className={`flex items-center gap-2 px-3.5 py-2 text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-colors border ${
                 isActive
-                  ? 'bg-blue-50 text-blue-700 border border-blue-200 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  ? 'bg-[#111111] text-white border-[#111111]'
+                  : 'bg-white text-[#111111] border-[#111111]/20 hover:border-[#111111] hover:bg-[#f4f4f0]'
               }`}
             >
-              <Icon className="w-4 h-4" />
+              <Icon className="w-3.5 h-3.5" />
               {tab.label}
             </button>
           );
@@ -474,50 +526,58 @@ export default function AdminPage() {
         <div className="space-y-8">
           {/* Key Stat Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <div className="p-5 rounded-3xl bg-white border border-slate-200/90 shadow-md shadow-slate-200/40 space-y-1">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                Total Families
+            <div className="p-5 bg-white border border-[#111111] space-y-2 shadow-xs">
+              <span className="text-[10px] font-bold text-[#666666] uppercase tracking-widest block">
+                [01] TOTAL HOUSEHOLDS
               </span>
-              <div className="text-3xl font-black text-slate-900">{metrics.totalFamilies}</div>
-              <span className="text-xs text-blue-600 font-semibold">Society Households</span>
-            </div>
-
-            <div className="p-5 rounded-3xl bg-white border border-slate-200/90 shadow-md shadow-slate-200/40 space-y-1">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                Total Athletes
-              </span>
-              <div className="text-3xl font-black text-blue-600">{metrics.totalParticipants}</div>
-              <span className="text-xs text-slate-500 font-medium">Registered Participants</span>
-            </div>
-
-            <div className="p-5 rounded-3xl bg-white border border-slate-200/90 shadow-md shadow-slate-200/40 space-y-1">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                Total Passes Issued
-              </span>
-              <div className="text-3xl font-black text-cyan-600">{metrics.totalRegistrations}</div>
-              <span className="text-xs text-slate-500 font-medium">
-                {metrics.confirmedRegistrations} Confirmed
+              <div className="text-3xl font-black text-[#111111]">{metrics.totalFamilies}</div>
+              <span className="text-[11px] text-[#dc2626] font-bold block uppercase tracking-wider">
+                Society Residences
               </span>
             </div>
 
-            <div className="p-5 rounded-3xl bg-white border border-slate-200/90 shadow-md shadow-slate-200/40 space-y-1">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                Gate Check-in Rate
+            <div className="p-5 bg-white border border-[#111111] space-y-2 shadow-xs">
+              <span className="text-[10px] font-bold text-[#666666] uppercase tracking-widest block">
+                [02] ATHLETE ENTRIES
               </span>
-              <div className="text-3xl font-black text-amber-500">
+              <div className="text-3xl font-black text-[#111111]">{metrics.totalParticipants}</div>
+              <span className="text-[11px] text-[#666666] font-bold block uppercase tracking-wider">
+                Active Competitors
+              </span>
+            </div>
+
+            <div className="p-5 bg-white border border-[#111111] space-y-2 shadow-xs">
+              <span className="text-[10px] font-bold text-[#666666] uppercase tracking-widest block">
+                [03] PASSES ISSUED
+              </span>
+              <div className="text-3xl font-black text-[#111111]">{metrics.totalRegistrations}</div>
+              <span className="text-[11px] text-[#dc2626] font-bold block uppercase tracking-wider">
+                {metrics.confirmedRegistrations} Confirmed Passes
+              </span>
+            </div>
+
+            <div className="p-5 bg-white border border-[#111111] space-y-2 shadow-xs">
+              <span className="text-[10px] font-bold text-[#666666] uppercase tracking-widest block">
+                [04] GATE CHECK-IN
+              </span>
+              <div className="text-3xl font-black text-[#111111]">
                 {metrics.checkedInCount}{' '}
-                <span className="text-sm font-normal text-slate-500">({metrics.checkInRate}%)</span>
+                <span className="text-sm font-normal text-[#666666]">({metrics.checkInRate}%)</span>
               </div>
-              <span className="text-xs text-slate-500 font-medium">Verified at Sports Gates</span>
+              <span className="text-[11px] text-[#666666] font-bold block uppercase tracking-wider">
+                Verified at Gates
+              </span>
             </div>
           </div>
 
           {/* Event Capacity Meters Grid */}
-          <div className="rounded-3xl bg-white border border-slate-200/90 p-6 sm:p-8 space-y-6 shadow-md shadow-slate-200/40">
-            <div className="flex items-center justify-between">
+          <div className="bg-white border border-[#111111] p-6 sm:p-8 space-y-6 shadow-xs">
+            <div className="flex items-center justify-between border-b border-[#111111]/15 pb-4">
               <div>
-                <h3 className="text-base font-bold text-slate-900">Event-Wise Capacity Analytics</h3>
-                <p className="text-xs text-slate-500">Real-time quota utilization for each tournament</p>
+                <h3 className="text-sm font-bold uppercase tracking-wider text-[#111111]">
+                  EVENT-WISE CAPACITY ALLOCATION
+                </h3>
+                <p className="text-xs text-[#666666] mt-0.5">Real-time quota utilization for each tournament</p>
               </div>
             </div>
 
@@ -530,32 +590,28 @@ export default function AdminPage() {
                 return (
                   <div
                     key={ev._id}
-                    className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2"
+                    className="p-4 bg-[#fafaf7] border border-[#111111]/20 space-y-3"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-900 truncate max-w-[180px]">
+                      <span className="text-xs font-bold text-[#111111] truncate max-w-[180px]">
                         {ev.title}
                       </span>
-                      <span className="text-[10px] font-semibold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">
+                      <span className="text-[9px] font-bold text-white bg-[#111111] px-2 py-0.5 uppercase tracking-wider">
                         {ev.sportType}
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between text-xs text-slate-500">
+                    <div className="flex items-center justify-between text-xs text-[#555555]">
                       <span>
                         {ev.registeredCount} / {ev.maxParticipants} entries
                       </span>
-                      <span className="font-bold text-slate-800">{filledPct}%</span>
+                      <span className="font-bold text-[#111111]">{filledPct}%</span>
                     </div>
 
-                    <div className="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
+                    <div className="w-full h-2 bg-[#e5e5e0] overflow-hidden border border-[#111111]/15">
                       <div
-                        className={`h-full rounded-full transition-all duration-500 ${
-                          filledPct >= 90
-                            ? 'bg-rose-500'
-                            : filledPct >= 70
-                            ? 'bg-amber-500'
-                            : 'bg-blue-600'
+                        className={`h-full transition-all duration-500 ${
+                          filledPct >= 90 ? 'bg-[#dc2626]' : 'bg-[#111111]'
                         }`}
                         style={{ width: `${filledPct}%` }}
                       />
@@ -571,14 +627,16 @@ export default function AdminPage() {
       {/* ================= TAB 2: GATE QR CHECK-IN ================= */}
       {activeTab === 'checkin' && (
         <div className="max-w-2xl mx-auto space-y-6">
-          <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200/90 space-y-6 shadow-xl shadow-slate-200/50">
+          <div className="p-6 sm:p-8 bg-white border border-[#111111] space-y-6 shadow-xs">
             <div className="text-center">
-              <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-3">
-                <QrCode className="w-6 h-6" />
+              <div className="w-12 h-12 bg-[#111111] text-white flex items-center justify-center mx-auto mb-3 border border-[#111111]">
+                <QrCode className="w-6 h-6 text-[#dc2626]" />
               </div>
-              <h2 className="text-xl font-bold text-slate-900">Event Gate Check-in Scanner</h2>
-              <p className="text-xs text-slate-500 mt-1">
-                Scan athlete QR code using a handheld barcode scanner or enter the Registration Pass ID (e.g. CG26-XXXX).
+              <h2 className="text-lg font-bold uppercase tracking-wider text-[#111111]">
+                [GATE ACCESS TERMINAL • SCANNER]
+              </h2>
+              <p className="text-xs text-[#666666] mt-1 font-sans">
+                Scan athlete QR credential with camera / barcode scanner or enter Registration Pass ID (e.g. CG26-XXXX).
               </p>
             </div>
 
@@ -588,8 +646,8 @@ export default function AdminPage() {
                   type="text"
                   value={checkInInput}
                   onChange={(e) => setCheckInInput(e.target.value)}
-                  placeholder="Paste QR payload or enter ID (e.g. CG26-K9F2L)..."
-                  className="w-full px-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-blue-600 focus:bg-white"
+                  placeholder="Scan QR payload or enter ID (e.g. CG-2026-XXXX)..."
+                  className="w-full px-4 py-3 bg-[#fafaf7] border border-[#111111] text-[#111111] placeholder-[#888888] text-xs font-mono focus:outline-none focus:bg-white"
                   autoFocus
                 />
               </div>
@@ -597,55 +655,52 @@ export default function AdminPage() {
               <button
                 type="submit"
                 disabled={processingCheckIn}
-                className="w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition"
+                className="w-full py-3 bg-[#111111] hover:bg-[#dc2626] text-white font-bold text-xs uppercase tracking-widest border border-[#111111] transition-colors"
               >
-                {processingCheckIn ? 'Verifying...' : 'Verify Pass & Mark Check-In'}
+                {processingCheckIn ? 'VERIFYING CREDENTIAL...' : 'VERIFY PASS & MARK CHECK-IN ↗'}
               </button>
             </form>
 
             {/* Scan Feedback Result Card */}
             {checkInResult && (
               <div
-                className={`p-5 rounded-2xl border text-xs space-y-3 ${
+                className={`p-5 border text-xs space-y-3 ${
                   checkInResult.error
-                    ? 'bg-rose-50 border-rose-200 text-rose-800'
-                    : 'bg-emerald-50 border-emerald-200 text-emerald-900'
+                    ? 'bg-[#fdf2f2] border-[#fca5a5] border-l-4 border-l-[#dc2626] text-[#7f1d1d]'
+                    : 'bg-[#f0fdf4] border-[#86efac] border-l-4 border-l-[#16a34a] text-[#14532d]'
                 }`}
               >
-                <div className="flex items-center gap-2 font-bold text-sm">
+                <div className="flex items-center gap-2 font-bold text-sm uppercase tracking-wide">
                   {checkInResult.error ? (
                     <>
-                      <XCircle className="w-5 h-5 text-rose-600" />
-                      Check-In Rejected: {checkInResult.error}
+                      <XCircle className="w-5 h-5 text-[#dc2626]" />
+                      CHECK-IN REJECTED: {checkInResult.error}
                     </>
                   ) : (
                     <>
-                      <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                      <CheckCircle2 className="w-5 h-5 text-[#16a34a]" />
                       {checkInResult.alreadyCheckedIn
-                        ? 'Notice: Pass Was Already Checked-In Earlier'
-                        : 'Gate Entry Verified & Checked-In!'}
+                        ? 'NOTICE: PASS WAS ALREADY CHECKED-IN EARLIER'
+                        : 'GATE ENTRY VERIFIED & CHECKED-IN!'}
                     </>
                   )}
                 </div>
 
                 {checkInResult.registration && (
-                  <div className="p-3 bg-white rounded-xl space-y-1 text-slate-700 border border-emerald-100">
+                  <div className="p-4 bg-white border border-[#111111]/20 space-y-1.5 text-[#111111]">
                     <p>
-                      <strong>Pass ID:</strong> {checkInResult.registration.registrationId}
+                      <strong>PASS ID:</strong>{' '}
+                      <span className="text-[#dc2626] font-bold">
+                        {checkInResult.registration.registrationId}
+                      </span>
                     </p>
                     <p>
-                      <strong>Contact:</strong> {checkInResult.registration.contactName} (
+                      <strong>PRIMARY CONTACT:</strong> {checkInResult.registration.contactName} (
                       {checkInResult.registration.contactPhone})
                     </p>
                     <p>
-                      <strong>Total Athlete Entries:</strong>{' '}
-                      {checkInResult.registration.entries.length}
-                    </p>
-                    <p>
-                      <strong>Checked in at:</strong>{' '}
-                      {new Date(
-                        checkInResult.registration.checkIn?.checkedInAt || Date.now()
-                      ).toLocaleTimeString('en-IN')}
+                      <strong>REGISTERED ATHLETES:</strong>{' '}
+                      {checkInResult.registration.entries?.length || 0} Entries
                     </p>
                   </div>
                 )}
@@ -661,13 +716,13 @@ export default function AdminPage() {
           {/* Search and Filters */}
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-[#888888] absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by ID, Contact, Flat, or Family..."
-                className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-none focus:border-blue-600 shadow-xs"
+                placeholder="Search by Pass ID, Contact, Unit, or Family..."
+                className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#111111]/30 text-[#111111] text-xs font-mono focus:outline-none focus:border-[#111111]"
               />
             </div>
 
@@ -675,7 +730,7 @@ export default function AdminPage() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-3 py-2.5 rounded-2xl bg-white border border-slate-300 text-xs text-slate-800 focus:outline-none shadow-xs"
+                className="px-3 py-2.5 bg-white border border-[#111111]/30 text-xs font-mono text-[#111111] focus:outline-none focus:border-[#111111]"
               >
                 <option value="All">All Statuses</option>
                 <option value="confirmed">Confirmed</option>
@@ -685,82 +740,106 @@ export default function AdminPage() {
           </div>
 
           {/* Registrations Table */}
-          <div className="rounded-3xl bg-white border border-slate-200/90 overflow-hidden shadow-xl shadow-slate-200/40">
+          <div className="bg-white border border-[#111111] overflow-hidden shadow-xs">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-600">
-                <thead className="bg-slate-50 border-b border-slate-200 text-[11px] uppercase font-bold text-slate-500">
+              <table className="w-full text-left text-xs text-[#111111]">
+                <thead className="bg-[#111111] text-white text-[10px] uppercase font-bold tracking-wider">
                   <tr>
                     <th className="px-5 py-3.5">Registration ID</th>
                     <th className="px-5 py-3.5">Contact / Family</th>
-                    <th className="px-5 py-3.5">Tower & Flat</th>
+                    <th className="px-5 py-3.5">Tower & Unit</th>
                     <th className="px-5 py-3.5">Athletes & Sports</th>
-                    <th className="px-5 py-3.5">Check-In</th>
+                    <th className="px-5 py-3.5">Gate Status</th>
                     <th className="px-5 py-3.5">Status</th>
-                    <th className="px-5 py-3.5 text-right">Actions</th>
+                    <th className="px-5 py-3.5 text-right">Actions (PDF / Web / Email)</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {filteredRegs.map((reg) => (
-                    <tr key={reg._id} className="hover:bg-slate-50 transition">
-                      <td className="px-5 py-4 font-mono font-bold text-blue-700">
+                <tbody className="divide-y divide-[#111111]/15">
+                  {filteredRegs.map((reg, idx) => (
+                    <tr
+                      key={reg._id}
+                      className={`hover:bg-[#f4f4f0] transition-colors ${
+                        idx % 2 === 0 ? 'bg-white' : 'bg-[#fafaf7]'
+                      }`}
+                    >
+                      <td className="px-5 py-4 font-mono font-bold text-[#111111]">
                         {reg.registrationId}
                       </td>
                       <td className="px-5 py-4">
-                        <div className="font-semibold text-slate-900">{reg.contactName}</div>
-                        <div className="text-[11px] text-slate-500">{reg.contactPhone}</div>
+                        <div className="font-bold text-[#111111]">{reg.contactName}</div>
+                        <div className="text-[11px] text-[#666666]">{reg.contactPhone}</div>
                       </td>
                       <td className="px-5 py-4">
-                        <div className="text-slate-900 font-medium">
+                        <div className="text-[#111111] font-bold">
                           {reg.familyId?.blockTower || '-'}
                         </div>
-                        <div className="text-[11px] text-slate-500">
+                        <div className="text-[11px] text-[#666666]">
                           Unit {reg.familyId?.houseNumber || '-'}
                         </div>
                       </td>
                       <td className="px-5 py-4">
-                        <span className="font-bold text-slate-900">{reg.entries.length} entries</span>
-                        <div className="text-[10px] text-slate-500 truncate max-w-[200px]">
+                        <span className="font-bold text-[#111111]">{reg.entries.length} entries</span>
+                        <div className="text-[10px] text-[#666666] truncate max-w-[200px]">
                           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                           {reg.entries.map((e: any) => e.sportType).join(', ')}
                         </div>
                       </td>
                       <td className="px-5 py-4">
                         {reg.checkIn?.isCheckedIn ? (
-                          <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                            Checked In
+                          <span className="text-[9px] font-bold text-white bg-[#111111] px-2 py-0.5 border border-[#111111] uppercase tracking-wider">
+                            CHECKED IN
                           </span>
                         ) : (
-                          <span className="text-[10px] text-slate-400">Gate Pending</span>
+                          <span className="text-[9px] font-bold text-[#666666] bg-[#e5e5e0] px-2 py-0.5 uppercase tracking-wider">
+                            PENDING
+                          </span>
                         )}
                       </td>
                       <td className="px-5 py-4">
                         <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-md uppercase ${
+                          className={`text-[9px] font-bold px-2 py-0.5 border uppercase tracking-wider ${
                             reg.status === 'confirmed'
-                              ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                              : 'bg-rose-50 text-rose-700 border border-rose-200'
+                              ? 'bg-[#fdf2f2] text-[#dc2626] border-[#dc2626]'
+                              : 'bg-[#fafaf7] text-[#666666] border-[#cccccc]'
                           }`}
                         >
                           {reg.status}
                         </span>
                       </td>
                       <td className="px-5 py-4 text-right">
-                        <div className="flex items-center justify-end gap-2">
+                        <div className="flex items-center justify-end gap-1.5">
+                          {/* Download PDF Pass */}
                           <a
                             href={`/api/registrations/${reg.registrationId}/pdf`}
                             download
-                            className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
-                            title="Download PDF"
+                            className="p-1.5 bg-white hover:bg-[#111111] hover:text-white text-[#111111] border border-[#111111]/30 transition-colors"
+                            title="Download Official Swiss PDF Pass"
                           >
                             <Download className="w-3.5 h-3.5" />
                           </a>
+
+                          {/* View Digital Pass */}
                           <Link
                             href={`/confirmation/${reg.registrationId}`}
-                            className="p-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 transition"
-                            title="View Pass"
+                            className="p-1.5 bg-white hover:bg-[#111111] hover:text-white text-[#111111] border border-[#111111]/30 transition-colors"
+                            title="View Digital Pass & QR"
                           >
                             <QrCode className="w-3.5 h-3.5" />
                           </Link>
+
+                          {/* Resend Confirmation Email */}
+                          <button
+                            onClick={() => handleResendEmail(reg.registrationId, reg.contactEmail)}
+                            disabled={resendingEmailId === reg.registrationId}
+                            className="p-1.5 bg-white hover:bg-[#dc2626] hover:text-white text-[#111111] border border-[#111111]/30 transition-colors disabled:opacity-50"
+                            title="Resend Confirmation Email with PDF Pass"
+                          >
+                            <Mail
+                              className={`w-3.5 h-3.5 ${
+                                resendingEmailId === reg.registrationId ? 'animate-spin' : ''
+                              }`}
+                            />
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -779,50 +858,50 @@ export default function AdminPage() {
             {events.map((ev) => (
               <div
                 key={ev._id}
-                className="p-6 rounded-3xl bg-white border border-slate-200 shadow-md space-y-4 flex flex-col justify-between"
+                className="p-5 bg-white border border-[#111111] shadow-xs space-y-4 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
+                    <span className="text-[10px] font-bold text-white bg-[#111111] px-2 py-0.5 uppercase tracking-wider">
                       {ev.sportType}
                     </span>
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                      className={`text-[9px] font-bold px-2 py-0.5 border uppercase tracking-wider ${
                         ev.status === 'open'
-                          ? 'bg-blue-50 text-blue-700'
-                          : 'bg-rose-50 text-rose-700'
+                          ? 'bg-[#fdf2f2] text-[#dc2626] border-[#dc2626]'
+                          : 'bg-[#fafaf7] text-[#666666] border-[#cccccc]'
                       }`}
                     >
                       {ev.status}
                     </span>
                   </div>
-                  <h3 className="font-bold text-slate-900 text-base">{ev.title}</h3>
-                  <p className="text-xs text-slate-500 line-clamp-2 mt-1">{ev.description}</p>
-                  <div className="mt-3 text-xs text-slate-600 space-y-1">
+                  <h3 className="font-bold text-[#111111] text-base uppercase tracking-tight">{ev.title}</h3>
+                  <p className="text-xs text-[#555555] line-clamp-2 mt-1 font-sans">{ev.description}</p>
+                  <div className="mt-3 text-xs text-[#444444] space-y-1">
                     <div>
-                      <strong>Venue:</strong> {ev.venue}
+                      <strong>VENUE:</strong> {ev.venue}
                     </div>
                     <div>
-                      <strong>Schedule:</strong> {ev.scheduleDate} • {ev.scheduleTime}
+                      <strong>SCHEDULE:</strong> {ev.scheduleDate} • {ev.scheduleTime}
                     </div>
                     <div>
-                      <strong>Capacity:</strong> {ev.registeredCount} / {ev.maxParticipants}
+                      <strong>CAPACITY:</strong> {ev.registeredCount} / {ev.maxParticipants}
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                <div className="pt-3 border-t border-[#111111]/15 flex items-center justify-between text-xs">
                   <Link
                     href={`/events/${ev.slug}`}
-                    className="text-xs text-blue-600 hover:underline font-semibold"
+                    className="text-[#111111] hover:text-[#dc2626] font-bold uppercase tracking-wider transition-colors"
                   >
-                    View Page
+                    View Page ↗
                   </Link>
                   <button
                     onClick={() => handleDeleteEvent(ev._id)}
-                    className="text-xs text-rose-600 hover:text-rose-700 font-semibold"
+                    className="text-[#dc2626] hover:underline font-bold uppercase tracking-wider"
                   >
-                    Delete Event
+                    Delete
                   </button>
                 </div>
               </div>
@@ -833,9 +912,9 @@ export default function AdminPage() {
 
       {/* ================= TAB 5: FAMILIES ================= */}
       {activeTab === 'families' && (
-        <div className="rounded-3xl bg-white border border-slate-200/90 overflow-hidden shadow-xl shadow-slate-200/40">
-          <table className="w-full text-left text-xs text-slate-600">
-            <thead className="bg-slate-50 border-b border-slate-200 text-[11px] uppercase font-bold text-slate-500">
+        <div className="bg-white border border-[#111111] overflow-hidden shadow-xs">
+          <table className="w-full text-left text-xs text-[#111111]">
+            <thead className="bg-[#111111] text-white text-[10px] uppercase font-bold tracking-wider">
               <tr>
                 <th className="px-5 py-3.5">Family Name</th>
                 <th className="px-5 py-3.5">Tower & Unit</th>
@@ -845,24 +924,28 @@ export default function AdminPage() {
                 <th className="px-5 py-3.5">Medal Tally</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
-              {families.map((f) => (
-                <tr key={f._id} className="hover:bg-slate-50 transition">
-                  <td className="px-5 py-4 font-bold text-slate-900">{f.familyName}</td>
+            <tbody className="divide-y divide-[#111111]/15">
+              {families.map((f, idx) => (
+                <tr
+                  key={f._id}
+                  className={`hover:bg-[#f4f4f0] transition-colors ${
+                    idx % 2 === 0 ? 'bg-white' : 'bg-[#fafaf7]'
+                  }`}
+                >
+                  <td className="px-5 py-4 font-bold text-[#111111]">{f.familyName}</td>
                   <td className="px-5 py-4">
                     {f.blockTower} - {f.houseNumber}
                   </td>
                   <td className="px-5 py-4">
-                    <div className="text-slate-900">{f.primaryContactName}</div>
-                    <div className="text-slate-500 text-[11px]">{f.primaryPhone}</div>
+                    <div className="text-[#111111] font-bold">{f.primaryContactName}</div>
+                    <div className="text-[#666666] text-[11px]">{f.primaryPhone}</div>
                   </td>
-                  <td className="px-5 py-4 font-semibold">{f.membersCount || 1} members</td>
-                  <td className="px-5 py-4 font-black text-blue-600 text-sm">
+                  <td className="px-5 py-4 font-bold">{f.membersCount || 1} members</td>
+                  <td className="px-5 py-4 font-black text-[#dc2626] text-sm">
                     {f.points || 0} pts
                   </td>
-                  <td className="px-5 py-4 text-xs font-semibold">
-                    🥇 {f.medals?.gold || 0} • 🥈 {f.medals?.silver || 0} • 🥉{' '}
-                    {f.medals?.bronze || 0}
+                  <td className="px-5 py-4 text-xs font-bold">
+                    🥇 {f.medals?.gold || 0} • 🥈 {f.medals?.silver || 0} • 🥉 {f.medals?.bronze || 0}
                   </td>
                 </tr>
               ))}
@@ -874,28 +957,28 @@ export default function AdminPage() {
       {/* ================= TAB 6: RESULTS & MEDAL ENTRY ================= */}
       {activeTab === 'results' && (
         <div className="max-w-3xl mx-auto space-y-6">
-          <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200/90 shadow-xl shadow-slate-200/50 space-y-6">
+          <div className="p-6 sm:p-8 bg-white border border-[#111111] shadow-xs space-y-6">
             <div>
-              <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                <Award className="w-5 h-5 text-amber-500" />
-                Record Tournament Winners & Points
+              <h2 className="text-base font-bold uppercase tracking-wider text-[#111111] flex items-center gap-2">
+                <Award className="w-5 h-5 text-[#dc2626]" />
+                [RECORD TOURNAMENT WINNERS & ALLOCATE POINTS]
               </h2>
-              <p className="text-xs text-slate-500 mt-1">
-                Submitting winners automatically awards Gold (10pts), Silver (7pts), and Bronze (5pts)
-                to family and block standings.
+              <p className="text-xs text-[#666666] mt-1 font-sans">
+                Submitting podium winners automatically awards Gold (10pts), Silver (7pts), and Bronze (5pts)
+                to family and tower championship rankings.
               </p>
             </div>
 
             <form onSubmit={handleSubmitResults} className="space-y-5">
               {/* Event Select */}
               <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1">
-                  Select Event *
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#111111] mb-1">
+                  Select Completed Event *
                 </label>
                 <select
                   value={resultEventId}
                   onChange={(e) => setResultEventId(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:border-blue-600 focus:bg-white"
+                  className="w-full px-3.5 py-2.5 bg-[#fafaf7] border border-[#111111] text-[#111111] text-xs font-mono focus:bg-white"
                   required
                 >
                   <option value="">-- Choose Completed Event --</option>
@@ -908,28 +991,28 @@ export default function AdminPage() {
               </div>
 
               {/* Gold Winner (1st Place) */}
-              <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 space-y-3">
-                <div className="text-xs font-bold uppercase tracking-wider text-amber-800 flex items-center gap-1.5">
-                  🥇 1st Place (Gold Medal • 10 Points)
+              <div className="p-4 bg-[#fafaf7] border border-[#111111] space-y-3">
+                <div className="text-xs font-bold uppercase tracking-wider text-[#111111] flex items-center gap-1.5">
+                  🥇 1ST PLACE (GOLD MEDAL • 10 POINTS)
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
-                    <label className="block text-[11px] text-slate-600 mb-1">Winner Name *</label>
+                    <label className="block text-[10px] uppercase font-bold text-[#666666] mb-1">Winner Name *</label>
                     <input
                       type="text"
                       value={goldWinnerName}
                       onChange={(e) => setGoldWinnerName(e.target.value)}
                       placeholder="e.g. Aarav Sharma"
-                      className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs"
+                      className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] text-slate-600 mb-1">Winning Family</label>
+                    <label className="block text-[10px] uppercase font-bold text-[#666666] mb-1">Winning Family</label>
                     <select
                       value={goldFamilyId}
                       onChange={(e) => setGoldFamilyId(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs"
+                      className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                     >
                       <option value="">-- Select Family --</option>
                       {families.map((f) => (
@@ -940,22 +1023,22 @@ export default function AdminPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[11px] text-slate-600 mb-1">Score / Time</label>
+                    <label className="block text-[10px] uppercase font-bold text-[#666666] mb-1">Score / Time</label>
                     <input
                       type="text"
                       value={goldScore}
                       onChange={(e) => setGoldScore(e.target.value)}
                       placeholder="e.g. 11.8s or 21-18"
-                      className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs"
+                      className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Silver Winner (2nd Place) */}
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-                <div className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                  🥈 2nd Place (Silver Medal • 7 Points)
+              <div className="p-4 bg-[#fafaf7] border border-[#111111]/30 space-y-3">
+                <div className="text-xs font-bold uppercase tracking-wider text-[#111111] flex items-center gap-1.5">
+                  🥈 2ND PLACE (SILVER MEDAL • 7 POINTS)
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
@@ -964,14 +1047,14 @@ export default function AdminPage() {
                       value={silverWinnerName}
                       onChange={(e) => setSilverWinnerName(e.target.value)}
                       placeholder="Silver winner name"
-                      className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs"
+                      className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                     />
                   </div>
                   <div>
                     <select
                       value={silverFamilyId}
                       onChange={(e) => setSilverFamilyId(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs"
+                      className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                     >
                       <option value="">-- Select Family --</option>
                       {families.map((f) => (
@@ -987,16 +1070,16 @@ export default function AdminPage() {
                       value={silverScore}
                       onChange={(e) => setSilverScore(e.target.value)}
                       placeholder="Score / Time"
-                      className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs"
+                      className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Bronze Winner (3rd Place) */}
-              <div className="p-4 rounded-2xl bg-amber-50/30 border border-amber-200 space-y-3">
-                <div className="text-xs font-bold uppercase tracking-wider text-amber-700 flex items-center gap-1.5">
-                  🥉 3rd Place (Bronze Medal • 5 Points)
+              <div className="p-4 bg-[#fafaf7] border border-[#111111]/30 space-y-3">
+                <div className="text-xs font-bold uppercase tracking-wider text-[#111111] flex items-center gap-1.5">
+                  🥉 3RD PLACE (BRONZE MEDAL • 5 POINTS)
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
@@ -1005,14 +1088,14 @@ export default function AdminPage() {
                       value={bronzeWinnerName}
                       onChange={(e) => setBronzeWinnerName(e.target.value)}
                       placeholder="Bronze winner name"
-                      className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs"
+                      className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                     />
                   </div>
                   <div>
                     <select
                       value={bronzeFamilyId}
                       onChange={(e) => setBronzeFamilyId(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs"
+                      className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                     >
                       <option value="">-- Select Family --</option>
                       {families.map((f) => (
@@ -1028,7 +1111,7 @@ export default function AdminPage() {
                       value={bronzeScore}
                       onChange={(e) => setBronzeScore(e.target.value)}
                       placeholder="Score / Time"
-                      className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs"
+                      className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                     />
                   </div>
                 </div>
@@ -1037,9 +1120,9 @@ export default function AdminPage() {
               <button
                 type="submit"
                 disabled={submittingResult}
-                className="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md shadow-blue-500/20 transition"
+                className="w-full py-3.5 bg-[#111111] hover:bg-[#dc2626] text-white font-bold text-xs uppercase tracking-widest border border-[#111111] transition-colors"
               >
-                {submittingResult ? 'Publishing Results...' : 'Publish Podium & Update Points'}
+                {submittingResult ? 'PUBLISHING RESULTS...' : 'PUBLISH PODIUM & UPDATE STANDINGS ↗'}
               </button>
             </form>
           </div>
@@ -1049,16 +1132,18 @@ export default function AdminPage() {
       {/* ================= TAB 7: ANNOUNCEMENTS ================= */}
       {activeTab === 'announcements' && (
         <div className="space-y-6">
-          <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-md space-y-4">
-            <h3 className="text-base font-bold text-slate-900">Post New Society Alert / Announcement</h3>
+          <div className="p-6 bg-white border border-[#111111] shadow-xs space-y-4">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-[#111111]">
+              [POST NEW SOCIETY BROADCAST / ALERT]
+            </h3>
             <form onSubmit={handleCreateAnnouncement} className="space-y-3">
               <div>
                 <input
                   type="text"
                   value={annTitle}
                   onChange={(e) => setAnnTitle(e.target.value)}
-                  placeholder="Announcement headline (e.g. Practice Schedule Updated)..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:border-blue-600 focus:bg-white"
+                  placeholder="Headline (e.g. Badminton Court Timings Updated)..."
+                  className="w-full px-3.5 py-2.5 bg-[#fafaf7] border border-[#111111]/30 text-[#111111] text-xs focus:bg-white focus:border-[#111111]"
                   required
                 />
               </div>
@@ -1068,42 +1153,42 @@ export default function AdminPage() {
                   value={annContent}
                   onChange={(e) => setAnnContent(e.target.value)}
                   rows={3}
-                  placeholder="Details of the announcement for society members..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:border-blue-600 focus:bg-white"
+                  placeholder="Details of the announcement for society residents..."
+                  className="w-full px-3.5 py-2.5 bg-[#fafaf7] border border-[#111111]/30 text-[#111111] text-xs focus:bg-white focus:border-[#111111]"
                   required
                 />
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
                 <div className="flex items-center gap-4 text-xs">
                   <select
                     value={annPriority}
                     onChange={(e) =>
                       setAnnPriority(e.target.value as 'normal' | 'high' | 'urgent')
                     }
-                    className="px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-800 text-xs"
+                    className="px-3 py-1.5 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                   >
                     <option value="normal">Normal Priority</option>
                     <option value="high">High Priority</option>
                     <option value="urgent">Urgent Banner</option>
                   </select>
 
-                  <label className="flex items-center gap-1.5 cursor-pointer text-slate-700">
+                  <label className="flex items-center gap-1.5 cursor-pointer text-[#111111]">
                     <input
                       type="checkbox"
                       checked={annPinned}
                       onChange={(e) => setAnnPinned(e.target.checked)}
-                      className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                      className="border-[#111111]"
                     />
-                    Pin to Homepage Banner
+                    Pin to Top
                   </label>
                 </div>
 
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow transition"
+                  className="px-5 py-2.5 bg-[#111111] hover:bg-[#dc2626] text-white font-bold text-xs uppercase tracking-wider border border-[#111111] transition-colors"
                 >
-                  Publish Announcement
+                  Publish Broadcast ↗
                 </button>
               </div>
             </form>
@@ -1113,22 +1198,22 @@ export default function AdminPage() {
             {announcements.map((ann) => (
               <div
                 key={ann._id}
-                className="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-between gap-4"
+                className="p-4 bg-white border border-[#111111]/20 shadow-xs flex items-center justify-between gap-4"
               >
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-900 text-sm">{ann.title}</span>
+                    <span className="font-bold text-[#111111] text-sm uppercase">{ann.title}</span>
                     {ann.isPinned && (
-                      <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                      <span className="text-[9px] font-bold text-white bg-[#dc2626] px-2 py-0.5 uppercase tracking-wider">
                         PINNED
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-500 mt-1">{ann.content}</p>
+                  <p className="text-xs text-[#555555] mt-1 font-sans">{ann.content}</p>
                 </div>
                 <button
                   onClick={() => handleDeleteAnnouncement(ann._id)}
-                  className="p-2 text-slate-400 hover:text-rose-600 transition"
+                  className="p-2 text-[#888888] hover:text-[#dc2626] transition-colors"
                   title="Delete"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -1141,29 +1226,45 @@ export default function AdminPage() {
 
       {/* ================= MODAL: ADD SPORT / EVENT ================= */}
       {showEventModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs overflow-y-auto">
-          <div className="w-full max-w-lg bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5 my-8">
-            <h3 className="text-xl font-bold text-slate-900">Create New Society Sport Event</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#111111]/60 backdrop-blur-xs overflow-y-auto font-mono">
+          <div className="w-full max-w-lg bg-white border-2 border-[#111111] p-6 sm:p-8 shadow-2xl space-y-5 my-8">
+            <div className="flex items-center justify-between border-b border-[#111111]/20 pb-3">
+              <h3 className="text-base font-bold uppercase tracking-wider text-[#111111]">
+                [CREATE NEW SPORT DISCIPLINE]
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowEventModal(false)}
+                className="text-[#666666] hover:text-[#dc2626] text-xs font-bold"
+              >
+                ✕ CLOSE
+              </button>
+            </div>
+
             <form onSubmit={handleCreateEvent} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1">Event Title *</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
+                  Event Title *
+                </label>
                 <input
                   type="text"
                   value={eventTitle}
                   onChange={(e) => setEventTitle(e.target.value)}
                   placeholder="e.g. Society Carrom Open, Badminton Veterans"
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:border-blue-600 focus:bg-white"
+                  className="w-full px-3 py-2 bg-[#fafaf7] border border-[#111111]/30 text-[#111111] text-xs focus:border-[#111111] focus:bg-white"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1">Sport Type</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
+                    Sport Discipline
+                  </label>
                   <select
                     value={eventSport}
                     onChange={(e) => setEventSport(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:border-blue-600 focus:bg-white"
+                    className="w-full px-3 py-2 bg-[#fafaf7] border border-[#111111]/30 text-[#111111] text-xs focus:border-[#111111] focus:bg-white"
                   >
                     <option value="Cricket">Cricket</option>
                     <option value="Football">Football</option>
@@ -1178,13 +1279,15 @@ export default function AdminPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1">Category</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
+                    Category
+                  </label>
                   <select
                     value={eventCategory}
                     onChange={(e) =>
                       setEventCategory(e.target.value as 'Individual' | 'Team' | 'Family')
                     }
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:border-blue-600 focus:bg-white"
+                    className="w-full px-3 py-2 bg-[#fafaf7] border border-[#111111]/30 text-[#111111] text-xs focus:border-[#111111] focus:bg-white"
                   >
                     <option value="Individual">Individual</option>
                     <option value="Team">Team</option>
@@ -1194,35 +1297,41 @@ export default function AdminPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1">Venue Location</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
+                  Venue Location
+                </label>
                 <input
                   type="text"
                   value={eventVenue}
                   onChange={(e) => setEventVenue(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:border-blue-600 focus:bg-white"
+                  className="w-full px-3 py-2 bg-[#fafaf7] border border-[#111111]/30 text-[#111111] text-xs focus:border-[#111111] focus:bg-white"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1">Schedule Date</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
+                    Schedule Date
+                  </label>
                   <input
                     type="date"
                     value={eventDate}
                     onChange={(e) => setEventDate(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:border-blue-600 focus:bg-white"
+                    className="w-full px-3 py-2 bg-[#fafaf7] border border-[#111111]/30 text-[#111111] text-xs focus:border-[#111111] focus:bg-white"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1">Time Slot</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
+                    Time Slot
+                  </label>
                   <input
                     type="text"
                     value={eventTime}
                     onChange={(e) => setEventTime(e.target.value)}
                     placeholder="09:00 AM - 12:00 PM"
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:border-blue-600 focus:bg-white"
+                    className="w-full px-3 py-2 bg-[#fafaf7] border border-[#111111]/30 text-[#111111] text-xs focus:border-[#111111] focus:bg-white"
                     required
                   />
                 </div>
@@ -1230,57 +1339,65 @@ export default function AdminPage() {
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1">Min Age</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
+                    Min Age
+                  </label>
                   <input
                     type="number"
                     value={eventMinAge}
                     onChange={(e) => setEventMinAge(parseInt(e.target.value) || 0)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs"
+                    className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1">Max Age</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
+                    Max Age
+                  </label>
                   <input
                     type="number"
                     value={eventMaxAge}
                     onChange={(e) => setEventMaxAge(parseInt(e.target.value) || 0)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs"
+                    className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1">Capacity</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
+                    Capacity
+                  </label>
                   <input
                     type="number"
                     value={eventMaxCapacity}
                     onChange={(e) => setEventMaxCapacity(parseInt(e.target.value) || 32)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs"
+                    className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1">Description</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
+                  Description
+                </label>
                 <textarea
                   value={eventDesc}
                   onChange={(e) => setEventDesc(e.target.value)}
                   rows={2}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs"
+                  className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                 />
               </div>
 
-              <div className="pt-3 flex items-center justify-end gap-2">
+              <div className="pt-3 border-t border-[#111111]/15 flex items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setShowEventModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-100 text-xs text-slate-700 hover:bg-slate-200"
+                  className="px-4 py-2 bg-white text-[#111111] border border-[#111111]/30 text-xs font-bold uppercase hover:bg-[#f4f4f0]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 shadow-md shadow-blue-500/20"
+                  className="px-5 py-2 bg-[#111111] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#dc2626] border border-[#111111]"
                 >
-                  Save & Publish Event
+                  Save & Publish Event ↗
                 </button>
               </div>
             </form>
