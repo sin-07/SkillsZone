@@ -22,7 +22,6 @@ import {
   Building,
   RefreshCw,
   Mail,
-  ArrowLeft,
 } from 'lucide-react';
 
 export default function AdminPage() {
@@ -392,10 +391,10 @@ export default function AdminPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-[#666666] font-mono">
-        <div className="flex items-center gap-3">
-          <div className="w-5 h-5 border-2 border-[#111111] border-t-transparent animate-spin" />
-          [SYSTEM: LOADING ADMIN COMMAND CENTER...]
+      <div className="min-h-screen flex items-center justify-center text-[#666666] font-mono px-4">
+        <div className="flex items-center gap-3 text-center">
+          <div className="w-5 h-5 border-2 border-[#111111] border-t-transparent animate-spin shrink-0" />
+          <span className="text-xs sm:text-sm">[SYSTEM: LOADING ADMIN COMMAND CENTER...]</span>
         </div>
       </div>
     );
@@ -410,7 +409,7 @@ export default function AdminPage() {
         <h2 className="text-xl font-bold uppercase tracking-wider text-[#111111] mb-2">
           ADMIN CLEARANCE REQUIRED
         </h2>
-        <p className="text-xs text-[#666666] max-w-sm mb-6">
+        <p className="text-xs text-[#666666] max-w-sm mb-6 font-sans">
           You must be signed in with a Society Sports Committee Admin account to view this command center.
         </p>
         <Link
@@ -446,18 +445,18 @@ export default function AdminPage() {
   });
 
   return (
-    <div className="min-h-screen py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8 font-mono">
+    <div className="min-h-screen py-6 sm:py-12 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6 sm:space-y-8 font-mono">
       {/* Top Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#111111]/20">
         <div>
-          <div className="flex items-center gap-2 mb-1 text-[10px] font-bold uppercase tracking-widest text-[#111111]">
-            <span className="w-3 h-3 bg-[#dc2626]" />
+          <div className="flex flex-wrap items-center gap-2 mb-1 text-[10px] font-bold uppercase tracking-widest text-[#111111]">
+            <span className="w-2.5 h-2.5 bg-[#dc2626]" />
             <Shield className="w-3.5 h-3.5 text-[#dc2626]" />
             <span>SOCIETY COMMITTEE ADMIN PANEL</span>
-            <span className="text-[#888888]">•</span>
-            <span className="text-[#666666]">LIVE SYSTEM V2.6</span>
+            <span className="text-[#888888] hidden sm:inline">•</span>
+            <span className="text-[#666666] hidden sm:inline">LIVE SYSTEM V2.6</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#111111] tracking-tight mt-1 uppercase">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-[#111111] tracking-tight mt-1 uppercase break-words">
             COLONY<span className="text-[#dc2626]">GAMES</span> 2026 COMMAND CENTER
           </h1>
           <p className="text-xs text-[#555555] mt-1 font-sans">
@@ -465,123 +464,149 @@ export default function AdminPage() {
           </p>
         </div>
 
-        {/* Global Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2.5 self-start md:self-auto">
+        {/* Global Action Buttons - Mobile Responsive Wrap */}
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full md:w-auto">
           <button
             onClick={fetchAllAdminData}
             title="Refresh Data"
-            className="p-2.5 bg-white hover:bg-[#f4f4f0] text-[#111111] border border-[#111111]/30 transition-colors"
+            className="p-2.5 bg-white hover:bg-[#f4f4f0] text-[#111111] border border-[#111111]/30 transition-colors shrink-0"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
           <a
             href="/api/export?view=roster"
             download
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-[#f4f4f0] text-[#111111] text-xs font-bold uppercase tracking-wider border border-[#111111]/30 transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 bg-white hover:bg-[#f4f4f0] text-[#111111] text-[11px] sm:text-xs font-bold uppercase tracking-wider border border-[#111111]/30 transition-colors text-center whitespace-nowrap"
           >
-            <FileSpreadsheet className="w-4 h-4 text-[#dc2626]" /> Export Roster (CSV)
+            <FileSpreadsheet className="w-3.5 h-3.5 text-[#dc2626]" /> Export Roster
           </a>
           <button
             onClick={() => setShowEventModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#111111] hover:bg-[#dc2626] text-white text-xs font-bold uppercase tracking-wider border border-[#111111] transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 bg-[#111111] hover:bg-[#dc2626] text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider border border-[#111111] transition-colors text-center whitespace-nowrap"
           >
-            <Plus className="w-4 h-4" /> Add Sport / Event
+            <Plus className="w-3.5 h-3.5" /> Add Sport / Event
           </button>
         </div>
       </div>
 
-      {/* Navigation Sub-Tabs */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-[#111111]/20">
-        {[
-          { id: 'overview', label: '01 / METRICS OVERVIEW', icon: Trophy },
-          { id: 'checkin', label: '02 / GATE QR CHECK-IN', icon: QrCode },
-          { id: 'registrations', label: `03 / PASSES (${registrations.length})`, icon: Users },
-          { id: 'events', label: `04 / EVENTS (${events.length})`, icon: Calendar },
-          { id: 'families', label: `05 / FAMILIES (${families.length})`, icon: Building },
-          { id: 'results', label: '06 / PODIUM & MEDALS', icon: Award },
-          { id: 'announcements', label: '07 / BROADCASTS', icon: Megaphone },
-        ].map((tab) => {
-          const Icon = tab.icon;
-          const isActive = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-3.5 py-2 text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-colors border ${
-                isActive
-                  ? 'bg-[#111111] text-white border-[#111111]'
-                  : 'bg-white text-[#111111] border-[#111111]/20 hover:border-[#111111] hover:bg-[#f4f4f0]'
-              }`}
-            >
-              <Icon className="w-3.5 h-3.5" />
-              {tab.label}
-            </button>
-          );
-        })}
+      {/* Navigation Sub-Tabs: Mobile Dropdown + Scrollable Strip */}
+      <div className="space-y-2">
+        {/* Mobile Tab Select Dropdown (Visible on small screens) */}
+        <div className="block sm:hidden">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-[#666666] mb-1 block">
+            SELECT MODULE:
+          </label>
+          <select
+            value={activeTab}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onChange={(e) => setActiveTab(e.target.value as any)}
+            className="w-full px-3 py-2.5 bg-white border border-[#111111] text-[#111111] font-mono font-bold text-xs uppercase focus:outline-none"
+          >
+            <option value="overview">01 / METRICS OVERVIEW</option>
+            <option value="checkin">02 / GATE QR CHECK-IN</option>
+            <option value="registrations">03 / PASSES ({registrations.length})</option>
+            <option value="events">04 / EVENTS ({events.length})</option>
+            <option value="families">05 / FAMILIES ({families.length})</option>
+            <option value="results">06 / PODIUM & MEDALS</option>
+            <option value="announcements">07 / BROADCASTS ({announcements.length})</option>
+          </select>
+        </div>
+
+        {/* Scrollable Tab Strip (Desktop & Swipeable on Mobile) */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-[#111111]/20 -mx-3 px-3 sm:mx-0 sm:px-0 touch-pan-x">
+          {[
+            { id: 'overview', label: '01 / METRICS', icon: Trophy },
+            { id: 'checkin', label: '02 / GATE CHECK-IN', icon: QrCode },
+            { id: 'registrations', label: `03 / PASSES (${registrations.length})`, icon: Users },
+            { id: 'events', label: `04 / EVENTS (${events.length})`, icon: Calendar },
+            { id: 'families', label: `05 / FAMILIES (${families.length})`, icon: Building },
+            { id: 'results', label: '06 / PODIUM', icon: Award },
+            { id: 'announcements', label: '07 / BROADCASTS', icon: Megaphone },
+          ].map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 py-2 text-[11px] sm:text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-colors border shrink-0 ${
+                  isActive
+                    ? 'bg-[#111111] text-white border-[#111111]'
+                    : 'bg-white text-[#111111] border-[#111111]/20 hover:border-[#111111] hover:bg-[#f4f4f0]'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* ================= TAB 1: OVERVIEW METRICS ================= */}
       {activeTab === 'overview' && (
-        <div className="space-y-8">
-          {/* Key Stat Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <div className="p-5 bg-white border border-[#111111] space-y-2 shadow-xs">
-              <span className="text-[10px] font-bold text-[#666666] uppercase tracking-widest block">
+        <div className="space-y-6 sm:space-y-8">
+          {/* Key Stat Cards - Responsive Grid */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            <div className="p-3.5 sm:p-5 bg-white border border-[#111111] space-y-1.5 shadow-xs">
+              <span className="text-[9px] sm:text-[10px] font-bold text-[#666666] uppercase tracking-widest block truncate">
                 [01] TOTAL HOUSEHOLDS
               </span>
-              <div className="text-3xl font-black text-[#111111]">{metrics.totalFamilies}</div>
-              <span className="text-[11px] text-[#dc2626] font-bold block uppercase tracking-wider">
+              <div className="text-2xl sm:text-3xl font-black text-[#111111]">{metrics.totalFamilies}</div>
+              <span className="text-[10px] sm:text-[11px] text-[#dc2626] font-bold block uppercase tracking-wider truncate">
                 Society Residences
               </span>
             </div>
 
-            <div className="p-5 bg-white border border-[#111111] space-y-2 shadow-xs">
-              <span className="text-[10px] font-bold text-[#666666] uppercase tracking-widest block">
+            <div className="p-3.5 sm:p-5 bg-white border border-[#111111] space-y-1.5 shadow-xs">
+              <span className="text-[9px] sm:text-[10px] font-bold text-[#666666] uppercase tracking-widest block truncate">
                 [02] ATHLETE ENTRIES
               </span>
-              <div className="text-3xl font-black text-[#111111]">{metrics.totalParticipants}</div>
-              <span className="text-[11px] text-[#666666] font-bold block uppercase tracking-wider">
-                Active Competitors
+              <div className="text-2xl sm:text-3xl font-black text-[#111111]">{metrics.totalParticipants}</div>
+              <span className="text-[10px] sm:text-[11px] text-[#666666] font-bold block uppercase tracking-wider truncate">
+                Competitors
               </span>
             </div>
 
-            <div className="p-5 bg-white border border-[#111111] space-y-2 shadow-xs">
-              <span className="text-[10px] font-bold text-[#666666] uppercase tracking-widest block">
+            <div className="p-3.5 sm:p-5 bg-white border border-[#111111] space-y-1.5 shadow-xs">
+              <span className="text-[9px] sm:text-[10px] font-bold text-[#666666] uppercase tracking-widest block truncate">
                 [03] PASSES ISSUED
               </span>
-              <div className="text-3xl font-black text-[#111111]">{metrics.totalRegistrations}</div>
-              <span className="text-[11px] text-[#dc2626] font-bold block uppercase tracking-wider">
-                {metrics.confirmedRegistrations} Confirmed Passes
+              <div className="text-2xl sm:text-3xl font-black text-[#111111]">{metrics.totalRegistrations}</div>
+              <span className="text-[10px] sm:text-[11px] text-[#dc2626] font-bold block uppercase tracking-wider truncate">
+                {metrics.confirmedRegistrations} Confirmed
               </span>
             </div>
 
-            <div className="p-5 bg-white border border-[#111111] space-y-2 shadow-xs">
-              <span className="text-[10px] font-bold text-[#666666] uppercase tracking-widest block">
+            <div className="p-3.5 sm:p-5 bg-white border border-[#111111] space-y-1.5 shadow-xs">
+              <span className="text-[9px] sm:text-[10px] font-bold text-[#666666] uppercase tracking-widest block truncate">
                 [04] GATE CHECK-IN
               </span>
-              <div className="text-3xl font-black text-[#111111]">
+              <div className="text-2xl sm:text-3xl font-black text-[#111111]">
                 {metrics.checkedInCount}{' '}
-                <span className="text-sm font-normal text-[#666666]">({metrics.checkInRate}%)</span>
+                <span className="text-xs sm:text-sm font-normal text-[#666666]">({metrics.checkInRate}%)</span>
               </div>
-              <span className="text-[11px] text-[#666666] font-bold block uppercase tracking-wider">
+              <span className="text-[10px] sm:text-[11px] text-[#666666] font-bold block uppercase tracking-wider truncate">
                 Verified at Gates
               </span>
             </div>
           </div>
 
           {/* Event Capacity Meters Grid */}
-          <div className="bg-white border border-[#111111] p-6 sm:p-8 space-y-6 shadow-xs">
-            <div className="flex items-center justify-between border-b border-[#111111]/15 pb-4">
+          <div className="bg-white border border-[#111111] p-4 sm:p-8 space-y-5 sm:space-y-6 shadow-xs">
+            <div className="flex items-center justify-between border-b border-[#111111]/15 pb-3">
               <div>
-                <h3 className="text-sm font-bold uppercase tracking-wider text-[#111111]">
+                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#111111]">
                   EVENT-WISE CAPACITY ALLOCATION
                 </h3>
-                <p className="text-xs text-[#666666] mt-0.5">Real-time quota utilization for each tournament</p>
+                <p className="text-[11px] sm:text-xs text-[#666666] mt-0.5 font-sans">
+                  Real-time quota utilization for each tournament
+                </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {events.map((ev) => {
                 const filledPct = Math.min(
                   100,
@@ -590,13 +615,13 @@ export default function AdminPage() {
                 return (
                   <div
                     key={ev._id}
-                    className="p-4 bg-[#fafaf7] border border-[#111111]/20 space-y-3"
+                    className="p-3.5 sm:p-4 bg-[#fafaf7] border border-[#111111]/20 space-y-2.5"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-[#111111] truncate max-w-[180px]">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-xs font-bold text-[#111111] truncate">
                         {ev.title}
                       </span>
-                      <span className="text-[9px] font-bold text-white bg-[#111111] px-2 py-0.5 uppercase tracking-wider">
+                      <span className="text-[9px] font-bold text-white bg-[#111111] px-1.5 py-0.5 uppercase tracking-wider shrink-0">
                         {ev.sportType}
                       </span>
                     </div>
@@ -627,27 +652,27 @@ export default function AdminPage() {
       {/* ================= TAB 2: GATE QR CHECK-IN ================= */}
       {activeTab === 'checkin' && (
         <div className="max-w-2xl mx-auto space-y-6">
-          <div className="p-6 sm:p-8 bg-white border border-[#111111] space-y-6 shadow-xs">
+          <div className="p-4 sm:p-8 bg-white border border-[#111111] space-y-5 shadow-xs">
             <div className="text-center">
-              <div className="w-12 h-12 bg-[#111111] text-white flex items-center justify-center mx-auto mb-3 border border-[#111111]">
-                <QrCode className="w-6 h-6 text-[#dc2626]" />
+              <div className="w-10 sm:w-12 h-10 sm:h-12 bg-[#111111] text-white flex items-center justify-center mx-auto mb-3 border border-[#111111]">
+                <QrCode className="w-5 sm:w-6 h-5 sm:h-6 text-[#dc2626]" />
               </div>
-              <h2 className="text-lg font-bold uppercase tracking-wider text-[#111111]">
+              <h2 className="text-base sm:text-lg font-bold uppercase tracking-wider text-[#111111]">
                 [GATE ACCESS TERMINAL • SCANNER]
               </h2>
               <p className="text-xs text-[#666666] mt-1 font-sans">
-                Scan athlete QR credential with camera / barcode scanner or enter Registration Pass ID (e.g. CG26-XXXX).
+                Scan athlete QR credential with camera / scanner or enter Registration Pass ID (e.g. CG-2026-XXXX).
               </p>
             </div>
 
-            <form onSubmit={handleCheckInSubmit} className="space-y-4">
+            <form onSubmit={handleCheckInSubmit} className="space-y-3.5">
               <div className="relative">
                 <input
                   type="text"
                   value={checkInInput}
                   onChange={(e) => setCheckInInput(e.target.value)}
                   placeholder="Scan QR payload or enter ID (e.g. CG-2026-XXXX)..."
-                  className="w-full px-4 py-3 bg-[#fafaf7] border border-[#111111] text-[#111111] placeholder-[#888888] text-xs font-mono focus:outline-none focus:bg-white"
+                  className="w-full px-3.5 py-3 bg-[#fafaf7] border border-[#111111] text-[#111111] placeholder-[#888888] text-xs font-mono focus:outline-none focus:bg-white"
                   autoFocus
                 />
               </div>
@@ -664,37 +689,37 @@ export default function AdminPage() {
             {/* Scan Feedback Result Card */}
             {checkInResult && (
               <div
-                className={`p-5 border text-xs space-y-3 ${
+                className={`p-4 border text-xs space-y-3 ${
                   checkInResult.error
                     ? 'bg-[#fdf2f2] border-[#fca5a5] border-l-4 border-l-[#dc2626] text-[#7f1d1d]'
                     : 'bg-[#f0fdf4] border-[#86efac] border-l-4 border-l-[#16a34a] text-[#14532d]'
                 }`}
               >
-                <div className="flex items-center gap-2 font-bold text-sm uppercase tracking-wide">
+                <div className="flex items-center gap-2 font-bold text-xs sm:text-sm uppercase tracking-wide">
                   {checkInResult.error ? (
                     <>
-                      <XCircle className="w-5 h-5 text-[#dc2626]" />
+                      <XCircle className="w-4 sm:w-5 h-4 sm:h-5 text-[#dc2626] shrink-0" />
                       CHECK-IN REJECTED: {checkInResult.error}
                     </>
                   ) : (
                     <>
-                      <CheckCircle2 className="w-5 h-5 text-[#16a34a]" />
+                      <CheckCircle2 className="w-4 sm:w-5 h-4 sm:h-5 text-[#16a34a] shrink-0" />
                       {checkInResult.alreadyCheckedIn
-                        ? 'NOTICE: PASS WAS ALREADY CHECKED-IN EARLIER'
+                        ? 'NOTICE: PASS WAS ALREADY CHECKED-IN'
                         : 'GATE ENTRY VERIFIED & CHECKED-IN!'}
                     </>
                   )}
                 </div>
 
                 {checkInResult.registration && (
-                  <div className="p-4 bg-white border border-[#111111]/20 space-y-1.5 text-[#111111]">
+                  <div className="p-3 sm:p-4 bg-white border border-[#111111]/20 space-y-1.5 text-[#111111]">
                     <p>
                       <strong>PASS ID:</strong>{' '}
                       <span className="text-[#dc2626] font-bold">
                         {checkInResult.registration.registrationId}
                       </span>
                     </p>
-                    <p>
+                    <p className="truncate">
                       <strong>PRIMARY CONTACT:</strong> {checkInResult.registration.contactName} (
                       {checkInResult.registration.contactPhone})
                     </p>
@@ -712,9 +737,9 @@ export default function AdminPage() {
 
       {/* ================= TAB 3: REGISTRATIONS MANAGEMENT ================= */}
       {activeTab === 'registrations' && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Search and Filters */}
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row gap-2.5">
             <div className="relative flex-1">
               <Search className="w-4 h-4 text-[#888888] absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
@@ -730,7 +755,7 @@ export default function AdminPage() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-3 py-2.5 bg-white border border-[#111111]/30 text-xs font-mono text-[#111111] focus:outline-none focus:border-[#111111]"
+                className="w-full sm:w-auto px-3 py-2.5 bg-white border border-[#111111]/30 text-xs font-mono text-[#111111] focus:outline-none focus:border-[#111111]"
               >
                 <option value="All">All Statuses</option>
                 <option value="confirmed">Confirmed</option>
@@ -739,8 +764,115 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* Registrations Table */}
-          <div className="bg-white border border-[#111111] overflow-hidden shadow-xs">
+          {/* MOBILE CARD VIEW: Dedicated touch-friendly cards on small screens */}
+          <div className="block md:hidden space-y-3">
+            {filteredRegs.map((reg) => (
+              <div key={reg._id} className="p-3.5 bg-white border border-[#111111] space-y-3 shadow-xs">
+                {/* Header: ID + Status + Gate */}
+                <div className="flex items-center justify-between gap-2 border-b border-[#111111]/10 pb-2">
+                  <div>
+                    <span className="text-[9px] text-[#888888] uppercase block">PASS ID</span>
+                    <span className="font-bold text-xs sm:text-sm text-[#111111]">{reg.registrationId}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <span
+                      className={`text-[9px] font-bold px-1.5 py-0.5 border uppercase tracking-wider ${
+                        reg.status === 'confirmed'
+                          ? 'bg-[#fdf2f2] text-[#dc2626] border-[#dc2626]'
+                          : 'bg-[#fafaf7] text-[#666666] border-[#cccccc]'
+                      }`}
+                    >
+                      {reg.status}
+                    </span>
+                    {reg.checkIn?.isCheckedIn ? (
+                      <span className="text-[9px] font-bold text-white bg-[#111111] px-1.5 py-0.5 border border-[#111111] uppercase tracking-wider">
+                        CHECKED IN
+                      </span>
+                    ) : (
+                      <span className="text-[9px] font-bold text-[#666666] bg-[#e5e5e0] px-1.5 py-0.5 uppercase tracking-wider">
+                        PENDING
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Details Grid */}
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div>
+                    <span className="text-[9px] text-[#666666] uppercase block">Contact</span>
+                    <span className="font-bold text-[#111111] block truncate">{reg.contactName}</span>
+                    <a href={`tel:${reg.contactPhone}`} className="text-[11px] text-[#dc2626] block truncate">
+                      {reg.contactPhone}
+                    </a>
+                  </div>
+                  <div>
+                    <span className="text-[9px] text-[#666666] uppercase block">Household</span>
+                    <span className="font-bold text-[#111111] block truncate">
+                      {reg.familyId?.familyName || '-'}
+                    </span>
+                    <span className="text-[11px] text-[#666666] block truncate">
+                      {reg.familyId?.blockTower} • Unit {reg.familyId?.houseNumber}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Sports entries */}
+                <div className="text-xs pt-1">
+                  <div className="text-[10px] text-[#666666] uppercase mb-1">
+                    Athletes ({reg.entries.length} entries):
+                  </div>
+                  <div className="flex flex-wrap gap-1">
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                    {reg.entries.map((e: any, i: number) => (
+                      <span
+                        key={i}
+                        className="text-[9px] font-bold bg-[#fafaf7] border border-[#111111]/20 px-1.5 py-0.5 text-[#111111]"
+                      >
+                        {e.participantName}: {e.sportType}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Action Buttons with Full Mobile Tap Targets */}
+                <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#111111]/10">
+                  <a
+                    href={`/api/registrations/${reg.registrationId}/pdf`}
+                    download
+                    className="flex items-center justify-center gap-1 py-2 px-1 bg-white hover:bg-[#111111] hover:text-white text-[#111111] text-[10px] font-bold uppercase tracking-wider border border-[#111111]/30 transition-colors text-center"
+                    title="Download PDF"
+                  >
+                    <Download className="w-3.5 h-3.5" /> PDF
+                  </a>
+
+                  <Link
+                    href={`/confirmation/${reg.registrationId}`}
+                    className="flex items-center justify-center gap-1 py-2 px-1 bg-white hover:bg-[#111111] hover:text-white text-[#111111] text-[10px] font-bold uppercase tracking-wider border border-[#111111]/30 transition-colors text-center"
+                    title="View Pass"
+                  >
+                    <QrCode className="w-3.5 h-3.5" /> PASS
+                  </Link>
+
+                  <button
+                    onClick={() => handleResendEmail(reg.registrationId, reg.contactEmail)}
+                    disabled={resendingEmailId === reg.registrationId}
+                    className="flex items-center justify-center gap-1 py-2 px-1 bg-white hover:bg-[#dc2626] hover:text-white text-[#111111] text-[10px] font-bold uppercase tracking-wider border border-[#111111]/30 transition-colors disabled:opacity-50 text-center"
+                    title="Resend Email"
+                  >
+                    <Mail
+                      className={`w-3.5 h-3.5 ${
+                        resendingEmailId === reg.registrationId ? 'animate-spin' : ''
+                      }`}
+                    />
+                    EMAIL
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* DESKTOP TABLE VIEW: Full table on larger screens */}
+          <div className="hidden md:block bg-white border border-[#111111] overflow-hidden shadow-xs">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs text-[#111111]">
                 <thead className="bg-[#111111] text-white text-[10px] uppercase font-bold tracking-wider">
@@ -854,11 +986,11 @@ export default function AdminPage() {
       {/* ================= TAB 4: EVENTS MANAGEMENT ================= */}
       {activeTab === 'events' && (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {events.map((ev) => (
               <div
                 key={ev._id}
-                className="p-5 bg-white border border-[#111111] shadow-xs space-y-4 flex flex-col justify-between"
+                className="p-4 sm:p-5 bg-white border border-[#111111] shadow-xs space-y-4 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between mb-2">
@@ -912,64 +1044,97 @@ export default function AdminPage() {
 
       {/* ================= TAB 5: FAMILIES ================= */}
       {activeTab === 'families' && (
-        <div className="bg-white border border-[#111111] overflow-hidden shadow-xs">
-          <table className="w-full text-left text-xs text-[#111111]">
-            <thead className="bg-[#111111] text-white text-[10px] uppercase font-bold tracking-wider">
-              <tr>
-                <th className="px-5 py-3.5">Family Name</th>
-                <th className="px-5 py-3.5">Tower & Unit</th>
-                <th className="px-5 py-3.5">Contact Person</th>
-                <th className="px-5 py-3.5">Members</th>
-                <th className="px-5 py-3.5">Championship Points</th>
-                <th className="px-5 py-3.5">Medal Tally</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#111111]/15">
-              {families.map((f, idx) => (
-                <tr
-                  key={f._id}
-                  className={`hover:bg-[#f4f4f0] transition-colors ${
-                    idx % 2 === 0 ? 'bg-white' : 'bg-[#fafaf7]'
-                  }`}
-                >
-                  <td className="px-5 py-4 font-bold text-[#111111]">{f.familyName}</td>
-                  <td className="px-5 py-4">
-                    {f.blockTower} - {f.houseNumber}
-                  </td>
-                  <td className="px-5 py-4">
-                    <div className="text-[#111111] font-bold">{f.primaryContactName}</div>
-                    <div className="text-[#666666] text-[11px]">{f.primaryPhone}</div>
-                  </td>
-                  <td className="px-5 py-4 font-bold">{f.membersCount || 1} members</td>
-                  <td className="px-5 py-4 font-black text-[#dc2626] text-sm">
-                    {f.points || 0} pts
-                  </td>
-                  <td className="px-5 py-4 text-xs font-bold">
-                    🥇 {f.medals?.gold || 0} • 🥈 {f.medals?.silver || 0} • 🥉 {f.medals?.bronze || 0}
-                  </td>
+        <div className="space-y-4">
+          {/* Mobile Card View for Families */}
+          <div className="block md:hidden space-y-3">
+            {families.map((f) => (
+              <div key={f._id} className="p-3.5 bg-white border border-[#111111] space-y-2 shadow-xs">
+                <div className="flex items-center justify-between border-b border-[#111111]/10 pb-2">
+                  <div>
+                    <h4 className="font-bold text-sm text-[#111111]">{f.familyName}</h4>
+                    <span className="text-xs text-[#666666]">
+                      {f.blockTower} - {f.houseNumber}
+                    </span>
+                  </div>
+                  <span className="text-base font-black text-[#dc2626]">{f.points || 0} pts</span>
+                </div>
+                <div className="flex items-center justify-between text-xs pt-1">
+                  <div>
+                    <span className="text-[10px] text-[#666666] uppercase block">Contact</span>
+                    <span className="font-bold text-[#111111]">{f.primaryContactName}</span>
+                    <span className="text-[11px] text-[#666666] block">{f.primaryPhone}</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[10px] text-[#666666] uppercase block">Medals</span>
+                    <span className="font-bold text-[#111111]">
+                      🥇 {f.medals?.gold || 0} • 🥈 {f.medals?.silver || 0} • 🥉 {f.medals?.bronze || 0}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Table View for Families */}
+          <div className="hidden md:block bg-white border border-[#111111] overflow-hidden shadow-xs">
+            <table className="w-full text-left text-xs text-[#111111]">
+              <thead className="bg-[#111111] text-white text-[10px] uppercase font-bold tracking-wider">
+                <tr>
+                  <th className="px-5 py-3.5">Family Name</th>
+                  <th className="px-5 py-3.5">Tower & Unit</th>
+                  <th className="px-5 py-3.5">Contact Person</th>
+                  <th className="px-5 py-3.5">Members</th>
+                  <th className="px-5 py-3.5">Championship Points</th>
+                  <th className="px-5 py-3.5">Medal Tally</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-[#111111]/15">
+                {families.map((f, idx) => (
+                  <tr
+                    key={f._id}
+                    className={`hover:bg-[#f4f4f0] transition-colors ${
+                      idx % 2 === 0 ? 'bg-white' : 'bg-[#fafaf7]'
+                    }`}
+                  >
+                    <td className="px-5 py-4 font-bold text-[#111111]">{f.familyName}</td>
+                    <td className="px-5 py-4">
+                      {f.blockTower} - {f.houseNumber}
+                    </td>
+                    <td className="px-5 py-4">
+                      <div className="text-[#111111] font-bold">{f.primaryContactName}</div>
+                      <div className="text-[#666666] text-[11px]">{f.primaryPhone}</div>
+                    </td>
+                    <td className="px-5 py-4 font-bold">{f.membersCount || 1} members</td>
+                    <td className="px-5 py-4 font-black text-[#dc2626] text-sm">
+                      {f.points || 0} pts
+                    </td>
+                    <td className="px-5 py-4 text-xs font-bold">
+                      🥇 {f.medals?.gold || 0} • 🥈 {f.medals?.silver || 0} • 🥉 {f.medals?.bronze || 0}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
       {/* ================= TAB 6: RESULTS & MEDAL ENTRY ================= */}
       {activeTab === 'results' && (
         <div className="max-w-3xl mx-auto space-y-6">
-          <div className="p-6 sm:p-8 bg-white border border-[#111111] shadow-xs space-y-6">
+          <div className="p-4 sm:p-8 bg-white border border-[#111111] shadow-xs space-y-5 sm:space-y-6">
             <div>
-              <h2 className="text-base font-bold uppercase tracking-wider text-[#111111] flex items-center gap-2">
-                <Award className="w-5 h-5 text-[#dc2626]" />
-                [RECORD TOURNAMENT WINNERS & ALLOCATE POINTS]
+              <h2 className="text-sm sm:text-base font-bold uppercase tracking-wider text-[#111111] flex items-center gap-2">
+                <Award className="w-5 h-5 text-[#dc2626] shrink-0" />
+                [RECORD WINNERS & ALLOCATE POINTS]
               </h2>
               <p className="text-xs text-[#666666] mt-1 font-sans">
                 Submitting podium winners automatically awards Gold (10pts), Silver (7pts), and Bronze (5pts)
-                to family and tower championship rankings.
+                to family and tower standings.
               </p>
             </div>
 
-            <form onSubmit={handleSubmitResults} className="space-y-5">
+            <form onSubmit={handleSubmitResults} className="space-y-4 sm:space-y-5">
               {/* Event Select */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-[#111111] mb-1">
@@ -991,11 +1156,11 @@ export default function AdminPage() {
               </div>
 
               {/* Gold Winner (1st Place) */}
-              <div className="p-4 bg-[#fafaf7] border border-[#111111] space-y-3">
+              <div className="p-3.5 sm:p-4 bg-[#fafaf7] border border-[#111111] space-y-3">
                 <div className="text-xs font-bold uppercase tracking-wider text-[#111111] flex items-center gap-1.5">
                   🥇 1ST PLACE (GOLD MEDAL • 10 POINTS)
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                   <div>
                     <label className="block text-[10px] uppercase font-bold text-[#666666] mb-1">Winner Name *</label>
                     <input
@@ -1036,11 +1201,11 @@ export default function AdminPage() {
               </div>
 
               {/* Silver Winner (2nd Place) */}
-              <div className="p-4 bg-[#fafaf7] border border-[#111111]/30 space-y-3">
+              <div className="p-3.5 sm:p-4 bg-[#fafaf7] border border-[#111111]/30 space-y-3">
                 <div className="text-xs font-bold uppercase tracking-wider text-[#111111] flex items-center gap-1.5">
                   🥈 2ND PLACE (SILVER MEDAL • 7 POINTS)
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                   <div>
                     <input
                       type="text"
@@ -1077,11 +1242,11 @@ export default function AdminPage() {
               </div>
 
               {/* Bronze Winner (3rd Place) */}
-              <div className="p-4 bg-[#fafaf7] border border-[#111111]/30 space-y-3">
+              <div className="p-3.5 sm:p-4 bg-[#fafaf7] border border-[#111111]/30 space-y-3">
                 <div className="text-xs font-bold uppercase tracking-wider text-[#111111] flex items-center gap-1.5">
                   🥉 3RD PLACE (BRONZE MEDAL • 5 POINTS)
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                   <div>
                     <input
                       type="text"
@@ -1131,9 +1296,9 @@ export default function AdminPage() {
 
       {/* ================= TAB 7: ANNOUNCEMENTS ================= */}
       {activeTab === 'announcements' && (
-        <div className="space-y-6">
-          <div className="p-6 bg-white border border-[#111111] shadow-xs space-y-4">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-[#111111]">
+        <div className="space-y-4 sm:space-y-6">
+          <div className="p-4 sm:p-6 bg-white border border-[#111111] shadow-xs space-y-4">
+            <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#111111]">
               [POST NEW SOCIETY BROADCAST / ALERT]
             </h3>
             <form onSubmit={handleCreateAnnouncement} className="space-y-3">
@@ -1186,7 +1351,7 @@ export default function AdminPage() {
 
                 <button
                   type="submit"
-                  className="px-5 py-2.5 bg-[#111111] hover:bg-[#dc2626] text-white font-bold text-xs uppercase tracking-wider border border-[#111111] transition-colors"
+                  className="w-full sm:w-auto px-5 py-2.5 bg-[#111111] hover:bg-[#dc2626] text-white font-bold text-xs uppercase tracking-wider border border-[#111111] transition-colors"
                 >
                   Publish Broadcast ↗
                 </button>
@@ -1198,13 +1363,13 @@ export default function AdminPage() {
             {announcements.map((ann) => (
               <div
                 key={ann._id}
-                className="p-4 bg-white border border-[#111111]/20 shadow-xs flex items-center justify-between gap-4"
+                className="p-3.5 sm:p-4 bg-white border border-[#111111]/20 shadow-xs flex items-center justify-between gap-3"
               >
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-[#111111] text-sm uppercase">{ann.title}</span>
+                    <span className="font-bold text-[#111111] text-xs sm:text-sm uppercase">{ann.title}</span>
                     {ann.isPinned && (
-                      <span className="text-[9px] font-bold text-white bg-[#dc2626] px-2 py-0.5 uppercase tracking-wider">
+                      <span className="text-[9px] font-bold text-white bg-[#dc2626] px-1.5 py-0.5 uppercase tracking-wider shrink-0">
                         PINNED
                       </span>
                     )}
@@ -1213,7 +1378,7 @@ export default function AdminPage() {
                 </div>
                 <button
                   onClick={() => handleDeleteAnnouncement(ann._id)}
-                  className="p-2 text-[#888888] hover:text-[#dc2626] transition-colors"
+                  className="p-2 text-[#888888] hover:text-[#dc2626] transition-colors shrink-0"
                   title="Delete"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -1224,24 +1389,24 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* ================= MODAL: ADD SPORT / EVENT ================= */}
+      {/* ================= MODAL: ADD SPORT / EVENT - Mobile Friendly ================= */}
       {showEventModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#111111]/60 backdrop-blur-xs overflow-y-auto font-mono">
-          <div className="w-full max-w-lg bg-white border-2 border-[#111111] p-6 sm:p-8 shadow-2xl space-y-5 my-8">
-            <div className="flex items-center justify-between border-b border-[#111111]/20 pb-3">
-              <h3 className="text-base font-bold uppercase tracking-wider text-[#111111]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#111111]/60 backdrop-blur-xs overflow-y-auto font-mono">
+          <div className="w-full max-w-lg bg-white border-2 border-[#111111] p-4 sm:p-8 shadow-2xl space-y-4 my-auto max-h-[92vh] flex flex-col">
+            <div className="flex items-center justify-between border-b border-[#111111]/20 pb-3 shrink-0">
+              <h3 className="text-xs sm:text-base font-bold uppercase tracking-wider text-[#111111]">
                 [CREATE NEW SPORT DISCIPLINE]
               </h3>
               <button
                 type="button"
                 onClick={() => setShowEventModal(false)}
-                className="text-[#666666] hover:text-[#dc2626] text-xs font-bold"
+                className="text-[#666666] hover:text-[#dc2626] text-xs font-bold p-1"
               >
                 ✕ CLOSE
               </button>
             </div>
 
-            <form onSubmit={handleCreateEvent} className="space-y-4">
+            <form onSubmit={handleCreateEvent} className="space-y-3.5 overflow-y-auto pr-1 flex-1">
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
                   Event Title *
@@ -1256,7 +1421,7 @@ export default function AdminPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
                     Sport Discipline
@@ -1309,7 +1474,7 @@ export default function AdminPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
                     Schedule Date
@@ -1337,38 +1502,38 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
+                  <label className="block text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
                     Min Age
                   </label>
                   <input
                     type="number"
                     value={eventMinAge}
                     onChange={(e) => setEventMinAge(parseInt(e.target.value) || 0)}
-                    className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
+                    className="w-full px-2.5 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
+                  <label className="block text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
                     Max Age
                   </label>
                   <input
                     type="number"
                     value={eventMaxAge}
                     onChange={(e) => setEventMaxAge(parseInt(e.target.value) || 0)}
-                    className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
+                    className="w-full px-2.5 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
+                  <label className="block text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#666666] mb-1">
                     Capacity
                   </label>
                   <input
                     type="number"
                     value={eventMaxCapacity}
                     onChange={(e) => setEventMaxCapacity(parseInt(e.target.value) || 32)}
-                    className="w-full px-3 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
+                    className="w-full px-2.5 py-2 bg-white border border-[#111111]/30 text-[#111111] text-xs"
                   />
                 </div>
               </div>
@@ -1385,17 +1550,17 @@ export default function AdminPage() {
                 />
               </div>
 
-              <div className="pt-3 border-t border-[#111111]/15 flex items-center justify-end gap-2">
+              <div className="pt-3 border-t border-[#111111]/15 flex items-center justify-end gap-2 shrink-0">
                 <button
                   type="button"
                   onClick={() => setShowEventModal(false)}
-                  className="px-4 py-2 bg-white text-[#111111] border border-[#111111]/30 text-xs font-bold uppercase hover:bg-[#f4f4f0]"
+                  className="px-4 py-2.5 bg-white text-[#111111] border border-[#111111]/30 text-xs font-bold uppercase hover:bg-[#f4f4f0]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#111111] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#dc2626] border border-[#111111]"
+                  className="px-5 py-2.5 bg-[#111111] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#dc2626] border border-[#111111]"
                 >
                   Save & Publish Event ↗
                 </button>
