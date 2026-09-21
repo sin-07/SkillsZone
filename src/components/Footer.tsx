@@ -107,9 +107,18 @@ export default function Footer() {
         {/* Bottom Colophon Bar */}
         <div className="mt-14 pt-6 border-t border-[#111111]/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-widest text-[#666666]">
           <p>© 2026 COLONYGAMES • PUBLISHED BY GREEN MEADOWS SPORTS COMMITTEE</p>
-          <p className="text-[#111111]">
-            TYPOGRAPHY: NEUE GROTESK • BUILT FOR RESIDENTS
-          </p>
+          <div className="flex items-center gap-3 sm:gap-4">
+            <p className="text-[#111111]">
+              TYPOGRAPHY: NEUE GROTESK • BUILT FOR RESIDENTS
+            </p>
+            <a
+              href="#top"
+              className="px-2 py-0.5 border border-[#111111]/30 hover:border-[#111111] bg-white text-[#111111] hover:bg-[#111111] hover:text-white transition-all text-[9px] font-bold"
+              title="Back to top"
+            >
+              TOP ↑
+            </a>
+          </div>
         </div>
       </div>
     </footer>

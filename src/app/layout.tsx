@@ -15,7 +15,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#2563eb',
+  themeColor: '#111111',
 };
 
 export const metadata: Metadata = {
@@ -39,7 +39,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-[#f4f4f0] text-[#111111] font-sans selection:bg-[#111111] selection:text-white">
+      <body id="top" className="min-h-full flex flex-col bg-[#f4f4f0] text-[#111111] font-sans selection:bg-[#111111] selection:text-white">
         <AuthProvider>
           <ToastProvider>
             <Navbar />
